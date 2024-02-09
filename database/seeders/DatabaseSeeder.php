@@ -2,8 +2,6 @@
 
 namespace Database\Seeders;
 
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-
 use App\Enums\Role as EnumsRole;
 use App\Models\Category;
 use App\Models\CouponCode;
@@ -36,12 +34,28 @@ class DatabaseSeeder extends Seeder
         ]);
 
         \App\Models\User::factory()->create([
-            'first_name' => 'Test',
-            'last_name' => 'User',
+            'first_name' => 'Zakariae',
+            'last_name' => 'Lajoui',
             'role_id' => EnumsRole::ADMIN,
-            'email' => 'test@example.com',
-            'password' => Hash::make('password')
+            'email' => 'lajoui.zakariae.1@gmail.com',
+            'password' => Hash::make('1234')
         ]);
+
+        \App\Models\User::factory()->create([
+            'first_name' => 'Ilham',
+            'last_name' => 'El Maimouni',
+            'role_id' => EnumsRole::ADMIN,
+            'email' => 'ilhammaimouni269@gmail.com',
+            'password' => Hash::make('1234')
+        ]);
+
+        // \App\Models\User::factory()->create([
+        //     'first_name' => 'Zakariae',
+        //     'last_name' => 'Lajoui',
+        //     'role_id' => EnumsRole::ADMIN,
+        //     'email' => 'lajoui.zakariae.1@gmail.com',
+        //     'password' => Hash::make('1234')
+        // ]);
 
         $payment_methods = [
             ["name" => "cheque"],

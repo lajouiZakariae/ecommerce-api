@@ -24,33 +24,16 @@ class OrderController extends Controller
      */
     public function index(): Response
     {
-        $orders = Order::query()->with([
-            'orderItems' => [
-                'product:id,title,price'
-            ]
-        ])->get(['id', 'full_name', 'status', 'delivery', 'created_at']);
+        $orders = Order::query()
+            ->with([
+                'orderItems' => [
+                    'product:id,title,price'
+                ],
+            ])
+            ->select(['id', 'full_name', 'status', 'delivery', 'created_at'])
+            ->get();
 
-        $orders = $orders->map(function (Order $order) {
-            $order['order_items_url'] = route('order-items.index', ['order' => $order->id]);
-            $order['order_items_count'] = $order->orderItems->count();
-
-            $order->orderItems->each(function (OrderItem $orderItem) use ($order) {
-                $orderItem->url = route('order-items.show', ['order' => $order->id, 'order_item' => $orderItem->id]);
-                $orderItem->product->url = route('products.show', ['product' => $orderItem->product->id]);
-                $orderItem->total_price = round($orderItem->quantity * $orderItem->product->price, 2);
-            });
-
-            $total_price =
-                $order->orderItems->reduce(function ($acc, OrderItem $orderItem) {
-                    return $acc + ($orderItem->quantity * $orderItem->product->price);
-                }, 0);
-
-            $order->total_price = round($total_price, 2);
-
-            return $order;
-        });
-
-        return response($orders);
+        return response(($orders));
     }
 
     /**
@@ -77,7 +60,8 @@ class OrderController extends Controller
     public function show(Order $order): Response
     {
         $orderData = $order->load([
-            'paymentMethod'
+            'paymentMethod',
+            'orderItems' => ['product:id,price']
         ]);
 
         return response(new OrderResource($orderData));

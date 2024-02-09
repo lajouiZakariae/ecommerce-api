@@ -18,10 +18,6 @@ use Spatie\RouteAttributes\Attributes\ApiResource;
 use Spatie\RouteAttributes\Attributes\Get;
 use Spatie\RouteAttributes\Attributes\Patch;
 
-/**
- * @group Products
- * @ApiResource Products 
- */
 #[ApiResource('products')]
 class ProductController extends Controller
 {

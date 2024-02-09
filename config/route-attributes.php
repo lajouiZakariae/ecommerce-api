@@ -16,7 +16,7 @@ return [
         // app_path('Http/Controllers'),
         app_path('Http/Controllers/Admin') => [
             'prefix' => 'api/admin',
-            'middleware' => 'api',
+            'middleware' => ['api', 'auth:sanctum'],
             // only register routes in files that match the patterns
             'patterns' => ['*Controller.php'],
             // do not register routes in files that match the patterns

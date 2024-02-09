@@ -15,10 +15,10 @@ class ProductResource extends JsonResource
         return [
             'id' => $this->id,
             'created_at' => $this->created_at,
-            'title' => $this->whenHas('title'),
+            'title' => $this->title,
             'description' => $this->whenHas('description'),
+            'price' => $this->price,
             'cost' => $this->whenHas('cost'),
-            'price' => $this->whenHas('price'),
             'stock_quantity' => $this->whenHas('stock_quantity'),
             'published' => $this->whenHas('published'),
             'category_id' => $this->whenHas('category_id'),
