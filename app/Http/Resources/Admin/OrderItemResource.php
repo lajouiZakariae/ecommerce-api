@@ -18,6 +18,7 @@ class OrderItemResource extends JsonResource
             'order_id' => $this->order_id,
             'product_id' => $this->product_id,
             'quantity' => $this->quantity,
+            'product' => $this->whenLoaded('product'),
             "url" => route(
                 'order-items.show',
                 ['order' => $this->order_id, 'order_item' => $this->id]
@@ -30,13 +31,6 @@ class OrderItemResource extends JsonResource
                 'order' => $this->order_id,
                 'order_item' => $this->id
             ]),
-            'product' => $this->whenLoaded('product'),
-            'total_price' => $this->calculateTotalPrice()
         ];
-    }
-
-    private function calculateTotalPrice(): ?float
-    {
-        return $this->whenLoaded('product', $this->quantity * $this->product->price);
     }
 }

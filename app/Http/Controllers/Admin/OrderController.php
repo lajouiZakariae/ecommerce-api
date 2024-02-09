@@ -17,6 +17,16 @@ use Spatie\RouteAttributes\Attributes\ApiResource;
 #[ApiResource('orders')]
 class OrderController extends Controller
 {
+    private function calculateTotals(Order $order): Order
+    {
+        $order->orderItems->each(function (OrderItem $orderItem) {
+            $orderItem->setTotalPrice();
+        });
+
+        $order->setTotalPrice();
+        return $order;
+    }
+
     /**
      * Display a listing of the orders.
      *
@@ -33,7 +43,9 @@ class OrderController extends Controller
             ->select(['id', 'full_name', 'status', 'delivery', 'created_at'])
             ->get();
 
-        return response(($orders));
+        $orders = $orders->map(fn (Order $order) => $this->calculateTotals($order));
+
+        return response($orders);
     }
 
     /**
@@ -59,12 +71,31 @@ class OrderController extends Controller
      */
     public function show(Order $order): Response
     {
-        $orderData = $order->load([
+        $order = $order->load([
             'paymentMethod',
             'orderItems' => ['product:id,price']
         ]);
 
-        return response(new OrderResource($orderData));
+        $order = $this->calculateTotals($order);
+
+        $order->orderItems->each(function (OrderItem $orderItem) {
+            $orderItem->url = route(
+                'order-items.show',
+                ['order' => $orderItem->order_id, 'order_item' => $orderItem->id]
+            );
+
+            $orderItem->increment_quantity_url =  route(
+                'order-items.increment-quantity',
+                ['order' => $orderItem->order_id, 'order_item' => $orderItem->id]
+            );
+
+            $orderItem->decrement_quantity_url =  route(
+                'order-items.decrement-quantity',
+                ['order' => $orderItem->order_id, 'order_item' => $orderItem->id]
+            );
+        });
+
+        return response($order);
     }
 
     /**

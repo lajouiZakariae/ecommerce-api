@@ -54,4 +54,13 @@ class Order extends Model
     {
         return $this->hasMany(OrderItem::class);
     }
+
+    public function setTotalPrice(): void
+    {
+        $total_price = $this->orderItems->reduce(function ($acc, OrderItem $orderItem) {
+            return $acc + ($orderItem->quantity * $orderItem->product->price);
+        }, 0);
+
+        $this->total_price = round($total_price, 2);
+    }
 }

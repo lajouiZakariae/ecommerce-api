@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use phpDocumentor\Reflection\Types\This;
 
 class OrderItem extends Model
 {
@@ -31,5 +32,11 @@ class OrderItem extends Model
     public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class);
+    }
+
+    public function setTotalPrice(): void
+    {
+        $total_price = $this->product->price * $this->quantity;
+        $this->total_price = round($total_price, 2);
     }
 }

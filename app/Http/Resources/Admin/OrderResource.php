@@ -36,14 +36,4 @@ class OrderResource extends JsonResource
             'total_price' => $this->calculateTotalPrice(),
         ];
     }
-
-    private function calculateTotalPrice(): ?float
-    {
-        return $this->whenLoaded(
-            'orderItems',
-            $this->orderItems->reduce(function ($acc, OrderItem $orderItem) {
-                return $acc + ($orderItem->quantity * $orderItem->product->price);
-            }, 0)
-        );
-    }
 }
