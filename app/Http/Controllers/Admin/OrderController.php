@@ -73,7 +73,7 @@ class OrderController extends Controller
     {
         $order = $order->load([
             'paymentMethod',
-            'orderItems' => ['product:id,price']
+            'orderItems' => ['product:id,title,price']
         ]);
 
         $order = $this->calculateTotals($order);

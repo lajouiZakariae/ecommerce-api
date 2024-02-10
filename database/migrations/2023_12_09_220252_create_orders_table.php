@@ -21,7 +21,6 @@ return new class extends Migration
             $table->enum('status', [
                 "pending", "in transit", "delivered", "delivery attempt", "cancelled", "return to sender"
             ]);
-            $table->string('city');
 
             $table->unsignedInteger('payment_method_id')->nullable();
 
@@ -32,7 +31,6 @@ return new class extends Migration
                 ->cascadeOnUpdate()
                 ->nullOnDelete();
 
-
             $table->unsignedInteger('coupon_code_id')->nullable();
             $table
                 ->foreign('coupon_code_id')
@@ -42,6 +40,7 @@ return new class extends Migration
                 ->nullOnDelete();
 
 
+            $table->string('city');
             $table->string('zip_code');
             $table->string('address');
             $table->boolean('delivery');

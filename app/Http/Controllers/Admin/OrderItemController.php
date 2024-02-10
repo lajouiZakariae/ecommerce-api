@@ -117,7 +117,7 @@ class OrderItemController extends Controller
             return response(['error' => 'maximum value reached'], Response::HTTP_BAD_REQUEST);
         }
 
-        $orderItem->query()->increment('quantity');
+        $orderItem->increment('quantity');
 
         return response()->noContent();
     }
@@ -136,7 +136,7 @@ class OrderItemController extends Controller
             return response(['error' => 'minimum value reached'], Response::HTTP_BAD_REQUEST);
         }
 
-        $orderItem->query()->decrement('quantity');
+        $orderItem->decrement('quantity');
 
         return response()->noContent();
     }
