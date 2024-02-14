@@ -40,6 +40,11 @@ class Order extends Model
 
     protected $hidden = ['updated_at'];
 
+    public function client(): BelongsTo
+    {
+        return $this->belongsTo(Client::class);
+    }
+
     public function paymentMethod(): BelongsTo
     {
         return $this->belongsTo(PaymentMethod::class);

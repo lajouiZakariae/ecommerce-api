@@ -84,6 +84,19 @@ class ProductController extends Controller
     }
 
     /**
+     * Display a listing of products.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    #[Get(('products/all'))]
+    public function all()
+    {
+        $products = $this->with('thumbnail')->all(10);
+
+        return ProductResource::collection($products);
+    }
+
+    /**
      * Store a newly created product in storage.
      *
      * @return \Illuminate\Http\Response

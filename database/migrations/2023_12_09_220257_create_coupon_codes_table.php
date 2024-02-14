@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::disableForeignKeyConstraints();
 
         Schema::create('coupon_codes', function (Blueprint $table) {
-            $table->increments('id');
+            $table->id();
             $table->string('code');
-            $table->unsignedInteger('amount');
+            $table->unsignedBigInteger('amount');
             $table->timestamps();
         });
 

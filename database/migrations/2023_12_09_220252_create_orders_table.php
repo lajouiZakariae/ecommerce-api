@@ -14,15 +14,23 @@ return new class extends Migration
         Schema::disableForeignKeyConstraints();
 
         Schema::create('orders', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('full_name');
-            $table->string('email');
-            $table->string('phone_number');
+            $table->id();
+
+            $table->unsignedBigInteger('client_id')->nullable();
+
+
+            $table
+                ->foreign('client_id')
+                ->references('id')
+                ->on('clients')
+                ->cascadeOnUpdate()
+                ->nullOnDelete();
+
             $table->enum('status', [
                 "pending", "in transit", "delivered", "delivery attempt", "cancelled", "return to sender"
             ]);
 
-            $table->unsignedInteger('payment_method_id')->nullable();
+            $table->unsignedBigInteger('payment_method_id')->nullable();
 
             $table
                 ->foreign('payment_method_id')
@@ -31,7 +39,7 @@ return new class extends Migration
                 ->cascadeOnUpdate()
                 ->nullOnDelete();
 
-            $table->unsignedInteger('coupon_code_id')->nullable();
+            $table->unsignedBigInteger('coupon_code_id')->nullable();
             $table
                 ->foreign('coupon_code_id')
                 ->references('id')
@@ -40,10 +48,6 @@ return new class extends Migration
                 ->nullOnDelete();
 
 
-            $table->string('city');
-            $table->string('zip_code');
-            $table->string('address');
-            $table->boolean('delivery');
 
             $table->timestamps();
         });

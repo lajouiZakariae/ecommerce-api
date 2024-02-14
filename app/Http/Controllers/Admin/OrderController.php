@@ -36,11 +36,12 @@ class OrderController extends Controller
     {
         $orders = Order::query()
             ->with([
+                'client:id,email',
                 'orderItems' => [
                     'product:id,title,price'
                 ],
             ])
-            ->select(['id', 'full_name', 'status', 'delivery', 'created_at'])
+            ->select(['id', 'client_id', 'status', 'created_at'])
             ->get();
 
         $orders = $orders->map(fn (Order $order) => $this->calculateTotals($order));
@@ -73,10 +74,21 @@ class OrderController extends Controller
     {
         $order = $order->load([
             'paymentMethod',
-            'orderItems' => ['product:id,title,price']
+            'client',
+            'orderItems' => [
+                'product:id,title,price' => [
+                    'thumbnail'
+                ]
+            ],
         ]);
 
         $order = $this->calculateTotals($order);
+
+        $order->orderItems->each(
+            function (OrderItem $orderItem) {
+                $orderItem->product->thumbnail->url = $orderItem->product->thumbnail->imageUrl();
+            }
+        );
 
         $order->orderItems->each(function (OrderItem $orderItem) {
             $orderItem->url = route(

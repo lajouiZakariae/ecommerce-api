@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::disableForeignKeyConstraints();
 
         Schema::create('reviews', function (Blueprint $table) {
-            $table->increments('id');
+            $table->id();
             $table->timestamps();
 
             $table->string('email');
@@ -22,7 +22,7 @@ return new class extends Migration
 
             $table->boolean('approved')->nullable()->default(false);
 
-            $table->unsignedInteger('product_id');
+            $table->unsignedBigInteger('product_id');
 
             $table
                 ->foreign('product_id')

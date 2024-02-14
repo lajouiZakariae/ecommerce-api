@@ -14,16 +14,16 @@ return new class extends Migration
         Schema::disableForeignKeyConstraints();
 
         Schema::create('products', function (Blueprint $table) {
-            $table->increments('id');
+            $table->id();
             $table->timestamps();
             $table->string('title');
             $table->text('description')->nullable();
             $table->float('cost')->nullable();
             $table->float('price')->nullable();
-            $table->unsignedInteger('stock_quantity')->nullable();
+            $table->unsignedBigInteger('stock_quantity')->nullable();
             $table->boolean('published')->default(false);
 
-            $table->unsignedInteger('category_id')->nullable()->default(1);
+            $table->unsignedBigInteger('category_id')->nullable()->default(1);
 
             $table->foreign('category_id')
                 ->references('id')
@@ -31,7 +31,7 @@ return new class extends Migration
                 ->onDelete('SET DEFAULT')
                 ->cascadeOnUpdate();
 
-            $table->unsignedInteger('store_id')->nullable();
+            $table->unsignedBigInteger('store_id')->nullable();
 
             $table
                 ->foreign('store_id')

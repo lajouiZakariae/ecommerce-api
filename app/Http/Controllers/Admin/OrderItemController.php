@@ -31,7 +31,7 @@ class OrderItemController extends Controller
     #[ScopeBindings]
     public function index(Order $order): Response
     {
-        $orderItems = $order->orderItems;
+        $orderItems = $order->orderItems()->with('product:id,title,price')->get();
 
         return response(OrderItemResource::collection($orderItems));
     }

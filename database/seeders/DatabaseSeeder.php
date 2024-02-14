@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Enums\Role as EnumsRole;
 use App\Models\Category;
+use App\Models\Client;
 use App\Models\CouponCode;
 use App\Models\Image;
 use App\Models\Order;
@@ -48,6 +49,8 @@ class DatabaseSeeder extends Seeder
             'email' => 'ilhammaimouni269@gmail.com',
             'password' => Hash::make('1234')
         ]);
+
+        Client::factory(3)->create();
 
         // \App\Models\User::factory()->create([
         //     'first_name' => 'Zakariae',
@@ -1098,28 +1101,16 @@ class DatabaseSeeder extends Seeder
 
         $orders = [
             [
-                "full_name" => "Jane Smith",
-                "email" => "jane.smith@example.com",
-                "phone_number" => "+9876543210",
+                "client_id" => 1,
                 "status" => fake()->randomElement(["pending", "in transit", "delivered", "delivery attempt", "cancelled", "return to sender"]),
-                "payment_method_id" => fake()->numberBetween(1, 2),
-                "city" => "Othercity",
-                "zip_code" => "54321",
-                "address" => "456 Oak Avenue",
                 "coupon_code_id" => 1,
-                "delivery" => false,
+                "payment_method_id" => fake()->numberBetween(1, 2),
             ],
             [
-                "full_name" => "John Doe",
-                "email" => "john.doe@example.com",
-                "phone_number" => "+1234567890",
+                "client_id" => 1,
                 "status" => fake()->randomElement(["pending", "in transit", "delivered", "delivery attempt", "cancelled", "return to sender"]),
                 "coupon_code_id" => 2,
                 "payment_method_id" => fake()->numberBetween(1, 2),
-                "zip_code" => "12345",
-                "address" => "123 Main Street",
-                "city" => "Anytown",
-                "delivery" => true,
             ],
         ];
 

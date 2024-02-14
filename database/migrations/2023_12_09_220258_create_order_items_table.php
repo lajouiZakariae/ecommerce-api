@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::disableForeignKeyConstraints();
 
         Schema::create('order_items', function (Blueprint $table) {
-            $table->increments('id');
+            $table->id();
 
-            $table->unsignedInteger('order_id');
+            $table->unsignedBigInteger('order_id');
 
             $table
                 ->foreign('order_id')
@@ -25,7 +25,7 @@ return new class extends Migration
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
 
-            $table->unsignedInteger('product_id');
+            $table->unsignedBigInteger('product_id');
 
             $table
                 ->foreign('product_id')
@@ -34,7 +34,7 @@ return new class extends Migration
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 
-            $table->unsignedInteger('quantity');
+            $table->unsignedBigInteger('quantity');
             $table->timestamps();
         });
 

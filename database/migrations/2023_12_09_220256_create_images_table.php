@@ -14,12 +14,12 @@ return new class extends Migration
         Schema::disableForeignKeyConstraints();
 
         Schema::create('images', function (Blueprint $table) {
-            $table->increments('id');
+            $table->id();
             $table->timestamps();
             $table->string('alt_text')->default('picture of a product');
             $table->string('path');
 
-            $table->unsignedInteger('product_id');
+            $table->unsignedBigInteger('product_id');
             $table
                 ->foreign('product_id')
                 ->references('id')

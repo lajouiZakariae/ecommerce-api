@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::disableForeignKeyConstraints();
 
         Schema::create('purchases', function (Blueprint $table) {
-            $table->increments('id');
+            $table->id();
 
-            $table->unsignedInteger('supplier_id')->nullable();
+            $table->unsignedBigInteger('supplier_id')->nullable();
             $table
                 ->foreign('supplier_id')
                 ->references('id')
@@ -27,7 +27,7 @@ return new class extends Migration
             $table->date('delivery_date');
             $table->boolean('paid');
 
-            $table->unsignedInteger('payment_method_id')->nullable();
+            $table->unsignedBigInteger('payment_method_id')->nullable();
             $table
                 ->foreign('payment_method_id')
                 ->references('id')
@@ -35,7 +35,7 @@ return new class extends Migration
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
 
-            $table->unsignedInteger('store_id');
+            $table->unsignedBigInteger('store_id');
             $table
                 ->foreign('store_id')
                 ->references('id')
