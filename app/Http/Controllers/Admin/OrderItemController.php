@@ -31,7 +31,19 @@ class OrderItemController extends Controller
     #[ScopeBindings]
     public function index(Order $order): Response
     {
-        $orderItems = $order->orderItems()->with('product:id,title,price')->get();
+
+        $orderItems = $order
+            ->orderItems()
+            ->with([
+                'product:id,title,price' => ['thumbnail']
+            ])
+            ->get();
+
+        $order->orderItems->each(
+            function (OrderItem $orderItem) {
+                $orderItem->product->thumbnail->url = $orderItem->product->thumbnail->imageUrl();
+            }
+        );
 
         return response(OrderItemResource::collection($orderItems));
     }

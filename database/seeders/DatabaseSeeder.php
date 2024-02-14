@@ -1120,9 +1120,12 @@ class DatabaseSeeder extends Seeder
 
         $order_items = [
             ["order_id" => 1, "product_id" => 1, "quantity" => 5],
+            ["order_id" => 1, "product_id" => 2, "quantity" => 3],
             ["order_id" => 2, "product_id" => 2, "quantity" => 3],
             ["order_id" => 1, "product_id" => 3, "quantity" => 8],
-            ["order_id" => 2, "product_id" => 4, "quantity" => 2]
+            ["order_id" => 2, "product_id" => 4, "quantity" => 2],
+            ["order_id" => 2, "product_id" => 5, "quantity" => 2],
+
         ];
 
         OrderItem::insert($order_items);
