@@ -10,6 +10,21 @@ class Client extends Model
 {
     use HasFactory;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'first_name',
+        'last_name',
+        'email',
+        'phone_number',
+        'city',
+        'address',
+        'zip_code',
+    ];
+
     public function orders(): HasMany
     {
         return $this->hasMany(Order::class);

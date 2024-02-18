@@ -31,7 +31,6 @@ class OrderItemController extends Controller
     #[ScopeBindings]
     public function index(Order $order): Response
     {
-
         $orderItems = $order
             ->orderItems()
             ->with([

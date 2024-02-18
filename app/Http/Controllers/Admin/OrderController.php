@@ -23,7 +23,12 @@ class OrderController extends Controller
             $orderItem->setTotalPrice();
         });
 
+        $order->setTotalUnitPrice();
+
+        $order->setTotalQuantity();
+
         $order->setTotalPrice();
+
         return $order;
     }
 
@@ -36,7 +41,7 @@ class OrderController extends Controller
     {
         $orders = Order::query()
             ->with([
-                'client:id,email',
+                'client:id,first_name,last_name',
                 'orderItems' => [
                     'product:id,title,price'
                 ],
