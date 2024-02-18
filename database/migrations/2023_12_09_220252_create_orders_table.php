@@ -24,7 +24,7 @@ return new class extends Migration
                 ->references('id')
                 ->on('clients')
                 ->cascadeOnUpdate()
-                ->nullOnDelete();
+                ->cascadeOnDelete();
 
             $table->enum('status', [
                 "pending", "in transit", "delivered", "delivery attempt", "cancelled", "return to sender"
