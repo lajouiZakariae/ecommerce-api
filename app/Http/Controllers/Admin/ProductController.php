@@ -2,18 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Enums\Filters;
-use App\Enums\SortBy;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\ProductUpdateRequest;
 use App\Http\Resources\Admin\ProductResource;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Store;
-use Illuminate\Database\Eloquent\Builder;
+use App\Services\ProductService;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
 use Spatie\RouteAttributes\Attributes\ApiResource;
 use Spatie\RouteAttributes\Attributes\Get;
 use Spatie\RouteAttributes\Attributes\Patch;
@@ -21,79 +17,23 @@ use Spatie\RouteAttributes\Attributes\Patch;
 #[ApiResource('products')]
 class ProductController extends Controller
 {
-    private function validProductFilters(array $filters): array
-    {
-        return Validator::make(
-            $filters,
-            [
-                'price_from' => ['numeric'],
-                'price_to' => ['numeric'],
-                'cost_from' => ['numeric'],
-                'cost_to' => ['numeric'],
-                'sort_by' => [Rule::enum(SortBy::class)],
-                'order' => [Rule::in(['asc', 'desc'])],
-            ]
-        )->valid();
-    }
-
-    private function filters($filters): Builder
-    {
-        return Product::query()
-            ->when(
-                isset($filters['price_from']),
-                fn (Builder $query) => $query->where('price', '>=', $filters['price_from'])
-            )
-            ->when(
-                isset($filters['price_to']),
-                fn (Builder $query) => $query->where('price', '<=', $filters['price_to'])
-            )
-            ->when(
-                isset($filters['cost_from']),
-                fn (Builder $query) => $query->where('cost', '>=', $filters['cost_from'])
-            )
-            ->when(
-                isset($filters['cost_to']),
-                fn (Builder $query) => $query->where('cost', '<=', $filters['cost_to'])
-            )
-            ->when(
-                isset($filters['sort_by']),
-                fn (Builder $query) => $query->orderBy($filters['sort_by'], $filters['order'] ?? 'asc')
-            );
-    }
-
     /**
      * Display a listing of products.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(ProductService $productService)
     {
-        $filters = $this->validProductFilters([
+        $filters = [
             'price_from' => request()->input('price_from'),
             'price_to' => request()->input('price_to'),
             'cost_from' => request()->input('cost_from'),
             'cost_to' => request()->input('cost_to'),
             'sort_by' => request()->input('sort_by'),
             'order' => request()->input('order'),
-        ]);
+        ];
 
-        $products = $this->filters($filters)->with('thumbnail')->paginate(10);
-
-
-        return ProductResource::collection($products);
-    }
-
-    /**
-     * Display a listing of products.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    #[Get(('products/all'))]
-    public function all()
-    {
-        $products = $this->with('thumbnail')->all(10);
-
-        return ProductResource::collection($products);
+        return $productService->getAll($filters);
     }
 
     /**

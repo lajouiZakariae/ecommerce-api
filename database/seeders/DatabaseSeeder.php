@@ -664,10 +664,26 @@ class DatabaseSeeder extends Seeder
         });
 
         foreach ($productsData as $product) {
-            Product::create($product);
+            $product = Product::create($product);
+
+            Inventory::insert([
+                'product_id' => $product->id,
+                'store_id'  => 1,
+                'quantity'  => fake()->numberBetween(0, 100),
+                'min_stock_level' => 10,
+                'max_stock_level' => 200
+            ]);
+
+            Inventory::insert([
+                'product_id' => $product->id,
+                'store_id'  => 2,
+                'quantity'  => fake()->numberBetween(0, 100),
+                'min_stock_level' => 10,
+                'max_stock_level' => 200
+            ]);
         }
 
-        Inventory::factory(25)->create();
+        // Inventory::factory(25)->create();
 
         $reviews = [
             [
