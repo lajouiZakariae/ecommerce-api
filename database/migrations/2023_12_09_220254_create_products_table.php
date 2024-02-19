@@ -20,7 +20,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->float('cost')->nullable();
             $table->float('price')->nullable();
-            $table->unsignedBigInteger('stock_quantity')->nullable();
+
             $table->boolean('published')->default(false);
 
             $table->unsignedBigInteger('category_id')->nullable()->default(1);
