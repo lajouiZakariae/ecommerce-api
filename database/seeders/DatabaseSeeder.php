@@ -124,18 +124,20 @@ class DatabaseSeeder extends Seeder
         foreach ($productsData as  $product) {
             $product = Product::create((array)$product);
 
+            if (in_array($product->id, [1, 2])) continue;
+
             Inventory::insert([
                 'product_id' => $product->id,
                 'quantity'  => fake()->numberBetween(0, 100),
                 'min_stock_level' => 10,
-                'max_stock_level' => 200
+                'max_stock_level' => 200,
             ]);
 
             Inventory::insert([
                 'product_id' => $product->id,
                 'quantity'  => fake()->numberBetween(0, 100),
                 'min_stock_level' => 10,
-                'max_stock_level' => 200
+                'max_stock_level' => 200,
             ]);
         }
 

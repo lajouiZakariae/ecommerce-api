@@ -62,7 +62,7 @@ class ProductService
             ->with([
                 'thumbnail',
             ])
-            ->withSum('inventory', 'quantity')
+            ->withSum('inventory AS quantity', 'quantity')
             ->paginate(10);
 
         return $products;
@@ -78,7 +78,7 @@ class ProductService
     public function getById(int $id): Product | null
     {
         $product = Product::query()
-            ->withAggregate('inventory AS quantity', 'quantity', 'sum')
+            ->withSum('inventory AS quantity', 'quantity')
             ->find($id);
 
         return $product;

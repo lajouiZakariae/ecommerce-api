@@ -20,11 +20,7 @@ class ProductResource extends JsonResource
             'description' => $this->whenHas('description'),
             'price' => $this->price,
             'cost' => $this->whenHas('cost'),
-            // 'quantity' =>
-            // $this->whenNotNull(
-            //     $this->whenAggregated('inventory', 'quantity', 'sum', $this->inventory_sum_quantity, 0)
-            // ),
-            'quantity' => $this->quantity,
+            'quantity' => $this->whenHas('quantity', $this->quantity ? $this->quantity : 0),
             'published' => $this->whenHas('published'),
             'category_id' => $this->whenHas('category_id'),
             'thumbnail' =>  new ImageResource($this->whenLoaded('thumbnail')),
