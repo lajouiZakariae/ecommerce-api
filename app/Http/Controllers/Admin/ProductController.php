@@ -71,7 +71,7 @@ class ProductController extends Controller
 
         $product = $productService->create($data);
 
-        return response($product, Response::HTTP_CREATED);
+        return response(new ProductResource($product), Response::HTTP_CREATED);
     }
 
     /**
