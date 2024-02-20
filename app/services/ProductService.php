@@ -106,9 +106,9 @@ class ProductService
      */
     public function deleteById(int $id): bool
     {
-        $affectedRowscount = Product::where('id', $id)->delete();
+        $affectedRowsCount = Product::where('id', $id)->delete();
 
-        return $affectedRowscount !== 0;
+        return $affectedRowsCount !== 0;
     }
 
     /**
@@ -120,10 +120,10 @@ class ProductService
      */
     public function togglePublishedState(int $id): bool
     {
-        $affectedRowscount = DB::update("UPDATE products SET published = !published WHERE id = :id ;", [
+        $affectedRowsCount = DB::update("UPDATE products SET published = !published WHERE id = :id ;", [
             ':id' => $id
         ]);
 
-        return $affectedRowscount !== 0;
+        return $affectedRowsCount !== 0;
     }
 }
