@@ -98,6 +98,22 @@ class ProductService
     }
 
     /**
+     * Update a product by its ID.
+     *
+     * @param int $id The ID of the product to be updated.
+     * 
+     * @param array $data
+     *
+     * @return bool True if the update was successful, otherwise false.
+     */
+    public function update(int $id, array $data): bool
+    {
+        $affectedRowsCount = Product::where('id', $id)->update($data);
+
+        return $affectedRowsCount !== 0;
+    }
+
+    /**
      * Delete a product by its ID.
      *
      * @param int $id The ID of the product to be deleted.

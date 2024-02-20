@@ -94,14 +94,14 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    // public function update(ProductUpdateRequest $request, Product $product): Response
-    // {
-    //     $data = $request->validated();
+    public function update(ProductUpdateRequest $request, ProductService $productService, $product_id): Response
+    {
+        $data = $request->validated();
 
-    //     $product->update($data);
+        $productService->update($product_id, $data);
 
-    //     return response()->noContent();
-    // }
+        return response()->noContent();
+    }
 
     /**
      * Remove the specified product from storage.
