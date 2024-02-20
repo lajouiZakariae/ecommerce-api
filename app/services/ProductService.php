@@ -7,9 +7,6 @@ use App\Models\Product;
 use DB;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Validation\Rule;
-use phpDocumentor\Reflection\Types\Null_;
-use Validator;
 
 class ProductService
 {

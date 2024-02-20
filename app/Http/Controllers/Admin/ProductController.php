@@ -84,7 +84,7 @@ class ProductController extends Controller
     {
         $product = $productService->getById($product_id);
 
-        return new ProductResource($product);
+        return $product ? new ProductResource($product) : abort(404);
     }
 
     /**
