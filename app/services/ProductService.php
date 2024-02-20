@@ -20,8 +20,7 @@ class ProductService
     /**
      * Apply filters to the product query.
      *
-     * @param array $filters An associative array of filters for querying products.
-     *                       Possible filters include 'price_from', 'price_to', 'cost_from', 'cost_to', 'sort_by', and 'order'.
+     * @param array $filters
      *
      * @return Builder The Eloquent query builder instance.
      */
