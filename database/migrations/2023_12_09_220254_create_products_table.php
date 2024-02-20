@@ -30,15 +30,6 @@ return new class extends Migration
                 ->on('categories')
                 ->onDelete('SET DEFAULT')
                 ->cascadeOnUpdate();
-
-            $table->unsignedBigInteger('store_id')->nullable();
-
-            $table
-                ->foreign('store_id')
-                ->references('id')
-                ->on('stores')
-                ->cascadeOnDelete()
-                ->cascadeOnUpdate();
         });
 
         Schema::enableForeignKeyConstraints();

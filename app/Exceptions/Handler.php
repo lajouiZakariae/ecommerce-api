@@ -36,9 +36,9 @@ class Handler extends ExceptionHandler
                 return response("", Response::HTTP_NOT_FOUND);
         });
 
-        $this->renderable(function (MethodNotAllowedException $e) {
-            if (request()->accepts("application/json"))
-                return response("", Response::HTTP_METHOD_NOT_ALLOWED);
-        });
+        // $this->renderable(function (MethodNotAllowedException $e) {
+        //     if (request()->accepts("application/json"))
+        //         return response("", Response::HTTP_METHOD_NOT_ALLOWED);
+        // });
     }
 }

@@ -14,17 +14,15 @@ class ProductResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'url' => route('products.show', ['product' => $this->id]),
             'created_at' => $this->created_at,
             'title' => $this->title,
             'description' => $this->whenHas('description'),
             'price' => $this->price,
             'cost' => $this->whenHas('cost'),
-            'stock_quantity' => $this->whenHas('stock_quantity'),
             'published' => $this->whenHas('published'),
             'category_id' => $this->whenHas('category_id'),
-            'store_id' => $this->whenHas('store_id'),
-            'thumbnail' => $this->whenLoaded('thumbnail', new ImageResource($this->thumbnail)),
-            'url' => route('products.show', ['product' => $this->id]),
+            'thumbnail' =>  new ImageResource($this->whenLoaded('thumbnail')),
         ];
     }
 }

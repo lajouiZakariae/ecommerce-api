@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\SortBy;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\ProductStoreRequest;
 use App\Http\Requests\Admin\ProductUpdateRequest;
 use App\Http\Resources\Admin\ProductResource;
 use App\Models\Category;
@@ -10,13 +12,33 @@ use App\Models\Product;
 use App\Models\Store;
 use App\Services\ProductService;
 use Illuminate\Http\Response;
-use Spatie\RouteAttributes\Attributes\ApiResource;
+use Illuminate\Validation\Rule;
 use Spatie\RouteAttributes\Attributes\Get;
 use Spatie\RouteAttributes\Attributes\Patch;
+use Spatie\RouteAttributes\Attributes\WhereNumber;
+use Validator;
 
-#[ApiResource('products')]
+// #[ApiResource('products')]
 class ProductController extends Controller
 {
+    /**
+     * Get valid filters only
+     */
+    private function getValidFiltersOnly(array $filters): array
+    {
+        return Validator::make(
+            $filters,
+            [
+                'price_from' => ['numeric'],
+                'price_to' => ['numeric'],
+                'cost_from' => ['numeric'],
+                'cost_to' => ['numeric'],
+                'sort_by' => [Rule::enum(SortBy::class)],
+                'order' => [Rule::in(['asc', 'desc'])],
+            ]
+        )->valid();
+    }
+
     /**
      * Display a listing of products.
      *
@@ -33,7 +55,9 @@ class ProductController extends Controller
             'order' => request()->input('order'),
         ];
 
-        return $productService->getAll($filters);
+        $validFilters = $this->getValidFiltersOnly($filters);
+
+        return ProductResource::collection($productService->getAll($validFilters));
     }
 
     /**
@@ -41,26 +65,26 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function store(): Response
+    public function store(ProductStoreRequest $request, ProductService $productService)
     {
-        $data = request()->validate([
-            'title' => ['required', 'string', 'min:1', 'max:255'],
-        ]);
+        $data = $request->validated();
 
-        $product = Product::create($data);
+        $product = $productService->create($data);
 
-        return response(new ProductResource($product), Response::HTTP_CREATED);
+        return response($product, Response::HTTP_CREATED);
     }
 
     /**
      * Display the specified product.
      *
-     * @param  \App\Models\Product  $product
+     * @param  int $product_id
      * @return \Illuminate\Http\Response
      */
-    public function show(Product $product): Response
+    public function show(ProductService $productService, $product_id): ProductResource
     {
-        return response(new ProductResource($product));
+        $product = $productService->getById($product_id);
+
+        return new ProductResource($product);
     }
 
     /**
@@ -70,39 +94,43 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function update(ProductUpdateRequest $request, Product $product): Response
-    {
-        $data = $request->validated();
+    // public function update(ProductUpdateRequest $request, Product $product): Response
+    // {
+    //     $data = $request->validated();
 
-        $product->update($data);
+    //     $product->update($data);
 
-        return response()->noContent();
-    }
+    //     return response()->noContent();
+    // }
 
     /**
      * Remove the specified product from storage.
      *
-     * @param  string  $product
+     * @param  \App\Services\ProductService  $productService
+     * @param  int  $product_id
      * @return \Illuminate\Http\Response
      */
     public function destroy(ProductService $productService, int $product_id): Response
     {
-        $productService->deleteById($product_id);
+        if (!$productService->deleteById($product_id)) {
+            abort(404);
+        };
 
         return response()->noContent();
     }
 
     /**
-     * Publish the specified product.
+     * Toggle publish state of the specified product.
      *
-     * @param  \App\Models\Product  $product
+     * @param  \App\Services\ProductService  $productService
+     * @param  int  $product_id
      * @return \Illuminate\Http\Response
      */
-    #[Patch('/products/{product}/toggle-publish')]
-    public function publish(Product $product): Response
+    public function togglePublish(ProductService $productService, int $product_id)
     {
-        $product->published = !$product->published;
-        $product->save();
+        if (!$productService->togglePublishedState($product_id)) {
+            abort(404);
+        };
 
         return response()->noContent();
     }

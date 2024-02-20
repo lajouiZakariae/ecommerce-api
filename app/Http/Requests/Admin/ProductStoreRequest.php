@@ -4,7 +4,7 @@ namespace App\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ProductUpdateRequest extends FormRequest
+class ProductStoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -14,12 +14,13 @@ class ProductUpdateRequest extends FormRequest
         return true;
     }
 
-    public function prepareForValidation()
+    public function prepareForValidation(): void
     {
         $this->merge([
             'published' => $this->boolean('published'),
         ]);
     }
+
 
     /**
      * Get the validation rules that apply to the request.
@@ -29,10 +30,10 @@ class ProductUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => ['string', 'min:1', 'max:255'],
-            'description' => ['nullable', 'string', 'min:1', 'max:500'],
-            'cost' => ['numeric'],
-            'price' => ['numeric'],
+            'title' => ['required', 'string', 'min:1', 'max:255'],
+            'description' => ['string', 'min:1', 'max:500'],
+            'cost' => ['required', 'numeric'],
+            'price' => ['required', 'numeric'],
             'published' => ['boolean'],
             'category_id' => ['exists:categories,id'],
         ];

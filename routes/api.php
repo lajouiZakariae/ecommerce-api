@@ -19,6 +19,8 @@ Route::middleware(['auth:sanctum'])->get('/admin/user', function (Request $reque
     return $request->user()->load('role');
 });
 
-// Route::group(['prefix' => 'admin', 'middlewear' => 'auth.sanctum'], function () {
-//     Route::apiResource('products', ProductController::class);
-// });
+Route::group(['prefix' => 'admin', 'middlewear' => 'auth.sanctum'], function () {
+    Route::apiResource('products', ProductController::class)->whereNumber('product');
+
+    Route::patch('products/{product}/toggle-publish', [ProductController::class, 'togglePublish']);
+});

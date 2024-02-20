@@ -4,29 +4,16 @@ namespace App\Services;
 
 use App\Enums\SortBy;
 use App\Models\Product;
-use Egulias\EmailValidator\Result\Reason\UnclosedComment;
+use DB;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Validation\Rule;
+use phpDocumentor\Reflection\Types\Null_;
 use Validator;
 
 class ProductService
 {
-    private function validProductFilters(array $filters): array
-    {
-        return Validator::make(
-            $filters,
-            [
-                'price_from' => ['numeric'],
-                'price_to' => ['numeric'],
-                'cost_from' => ['numeric'],
-                'cost_to' => ['numeric'],
-                'sort_by' => [Rule::enum(SortBy::class)],
-                'order' => [Rule::in(['asc', 'desc'])],
-            ]
-        )->valid();
-    }
-
-    private function queryFilters($filters): Builder
+    private function queryFilters(array $filters): Builder
     {
         return Product::query()
             ->when(
@@ -51,23 +38,46 @@ class ProductService
             );
     }
 
-    public function getAll($filters)
+    public function getAll(array $filters): LengthAwarePaginator
     {
-        $validFilters = $this->validProductFilters($filters);
-
         $products = $this
-            ->queryFilters($validFilters)
+            ->queryFilters($filters)
             ->with([
                 'thumbnail',
             ])
             ->withSum('inventory', 'quantity')
             ->paginate(10);
 
-        return ($products);
+        return $products;
+    }
+
+    public  function getById(int $id): Product | null
+    {
+        return Product::find($id);
+    }
+
+    public function create(array $data): Product
+    {
+        $product = new Product($data);
+
+        $product->save();
+
+        return $product;
     }
 
     public  function deleteById(int $id): bool
     {
-        return Product::destroy($id);
+        $affectedRowscount = Product::where('id', $id)->delete();
+
+        return $affectedRowscount !== 0;
+    }
+
+    public  function togglePublishedState(int $id): bool
+    {
+        $affectedRowscount = DB::update("UPDATE products SET published = !published WHERE id = :id ;", [
+            ':id' => $id
+        ]);
+
+        return $affectedRowscount !== 0;
     }
 }
