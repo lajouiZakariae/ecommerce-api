@@ -1088,8 +1088,6 @@ class DatabaseSeeder extends Seeder
         OrderItem::insert($order_items);
 
 
-        File::put(base_path('storage/app/public/products/hello.txt'), 'hello world');
-
         for ($i = 1; $i <= 30; $i++) {
             Image::insert([
                 'alt_text' => fake()->word,

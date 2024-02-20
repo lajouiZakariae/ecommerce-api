@@ -82,12 +82,12 @@ class ProductController extends Controller
     /**
      * Remove the specified product from storage.
      *
-     * @param  \App\Models\Product  $product
+     * @param  string  $product
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Product $product): Response
+    public function destroy(ProductService $productService, int $product_id): Response
     {
-        $product->delete();
+        $productService->deleteById($product_id);
 
         return response()->noContent();
     }

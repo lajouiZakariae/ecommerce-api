@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Enums\SortBy;
 use App\Models\Product;
+use Egulias\EmailValidator\Result\Reason\UnclosedComment;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Validation\Rule;
 use Validator;
@@ -25,7 +26,7 @@ class ProductService
         )->valid();
     }
 
-    private function filters($filters): Builder
+    private function queryFilters($filters): Builder
     {
         return Product::query()
             ->when(
@@ -55,7 +56,7 @@ class ProductService
         $validFilters = $this->validProductFilters($filters);
 
         $products = $this
-            ->filters($validFilters)
+            ->queryFilters($validFilters)
             ->with([
                 'thumbnail',
             ])
@@ -63,5 +64,10 @@ class ProductService
             ->paginate(10);
 
         return ($products);
+    }
+
+    public  function deleteById(int $id): bool
+    {
+        return Product::destroy($id);
     }
 }
