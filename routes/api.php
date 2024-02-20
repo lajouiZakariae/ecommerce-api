@@ -23,4 +23,6 @@ Route::group(['prefix' => 'admin', 'middlewear' => 'auth.sanctum'], function () 
     Route::apiResource('products', ProductController::class)->whereNumber('product');
 
     Route::patch('products/{product}/toggle-publish', [ProductController::class, 'togglePublish'])->whereNumber('product');
+
+    Route::get('categories/{category}/products', [ProductController::class, 'categoryProducts'])->whereNumber('category');
 });

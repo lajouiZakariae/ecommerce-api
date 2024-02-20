@@ -141,10 +141,10 @@ class ProductController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    #[Get('/categories/{category}/products')]
-    public function categoryProducts(Category $category)
+    public function categoryProducts(ProductService $productService, $category_id)
     {
-        return ProductResource::collection($category->products)->withoutWrapping();
+        return $productService->getByCategory($category_id);
+        // return ProductResource::collection($category->products);
     }
 
     /**

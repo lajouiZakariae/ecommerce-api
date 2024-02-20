@@ -6,6 +6,7 @@ use App\Enums\SortBy;
 use App\Models\Product;
 use DB;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 /**
@@ -78,6 +79,18 @@ class ProductService
     public function getById(int $id): Product | null
     {
         return Product::find($id);
+    }
+
+    /**
+     * Get a product by its ID.
+     *
+     * @param int $id The ID of the product.
+     *
+     * @return Product|null The product instance if found, otherwise null.
+     */
+    public function getByCategory(int $caetgory_id): Collection
+    {
+        return Product::where('category_id', $caetgory_id)->get();
     }
 
     /**

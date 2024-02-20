@@ -122,7 +122,6 @@ class DatabaseSeeder extends Seeder
                 'cost' => 499.99,
                 'category_id' => 1,
                 'published' => true,
-                'store_id' => 1,
             ],
             [
                 'title' => 'Laptop',
@@ -131,7 +130,6 @@ class DatabaseSeeder extends Seeder
                 'cost' => 899.99,
                 'category_id' => 2,
                 'published' => false,
-                'store_id' => 2,
             ],
             [
                 'title' => 'Wireless Earbuds',
@@ -140,7 +138,6 @@ class DatabaseSeeder extends Seeder
                 'cost' => 79.99,
                 'category_id' => 3,
                 'published' => true,
-                'store_id' => 2,
             ],
             [
                 'title' => 'Smart TV',
@@ -149,7 +146,6 @@ class DatabaseSeeder extends Seeder
                 'cost' => 699.99,
                 'category_id' => 4,
                 'published' => true,
-                'store_id' => 4,
             ],
             [
                 'title' => 'Gaming Console',
@@ -158,7 +154,6 @@ class DatabaseSeeder extends Seeder
                 'cost' => 349.99,
                 'category_id' => 3,
                 'published' => true,
-                'store_id' => 2,
             ],
             [
                 'title' => 'Laptop',
@@ -167,7 +162,6 @@ class DatabaseSeeder extends Seeder
                 'cost' => 599.99,
                 'category_id' => 2,
                 'published' => true,
-                'store_id' => 2,
             ],
             [
                 'title' => 'Bluetooth Speaker',
@@ -176,7 +170,6 @@ class DatabaseSeeder extends Seeder
                 'cost' => 49.99,
                 'category_id' => 3,
                 'published' => true,
-                'store_id' => 3,
             ],
             [
                 'title' => 'Tablet',
@@ -185,7 +178,6 @@ class DatabaseSeeder extends Seeder
                 'cost' => 299.99,
                 'category_id' => 1,
                 'published' => true,
-                'store_id' => 1,
             ],
             [
                 'title' => 'Gaming Mouse',
@@ -194,7 +186,6 @@ class DatabaseSeeder extends Seeder
                 'cost' => 29.99,
                 'category_id' => 5,
                 'published' => true,
-                'store_id' => 5,
             ],
             [
                 'title' => 'Fitness Tracker',
@@ -203,7 +194,6 @@ class DatabaseSeeder extends Seeder
                 'cost' => 79.99,
                 'category_id' => 2,
                 'published' => true,
-                'store_id' => 2,
             ],
             [
                 'title' => '4K Monitor',
@@ -212,7 +202,6 @@ class DatabaseSeeder extends Seeder
                 'cost' => 349.99,
                 'category_id' => 4,
                 'published' => true,
-                'store_id' => 4,
             ],
             [
                 'title' => 'Wireless Keyboard and Mouse Combo',
@@ -221,7 +210,6 @@ class DatabaseSeeder extends Seeder
                 'cost' => 49.99,
                 'category_id' => 2,
                 'published' => true,
-                'store_id' => 2,
             ],
             [
                 'title' => 'Digital Camera',
@@ -230,7 +218,6 @@ class DatabaseSeeder extends Seeder
                 'cost' => 499.99,
                 'category_id' => 5,
                 'published' => true,
-                'store_id' => 3,
             ],
             [
                 'title' => 'External Hard Drive',
@@ -239,7 +226,6 @@ class DatabaseSeeder extends Seeder
                 'cost' => 89.99,
                 'category_id' => 4,
                 'published' => true,
-                'store_id' => 2,
             ],
             [
                 'title' => 'Smart Home Security Camera',
@@ -248,7 +234,6 @@ class DatabaseSeeder extends Seeder
                 'cost' => 99.99,
                 'category_id' => 1,
                 'published' => true,
-                'store_id' => 3
             ],
             [
                 'title' => 'Smart Thermostat',
@@ -257,7 +242,6 @@ class DatabaseSeeder extends Seeder
                 'cost' => 89.99,
                 'category_id' => 3,
                 'published' => true,
-                'store_id' => 2,
             ],
             [
                 'title' => 'Electric Toothbrush',
@@ -266,7 +250,6 @@ class DatabaseSeeder extends Seeder
                 'cost' => 39.99,
                 'category_id' => 3,
                 'published' => true,
-                'store_id' => 3,
             ],
             [
                 'title' => 'Soundbar',
@@ -275,7 +258,6 @@ class DatabaseSeeder extends Seeder
                 'cost' => 99.99,
                 'category_id' => 3,
                 'published' => true,
-                'store_id' => 3,
             ],
             [
                 'title' => 'Robot Vacuum Cleaner',
@@ -284,7 +266,6 @@ class DatabaseSeeder extends Seeder
                 'cost' => 199.99,
                 'category_id' => 4,
                 'published' => true,
-                'store_id' => 2,
             ],
             [
                 'title' => 'Portable Power Bank',
@@ -293,7 +274,6 @@ class DatabaseSeeder extends Seeder
                 'cost' => 19.99,
                 'category_id' => 1,
                 'published' => true,
-                'store_id' => 2,
             ],
             [
                 'title' => 'Smartphone',
@@ -302,7 +282,6 @@ class DatabaseSeeder extends Seeder
                 'cost' => 499.99,
                 'category_id' => 1,
                 'published' => true,
-                'store_id' => 1,
             ],
             [
                 'title' => 'Laptop',
@@ -311,7 +290,6 @@ class DatabaseSeeder extends Seeder
                 'cost' => 899.99,
                 'category_id' => 2,
                 'published' => false,
-                'store_id' => 2,
             ],
             [
                 'title' => 'Wireless Earbuds',
@@ -320,7 +298,6 @@ class DatabaseSeeder extends Seeder
                 'cost' => 79.99,
                 'category_id' => 3,
                 'published' => true,
-                'store_id' => 2,
             ],
             [
                 'title' => 'Smart TV',
@@ -329,7 +306,6 @@ class DatabaseSeeder extends Seeder
                 'cost' => 699.99,
                 'category_id' => 4,
                 'published' => true,
-                'store_id' => 4,
             ],
             [
                 'title' => 'Gaming Console',
@@ -338,7 +314,6 @@ class DatabaseSeeder extends Seeder
                 'cost' => 349.99,
                 'category_id' => 3,
                 'published' => true,
-                'store_id' => 2,
             ],
             [
                 'title' => 'Laptop',
@@ -347,7 +322,6 @@ class DatabaseSeeder extends Seeder
                 'cost' => 599.99,
                 'category_id' => 2,
                 'published' => true,
-                'store_id' => 2,
             ],
             [
                 'title' => 'Bluetooth Speaker',
@@ -356,7 +330,6 @@ class DatabaseSeeder extends Seeder
                 'cost' => 49.99,
                 'category_id' => 3,
                 'published' => true,
-                'store_id' => 3,
             ],
             [
                 'title' => 'Tablet',
@@ -365,7 +338,6 @@ class DatabaseSeeder extends Seeder
                 'cost' => 299.99,
                 'category_id' => 1,
                 'published' => true,
-                'store_id' => 1,
             ],
             [
                 'title' => 'Gaming Mouse',
@@ -374,7 +346,6 @@ class DatabaseSeeder extends Seeder
                 'cost' => 29.99,
                 'category_id' => 5,
                 'published' => true,
-                'store_id' => 5,
             ],
             [
                 'title' => 'Fitness Tracker',
@@ -383,7 +354,6 @@ class DatabaseSeeder extends Seeder
                 'cost' => 79.99,
                 'category_id' => 2,
                 'published' => true,
-                'store_id' => 2,
             ],
             [
                 'title' => '4K Monitor',
@@ -392,7 +362,6 @@ class DatabaseSeeder extends Seeder
                 'cost' => 349.99,
                 'category_id' => 4,
                 'published' => true,
-                'store_id' => 4,
             ],
             [
                 'title' => 'Wireless Keyboard and Mouse Combo',
@@ -401,7 +370,6 @@ class DatabaseSeeder extends Seeder
                 'cost' => 49.99,
                 'category_id' => 2,
                 'published' => true,
-                'store_id' => 2,
             ],
             [
                 'title' => 'Digital Camera',
@@ -410,7 +378,6 @@ class DatabaseSeeder extends Seeder
                 'cost' => 499.99,
                 'category_id' => 5,
                 'published' => true,
-                'store_id' => 3,
             ],
             [
                 'title' => 'External Hard Drive',
@@ -419,7 +386,6 @@ class DatabaseSeeder extends Seeder
                 'cost' => 89.99,
                 'category_id' => 4,
                 'published' => true,
-                'store_id' => 2,
             ],
             [
                 'title' => 'Smart Home Security Camera',
@@ -428,7 +394,6 @@ class DatabaseSeeder extends Seeder
                 'cost' => 99.99,
                 'category_id' => 1,
                 'published' => true,
-                'store_id' => 3
             ],
             [
                 'title' => 'Smart Thermostat',
@@ -437,7 +402,6 @@ class DatabaseSeeder extends Seeder
                 'cost' => 89.99,
                 'category_id' => 3,
                 'published' => true,
-                'store_id' => 2,
             ],
             [
                 'title' => 'Electric Toothbrush',
@@ -446,7 +410,6 @@ class DatabaseSeeder extends Seeder
                 'cost' => 39.99,
                 'category_id' => 3,
                 'published' => true,
-                'store_id' => 3,
             ],
             [
                 'title' => 'Soundbar',
@@ -455,7 +418,6 @@ class DatabaseSeeder extends Seeder
                 'cost' => 99.99,
                 'category_id' => 3,
                 'published' => true,
-                'store_id' => 3,
             ],
             [
                 'title' => 'Robot Vacuum Cleaner',
@@ -464,7 +426,6 @@ class DatabaseSeeder extends Seeder
                 'cost' => 199.99,
                 'category_id' => 4,
                 'published' => true,
-                'store_id' => 2,
             ],
             [
                 'title' => 'Portable Power Bank',
@@ -473,7 +434,6 @@ class DatabaseSeeder extends Seeder
                 'cost' => 19.99,
                 'category_id' => 1,
                 'published' => true,
-                'store_id' => 2,
             ],
             [
                 'title' => 'Smartphone',
@@ -482,7 +442,6 @@ class DatabaseSeeder extends Seeder
                 'cost' => 499.99,
                 'category_id' => 1,
                 'published' => true,
-                'store_id' => 1,
             ],
             [
                 'title' => 'Laptop',
@@ -491,7 +450,6 @@ class DatabaseSeeder extends Seeder
                 'cost' => 899.99,
                 'category_id' => 2,
                 'published' => false,
-                'store_id' => 2,
             ],
             [
                 'title' => 'Wireless Earbuds',
@@ -500,7 +458,6 @@ class DatabaseSeeder extends Seeder
                 'cost' => 79.99,
                 'category_id' => 3,
                 'published' => true,
-                'store_id' => 2,
             ],
             [
                 'title' => 'Smart TV',
@@ -509,7 +466,6 @@ class DatabaseSeeder extends Seeder
                 'cost' => 699.99,
                 'category_id' => 4,
                 'published' => true,
-                'store_id' => 4,
             ],
             [
                 'title' => 'Gaming Console',
@@ -518,7 +474,6 @@ class DatabaseSeeder extends Seeder
                 'cost' => 349.99,
                 'category_id' => 3,
                 'published' => true,
-                'store_id' => 2,
             ],
             [
                 'title' => 'Laptop',
@@ -527,7 +482,6 @@ class DatabaseSeeder extends Seeder
                 'cost' => 599.99,
                 'category_id' => 2,
                 'published' => true,
-                'store_id' => 2,
             ],
             [
                 'title' => 'Bluetooth Speaker',
@@ -536,7 +490,6 @@ class DatabaseSeeder extends Seeder
                 'cost' => 49.99,
                 'category_id' => 3,
                 'published' => true,
-                'store_id' => 3,
             ],
             [
                 'title' => 'Tablet',
@@ -545,7 +498,6 @@ class DatabaseSeeder extends Seeder
                 'cost' => 299.99,
                 'category_id' => 1,
                 'published' => true,
-                'store_id' => 1,
             ],
             [
                 'title' => 'Gaming Mouse',
@@ -554,7 +506,6 @@ class DatabaseSeeder extends Seeder
                 'cost' => 29.99,
                 'category_id' => 5,
                 'published' => true,
-                'store_id' => 5,
             ],
             [
                 'title' => 'Fitness Tracker',
@@ -563,7 +514,6 @@ class DatabaseSeeder extends Seeder
                 'cost' => 79.99,
                 'category_id' => 2,
                 'published' => true,
-                'store_id' => 2,
             ],
             [
                 'title' => '4K Monitor',
@@ -572,7 +522,6 @@ class DatabaseSeeder extends Seeder
                 'cost' => 349.99,
                 'category_id' => 4,
                 'published' => true,
-                'store_id' => 4,
             ],
             [
                 'title' => 'Wireless Keyboard and Mouse Combo',
@@ -581,7 +530,6 @@ class DatabaseSeeder extends Seeder
                 'cost' => 49.99,
                 'category_id' => 2,
                 'published' => true,
-                'store_id' => 2,
             ],
             [
                 'title' => 'Digital Camera',
@@ -590,7 +538,6 @@ class DatabaseSeeder extends Seeder
                 'cost' => 499.99,
                 'category_id' => 5,
                 'published' => true,
-                'store_id' => 3,
             ],
             [
                 'title' => 'External Hard Drive',
@@ -599,7 +546,6 @@ class DatabaseSeeder extends Seeder
                 'cost' => 89.99,
                 'category_id' => 4,
                 'published' => true,
-                'store_id' => 2,
             ],
             [
                 'title' => 'Smart Home Security Camera',
@@ -608,7 +554,6 @@ class DatabaseSeeder extends Seeder
                 'cost' => 99.99,
                 'category_id' => 1,
                 'published' => true,
-                'store_id' => 3
             ],
             [
                 'title' => 'Smart Thermostat',
@@ -617,7 +562,6 @@ class DatabaseSeeder extends Seeder
                 'cost' => 89.99,
                 'category_id' => 3,
                 'published' => true,
-                'store_id' => 2,
             ],
             [
                 'title' => 'Electric Toothbrush',
@@ -626,7 +570,6 @@ class DatabaseSeeder extends Seeder
                 'cost' => 39.99,
                 'category_id' => 3,
                 'published' => true,
-                'store_id' => 3,
             ],
             [
                 'title' => 'Soundbar',
@@ -635,7 +578,6 @@ class DatabaseSeeder extends Seeder
                 'cost' => 99.99,
                 'category_id' => 3,
                 'published' => true,
-                'store_id' => 3,
             ],
             [
                 'title' => 'Robot Vacuum Cleaner',
@@ -644,7 +586,6 @@ class DatabaseSeeder extends Seeder
                 'cost' => 199.99,
                 'category_id' => 4,
                 'published' => true,
-                'store_id' => 2,
             ],
             [
                 'title' => 'Portable Power Bank',
@@ -653,13 +594,12 @@ class DatabaseSeeder extends Seeder
                 'cost' => 19.99,
                 'category_id' => 1,
                 'published' => true,
-                'store_id' => 2,
             ]
 
         ];
 
         $productsData = collect($productsData)->map(function ($product) {
-            $product['created_at'] = fake()->date();
+            $product['created_at'] = fake()->time();
             return $product;
         });
 
@@ -668,7 +608,6 @@ class DatabaseSeeder extends Seeder
 
             Inventory::insert([
                 'product_id' => $product->id,
-                'store_id'  => 1,
                 'quantity'  => fake()->numberBetween(0, 100),
                 'min_stock_level' => 10,
                 'max_stock_level' => 200
@@ -676,7 +615,6 @@ class DatabaseSeeder extends Seeder
 
             Inventory::insert([
                 'product_id' => $product->id,
-                'store_id'  => 2,
                 'quantity'  => fake()->numberBetween(0, 100),
                 'min_stock_level' => 10,
                 'max_stock_level' => 200
