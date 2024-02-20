@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Enums\SortBy;
 use App\Models\Product;
 use DB;
 use Illuminate\Database\Eloquent\Builder;
@@ -78,7 +77,11 @@ class ProductService
      */
     public function getById(int $id): Product | null
     {
-        return Product::find($id);
+        $product = Product::query()
+            ->withAggregate('inventory AS quantity', 'quantity', 'sum')
+            ->find($id);
+
+        return $product;
     }
 
     /**
@@ -88,9 +91,9 @@ class ProductService
      *
      * @return Product|null The product instance if found, otherwise null.
      */
-    public function getByCategory(int $caetgory_id): Collection
+    public function getByCategory(int $caetgory_id): LengthAwarePaginator
     {
-        return Product::where('category_id', $caetgory_id)->get();
+        return Product::where('category_id', $caetgory_id)->paginate();
     }
 
     /**

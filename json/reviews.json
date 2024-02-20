@@ -1,0 +1,252 @@
+[
+    {
+        "body": "Excellent product! Highly recommended.",
+        "product_id": 1,
+        "approved": true
+    },
+    {
+        "body": "Not satisfied with the quality.",
+        "product_id": 2,
+        "approved": false
+    },
+    {
+        "body": "Amazing features, worth the price.",
+        "product_id": 3,
+        "approved": true
+    },
+    {
+        "body": "Average product, needs improvement.",
+        "product_id": 4,
+        "approved": true
+    },
+    {
+        "body": "Great customer service, prompt delivery.",
+        "product_id": 5,
+        "approved": true
+    },
+    {
+        "body": "Terrible experience with this product.",
+        "product_id": 6,
+        "approved": false
+    },
+    {
+        "body": "Impressed with the build quality.",
+        "product_id": 7,
+        "approved": true
+    },
+    {
+        "body": "Good value for money.",
+        "product_id": 8,
+        "approved": true
+    },
+    {
+        "body": "Fast shipping, satisfied with the purchase.",
+        "product_id": 9,
+        "approved": true
+    },
+    {
+        "body": "Poor customer support.",
+        "product_id": 1,
+        "approved": false
+    },
+    {
+        "body": "Impressive performance, exceeded my expectations.",
+        "product_id": 11,
+        "approved": true
+    },
+    {
+        "body": "Decent product for the price.",
+        "product_id": 12,
+        "approved": true
+    },
+    {
+        "body": "Hassle-free returns and refunds.",
+        "product_id": 13,
+        "approved": true
+    },
+    {
+        "body": "Faulty product, disappointed with the purchase.",
+        "product_id": 14,
+        "approved": false
+    },
+    {
+        "body": "Responsive customer service, resolved my issues quickly.",
+        "product_id": 15,
+        "approved": true
+    },
+    {
+        "body": "Excellent build quality, sturdy and durable.",
+        "product_id": 16,
+        "approved": true
+    },
+    {
+        "body": "Difficult to assemble, unclear instructions.",
+        "product_id": 17,
+        "approved": false
+    },
+    {
+        "body": "Sleek design, fits perfectly in my space.",
+        "product_id": 18,
+        "approved": true
+    },
+    {
+        "body": "Unresponsive customer support.",
+        "product_id": 19,
+        "approved": false
+    },
+    {
+        "body": "Happy with the purchase, great value.",
+        "product_id": 20,
+        "approved": true
+    },
+    {
+        "body": "Smooth transaction, quick delivery.",
+        "product_id": 1,
+        "approved": true
+    },
+    {
+        "body": "Disappointed with the product quality.",
+        "product_id": 2,
+        "approved": false
+    },
+    {
+        "body": "Impressed with the customer service.",
+        "product_id": 20,
+        "approved": true
+    },
+    {
+        "body": "Average product, nothing exceptional.",
+        "product_id": 1,
+        "approved": true
+    },
+    {
+        "body": "Great packaging, no damage during shipping.",
+        "product_id": 2,
+        "approved": true
+    },
+    {
+        "body": "Defective product, had to return it.",
+        "product_id": 3,
+        "approved": false
+    },
+    {
+        "body": "Excellent warranty coverage.",
+        "product_id": 4,
+        "approved": true
+    },
+    {
+        "body": "User-friendly interface, easy setup.",
+        "product_id": 5,
+        "approved": true
+    },
+    {
+        "body": "Poorly designed, not user-friendly.",
+        "product_id": 6,
+        "approved": false
+    },
+    {
+        "body": "Affordable and reliable product.",
+        "product_id": 7,
+        "approved": true
+    },
+    {
+        "body": "Exceptional build quality, highly recommended.",
+        "product_id": 8,
+        "approved": true
+    },
+    {
+        "body": "Average product, not worth the price.",
+        "product_id": 9,
+        "approved": false
+    },
+    {
+        "body": "Fast and secure payment process.",
+        "product_id": 10,
+        "approved": true
+    },
+    {
+        "body": "Durable and long-lasting, great investment.",
+        "product_id": 11,
+        "approved": true
+    },
+    {
+        "body": "Unreliable product, constant issues.",
+        "product_id": 12,
+        "approved": false
+    },
+    {
+        "body": "Fantastic customer service experience.",
+        "product_id": 17,
+        "approved": true
+    },
+    {
+        "body": "Compact design, fits well in small spaces.",
+        "product_id": 14,
+        "approved": true
+    },
+    {
+        "body": "Difficult to assemble, requires professional help.",
+        "product_id": 15,
+        "approved": false
+    },
+    {
+        "body": "Happy with the purchase, exceeded expectations.",
+        "product_id": 16,
+        "approved": true
+    },
+    {
+        "body": "Unresponsive customer support, frustrating experience.",
+        "product_id": 14,
+        "approved": false
+    },
+    {
+        "body": "Affordable and reliable, great value for money.",
+        "product_id": 11,
+        "approved": true
+    },
+    {
+        "body": "Disappointed with the shipping delays.",
+        "product_id": 13,
+        "approved": false
+    },
+    {
+        "body": "Sleek design, enhances the overall aesthetics.",
+        "product_id": 18,
+        "approved": true
+    },
+    {
+        "body": "Faulty product, major quality issues.",
+        "product_id": 15,
+        "approved": false
+    },
+    {
+        "body": "Responsive and helpful customer service.",
+        "product_id": 9,
+        "approved": true
+    },
+    {
+        "body": "Innovative features, sets it apart from others.",
+        "product_id": 6,
+        "approved": true
+    },
+    {
+        "body": "Product arrived damaged, poor packaging.",
+        "product_id": 7,
+        "approved": false
+    },
+    {
+        "body": "Decent product, met my basic requirements.",
+        "product_id": 19,
+        "approved": true
+    },
+    {
+        "body": "Easy to use, suitable for beginners.",
+        "product_id": 4,
+        "approved": true
+    },
+    {
+        "body": "Overpriced for the quality provided.",
+        "product_id": 6,
+        "approved": false
+    }
+]

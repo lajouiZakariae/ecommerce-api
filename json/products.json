@@ -1,0 +1,482 @@
+[
+    {
+        "title": "Smartphone",
+        "description": "A high-end smartphone with advanced features.",
+        "price": 699.99,
+        "cost": 499.99,
+        "category_id": 1,
+        "published": true
+    },
+    {
+        "title": "Laptop",
+        "description": "A powerful laptop for gaming and productivity.",
+        "price": 1299.99,
+        "cost": 899.99,
+        "category_id": 2,
+        "published": false
+    },
+    {
+        "title": "Wireless Earbuds",
+        "description": "High-quality wireless earbuds with noise cancellation.",
+        "price": 129.99,
+        "cost": 79.99,
+        "category_id": 3,
+        "published": true
+    },
+    {
+        "title": "Smart TV",
+        "description": "A large-screen smart TV with 4K resolution.",
+        "price": 899.99,
+        "cost": 699.99,
+        "category_id": 4,
+        "published": true
+    },
+    {
+        "title": "Gaming Console",
+        "description": "The latest gaming console with high-performance hardware.",
+        "price": 499.99,
+        "cost": 349.99,
+        "category_id": 3,
+        "published": true
+    },
+    {
+        "title": "Laptop",
+        "description": "A sleek and lightweight laptop for everyday use.",
+        "price": 899.99,
+        "cost": 599.99,
+        "category_id": 2,
+        "published": true
+    },
+    {
+        "title": "Bluetooth Speaker",
+        "description": "Portable Bluetooth speaker with enhanced bass.",
+        "price": 79.99,
+        "cost": 49.99,
+        "category_id": 3,
+        "published": true
+    },
+    {
+        "title": "Tablet",
+        "description": "Versatile tablet with a high-resolution display.",
+        "price": 449.99,
+        "cost": 299.99,
+        "category_id": 1,
+        "published": true
+    },
+    {
+        "title": "Gaming Mouse",
+        "description": "Precision gaming mouse with customizable RGB lighting.",
+        "price": 49.99,
+        "cost": 29.99,
+        "category_id": 5,
+        "published": true
+    },
+    {
+        "title": "Fitness Tracker",
+        "description": "Advanced fitness tracker with heart rate monitoring.",
+        "price": 129.99,
+        "cost": 79.99,
+        "category_id": 2,
+        "published": true
+    },
+    {
+        "title": "4K Monitor",
+        "description": "Ultra-high-definition 4K monitor for crisp visuals.",
+        "price": 499.99,
+        "cost": 349.99,
+        "category_id": 4,
+        "published": true
+    },
+    {
+        "title": "Wireless Keyboard and Mouse Combo",
+        "description": "Ergonomic wireless keyboard and mouse set for productivity.",
+        "price": 79.99,
+        "cost": 49.99,
+        "category_id": 2,
+        "published": true
+    },
+    {
+        "title": "Digital Camera",
+        "description": "High-resolution digital camera for capturing moments.",
+        "price": 699.99,
+        "cost": 499.99,
+        "category_id": 5,
+        "published": true
+    },
+    {
+        "title": "External Hard Drive",
+        "description": "Large-capacity external hard drive for data storage.",
+        "price": 129.99,
+        "cost": 89.99,
+        "category_id": 4,
+        "published": true
+    },
+    {
+        "title": "Smart Home Security Camera",
+        "description": "Wireless smart home security camera for surveillance.",
+        "price": 149.99,
+        "cost": 99.99,
+        "category_id": 1,
+        "published": true
+    },
+    {
+        "title": "Smart Thermostat",
+        "description": "Wi-Fi enabled smart thermostat for home temperature control.",
+        "price": 129.99,
+        "cost": 89.99,
+        "category_id": 3,
+        "published": true
+    },
+    {
+        "title": "Electric Toothbrush",
+        "description": "Advanced electric toothbrush with multiple cleaning modes.",
+        "price": 59.99,
+        "cost": 39.99,
+        "category_id": 3,
+        "published": true
+    },
+    {
+        "title": "Soundbar",
+        "description": "High-quality soundbar for enhanced audio experience.",
+        "price": 149.99,
+        "cost": 99.99,
+        "category_id": 3,
+        "published": true
+    },
+    {
+        "title": "Robot Vacuum Cleaner",
+        "description": "Smart robot vacuum cleaner for automated cleaning.",
+        "price": 299.99,
+        "cost": 199.99,
+        "category_id": 4,
+        "published": true
+    },
+    {
+        "title": "Portable Power Bank",
+        "description": "Compact portable power bank for charging devices on the go.",
+        "price": 29.99,
+        "cost": 19.99,
+        "category_id": 1,
+        "published": true
+    },
+    {
+        "title": "Smartphone",
+        "description": "A high-end smartphone with advanced features.",
+        "price": 699.99,
+        "cost": 499.99,
+        "category_id": 1,
+        "published": true
+    },
+    {
+        "title": "Laptop",
+        "description": "A powerful laptop for gaming and productivity.",
+        "price": 1299.99,
+        "cost": 899.99,
+        "category_id": 2,
+        "published": false
+    },
+    {
+        "title": "Wireless Earbuds",
+        "description": "High-quality wireless earbuds with noise cancellation.",
+        "price": 129.99,
+        "cost": 79.99,
+        "category_id": 3,
+        "published": true
+    },
+    {
+        "title": "Smart TV",
+        "description": "A large-screen smart TV with 4K resolution.",
+        "price": 899.99,
+        "cost": 699.99,
+        "category_id": 4,
+        "published": true
+    },
+    {
+        "title": "Gaming Console",
+        "description": "The latest gaming console with high-performance hardware.",
+        "price": 499.99,
+        "cost": 349.99,
+        "category_id": 3,
+        "published": true
+    },
+    {
+        "title": "Laptop",
+        "description": "A sleek and lightweight laptop for everyday use.",
+        "price": 899.99,
+        "cost": 599.99,
+        "category_id": 2,
+        "published": true
+    },
+    {
+        "title": "Bluetooth Speaker",
+        "description": "Portable Bluetooth speaker with enhanced bass.",
+        "price": 79.99,
+        "cost": 49.99,
+        "category_id": 3,
+        "published": true
+    },
+    {
+        "title": "Tablet",
+        "description": "Versatile tablet with a high-resolution display.",
+        "price": 449.99,
+        "cost": 299.99,
+        "category_id": 1,
+        "published": true
+    },
+    {
+        "title": "Gaming Mouse",
+        "description": "Precision gaming mouse with customizable RGB lighting.",
+        "price": 49.99,
+        "cost": 29.99,
+        "category_id": 5,
+        "published": true
+    },
+    {
+        "title": "Fitness Tracker",
+        "description": "Advanced fitness tracker with heart rate monitoring.",
+        "price": 129.99,
+        "cost": 79.99,
+        "category_id": 2,
+        "published": true
+    },
+    {
+        "title": "4K Monitor",
+        "description": "Ultra-high-definition 4K monitor for crisp visuals.",
+        "price": 499.99,
+        "cost": 349.99,
+        "category_id": 4,
+        "published": true
+    },
+    {
+        "title": "Wireless Keyboard and Mouse Combo",
+        "description": "Ergonomic wireless keyboard and mouse set for productivity.",
+        "price": 79.99,
+        "cost": 49.99,
+        "category_id": 2,
+        "published": true
+    },
+    {
+        "title": "Digital Camera",
+        "description": "High-resolution digital camera for capturing moments.",
+        "price": 699.99,
+        "cost": 499.99,
+        "category_id": 5,
+        "published": true
+    },
+    {
+        "title": "External Hard Drive",
+        "description": "Large-capacity external hard drive for data storage.",
+        "price": 129.99,
+        "cost": 89.99,
+        "category_id": 4,
+        "published": true
+    },
+    {
+        "title": "Smart Home Security Camera",
+        "description": "Wireless smart home security camera for surveillance.",
+        "price": 149.99,
+        "cost": 99.99,
+        "category_id": 1,
+        "published": true
+    },
+    {
+        "title": "Smart Thermostat",
+        "description": "Wi-Fi enabled smart thermostat for home temperature control.",
+        "price": 129.99,
+        "cost": 89.99,
+        "category_id": 3,
+        "published": true
+    },
+    {
+        "title": "Electric Toothbrush",
+        "description": "Advanced electric toothbrush with multiple cleaning modes.",
+        "price": 59.99,
+        "cost": 39.99,
+        "category_id": 3,
+        "published": true
+    },
+    {
+        "title": "Soundbar",
+        "description": "High-quality soundbar for enhanced audio experience.",
+        "price": 149.99,
+        "cost": 99.99,
+        "category_id": 3,
+        "published": true
+    },
+    {
+        "title": "Robot Vacuum Cleaner",
+        "description": "Smart robot vacuum cleaner for automated cleaning.",
+        "price": 299.99,
+        "cost": 199.99,
+        "category_id": 4,
+        "published": true
+    },
+    {
+        "title": "Portable Power Bank",
+        "description": "Compact portable power bank for charging devices on the go.",
+        "price": 29.99,
+        "cost": 19.99,
+        "category_id": 1,
+        "published": true
+    },
+    {
+        "title": "Smartphone",
+        "description": "A high-end smartphone with advanced features.",
+        "price": 699.99,
+        "cost": 499.99,
+        "category_id": 1,
+        "published": true
+    },
+    {
+        "title": "Laptop",
+        "description": "A powerful laptop for gaming and productivity.",
+        "price": 1299.99,
+        "cost": 899.99,
+        "category_id": 2,
+        "published": false
+    },
+    {
+        "title": "Wireless Earbuds",
+        "description": "High-quality wireless earbuds with noise cancellation.",
+        "price": 129.99,
+        "cost": 79.99,
+        "category_id": 3,
+        "published": true
+    },
+    {
+        "title": "Smart TV",
+        "description": "A large-screen smart TV with 4K resolution.",
+        "price": 899.99,
+        "cost": 699.99,
+        "category_id": 4,
+        "published": true
+    },
+    {
+        "title": "Gaming Console",
+        "description": "The latest gaming console with high-performance hardware.",
+        "price": 499.99,
+        "cost": 349.99,
+        "category_id": 3,
+        "published": true
+    },
+    {
+        "title": "Laptop",
+        "description": "A sleek and lightweight laptop for everyday use.",
+        "price": 899.99,
+        "cost": 599.99,
+        "category_id": 2,
+        "published": true
+    },
+    {
+        "title": "Bluetooth Speaker",
+        "description": "Portable Bluetooth speaker with enhanced bass.",
+        "price": 79.99,
+        "cost": 49.99,
+        "category_id": 3,
+        "published": true
+    },
+    {
+        "title": "Tablet",
+        "description": "Versatile tablet with a high-resolution display.",
+        "price": 449.99,
+        "cost": 299.99,
+        "category_id": 1,
+        "published": true
+    },
+    {
+        "title": "Gaming Mouse",
+        "description": "Precision gaming mouse with customizable RGB lighting.",
+        "price": 49.99,
+        "cost": 29.99,
+        "category_id": 5,
+        "published": true
+    },
+    {
+        "title": "Fitness Tracker",
+        "description": "Advanced fitness tracker with heart rate monitoring.",
+        "price": 129.99,
+        "cost": 79.99,
+        "category_id": 2,
+        "published": true
+    },
+    {
+        "title": "4K Monitor",
+        "description": "Ultra-high-definition 4K monitor for crisp visuals.",
+        "price": 499.99,
+        "cost": 349.99,
+        "category_id": 4,
+        "published": true
+    },
+    {
+        "title": "Wireless Keyboard and Mouse Combo",
+        "description": "Ergonomic wireless keyboard and mouse set for productivity.",
+        "price": 79.99,
+        "cost": 49.99,
+        "category_id": 2,
+        "published": true
+    },
+    {
+        "title": "Digital Camera",
+        "description": "High-resolution digital camera for capturing moments.",
+        "price": 699.99,
+        "cost": 499.99,
+        "category_id": 5,
+        "published": true
+    },
+    {
+        "title": "External Hard Drive",
+        "description": "Large-capacity external hard drive for data storage.",
+        "price": 129.99,
+        "cost": 89.99,
+        "category_id": 4,
+        "published": true
+    },
+    {
+        "title": "Smart Home Security Camera",
+        "description": "Wireless smart home security camera for surveillance.",
+        "price": 149.99,
+        "cost": 99.99,
+        "category_id": 1,
+        "published": true
+    },
+    {
+        "title": "Smart Thermostat",
+        "description": "Wi-Fi enabled smart thermostat for home temperature control.",
+        "price": 129.99,
+        "cost": 89.99,
+        "category_id": 3,
+        "published": true
+    },
+    {
+        "title": "Electric Toothbrush",
+        "description": "Advanced electric toothbrush with multiple cleaning modes.",
+        "price": 59.99,
+        "cost": 39.99,
+        "category_id": 3,
+        "published": true
+    },
+    {
+        "title": "Soundbar",
+        "description": "High-quality soundbar for enhanced audio experience.",
+        "price": 149.99,
+        "cost": 99.99,
+        "category_id": 3,
+        "published": true
+    },
+    {
+        "title": "Robot Vacuum Cleaner",
+        "description": "Smart robot vacuum cleaner for automated cleaning.",
+        "price": 299.99,
+        "cost": 199.99,
+        "category_id": 4,
+        "published": true
+    },
+    {
+        "title": "Portable Power Bank",
+        "description": "Compact portable power bank for charging devices on the go.",
+        "price": 29.99,
+        "cost": 19.99,
+        "category_id": 1,
+        "published": true
+    }
+]

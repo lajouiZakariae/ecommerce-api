@@ -7,15 +7,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\ProductStoreRequest;
 use App\Http\Requests\Admin\ProductUpdateRequest;
 use App\Http\Resources\Admin\ProductResource;
-use App\Models\Category;
-use App\Models\Product;
 use App\Models\Store;
 use App\Services\ProductService;
 use Illuminate\Http\Response;
 use Illuminate\Validation\Rule;
 use Spatie\RouteAttributes\Attributes\Get;
-use Spatie\RouteAttributes\Attributes\Patch;
-use Spatie\RouteAttributes\Attributes\WhereNumber;
 use Validator;
 
 // #[ApiResource('products')]
@@ -84,7 +80,9 @@ class ProductController extends Controller
     {
         $product = $productService->getById($product_id);
 
-        return $product ? new ProductResource($product) : abort(404);
+        abort_if(!$product, 404);
+
+        return new ProductResource($product);
     }
 
     /**
@@ -112,9 +110,9 @@ class ProductController extends Controller
      */
     public function destroy(ProductService $productService, int $product_id): Response
     {
-        if (!$productService->deleteById($product_id)) {
-            abort(404);
-        };
+        $deleted = $productService->deleteById($product_id);
+
+        abort_if(!$deleted, 404);
 
         return response()->noContent();
     }
@@ -128,9 +126,9 @@ class ProductController extends Controller
      */
     public function togglePublish(ProductService $productService, int $product_id)
     {
-        if (!$productService->togglePublishedState($product_id)) {
-            abort(404);
-        };
+        $toggled = $productService->togglePublishedState($product_id);
+
+        abort_if(!$toggled, 404);
 
         return response()->noContent();
     }
@@ -144,7 +142,6 @@ class ProductController extends Controller
     public function categoryProducts(ProductService $productService, $category_id)
     {
         return $productService->getByCategory($category_id);
-        // return ProductResource::collection($category->products);
     }
 
     /**

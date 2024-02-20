@@ -17,7 +17,14 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
 
-            $table->string('email');
+            $table->unsignedBigInteger('client_id');
+            $table
+                ->foreign('client_id')
+                ->references('id')
+                ->on('clients')
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
+
             $table->text('body');
 
             $table->boolean('approved')->nullable()->default(false);
