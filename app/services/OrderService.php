@@ -20,7 +20,7 @@ class OrderService
             ])
             ->get();
 
-        $orders->map(fn ($order) => ($this->calculateTotalsOfOrderAndOrderItems($order)));
+        $orders = $orders->map(fn ($order) => ($this->calculateTotalsOfOrderAndOrderItems($order)));
 
         return OrderResource::collection($orders);
     }
