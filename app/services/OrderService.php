@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Http\Resources\Admin\OrderResource;
 use App\Models\Order;
 use App\Models\OrderItem;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
@@ -12,12 +13,11 @@ class OrderService
     private function calculateTotalsOfOrderAndOrderItems(Order $order): Order
     {
         $order->orderItems->each(function (OrderItem $orderItem) {
-            $orderItem->setTotalPrice();
             $total_price = $orderItem->product->price * $orderItem->quantity;
             $orderItem->total_price = round($total_price, 2);
         });
 
-        $total_quantity  = $order->orderItems->reduce(
+        $total_quantity = $order->orderItems->reduce(
             fn ($acc, OrderItem $orderItem) => $acc + $orderItem->quantity,
             0
         );
@@ -53,7 +53,7 @@ class OrderService
 
         $orders->map(fn ($order) => ($this->calculateTotalsOfOrderAndOrderItems($order)));
 
-        return $orders;
+        return OrderResource::collection($orders);
     }
 
     public function getBydId(int $id): Order
