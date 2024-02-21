@@ -15,7 +15,7 @@ class ProductResource extends JsonResource
         return [
             'id' => $this->id,
             'url' => route('products.show', ['product' => $this->id]),
-            'created_at' => $this->created_at,
+            'created_at' => $this->whenHas('created_at'),
             'title' => $this->title,
             'description' => $this->whenHas('description'),
             'price' => $this->price,

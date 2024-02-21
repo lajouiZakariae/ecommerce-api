@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Order;
 use App\Models\OrderItem;
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
 class OrderService
 {
@@ -47,12 +48,29 @@ class OrderService
                 'orderItems' => [
                     'product:id,title,price'
                 ],
-                'couponCode:id,code,amount'
             ])
             ->get();
 
         $orders->map(fn ($order) => ($this->calculateTotals($order)));
 
         return $orders;
+    }
+
+    public function getBydId(int $id): Order
+    {
+        $order = Order::with([
+            'paymentMethod',
+            'client',
+            'orderItems' => [
+                'product:id,title,price' => [
+                    'thumbnail'
+                ]
+            ],
+        ])->find($id);
+
+        if ($order === null)
+            throw new ResourceNotFoundException("Order Not Found");
+
+        return $this->calculateTotals($order);
     }
 }

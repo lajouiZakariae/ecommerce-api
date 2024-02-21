@@ -14,6 +14,7 @@ class ImageResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'created_at' => $this->whenHas('created_at'),
             'alt_text' => $this->alt_text,
             'url' => $this->imageUrl(),
             'product_id' => $this->product_id,

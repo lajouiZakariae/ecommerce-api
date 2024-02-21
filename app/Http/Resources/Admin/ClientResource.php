@@ -14,6 +14,7 @@ class ClientResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'url' => route('clients.show', ['client' => $this->id]),
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
             'email' => $this->email,
@@ -21,7 +22,6 @@ class ClientResource extends JsonResource
             'city' => $this->city,
             'zip_code' => $this->zip_code,
             'address' => $this->address,
-            'url' => route('clients.show', ['client' => $this->id]),
         ];
     }
 }

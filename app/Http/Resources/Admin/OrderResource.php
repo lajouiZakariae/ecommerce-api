@@ -15,25 +15,13 @@ class OrderResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->id,
-            'full_name' => $this->whenHas('full_name'),
-            'email' => $this->whenHas('email'),
-            'phone_number' => $this->whenHas('phone_number'),
-            'status' => $this->status,
-            'delivery' => $this->delivery,
-            'created_at' => $this->created_at,
-            'order_items_count' => $this->whenCounted('order_items'),
-            'city' => $this->whenHas('city'),
-            'zip_code' => $this->whenHas('zip_code'),
-            'address' => $this->whenHas('address'),
-            'payment_method' => new PaymentMethodResource($this->whenLoaded('paymentMethod')),
-            'order_items_count' => $this->whenCounted('orderItems'),
-            'order_items_url' => $this->whenLoaded(
-                'orderItems',
-                route('order-items.index', ['order' => $this->id])
-            ),
-            'order_items' => $this->whenLoaded('orderItems', OrderItemResource::collection($this->orderItems)),
-            'total_price' => $this->calculateTotalPrice(),
+            "id" => $this->id,
+            "url" => route('orders.show', ['order' => $this->id]),
+            "created_at" => $this->created_at,
+            "status" => $this->status,
+            "total_price" => $this->whenHas('total_price'),
+            "client" => new ClientResource($this->whenLoaded('client')),
+            "order_items" => OrderItemResource::collection($this->whenLoaded('orderItems')),
         ];
     }
 }

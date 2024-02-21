@@ -22,8 +22,6 @@ class OrderController extends Controller
     {
     }
 
-
-
     /**
      * Display a listing of the orders.
      *
@@ -31,18 +29,6 @@ class OrderController extends Controller
      */
     public function index(): Response
     {
-        // $orders = Order::query()
-        //     ->with([
-        //         'client:id,first_name,last_name',
-        //         'orderItems' => [
-        //             'product:id,title,price'
-        //         ],
-        //     ])
-        //     ->select(['id', 'client_id', 'status', 'created_at'])
-        //     ->get();
-
-        // $orders = $orders->map(fn (Order $order) => $this->calculateTotals($order));
-
         return response($this->orderService->getAllFilteredOrders([]));
     }
 
@@ -64,47 +50,14 @@ class OrderController extends Controller
     /**
      * Display the specified order.
      *
-     * @param  \App\Models\Order  $order
+     * @param int $order_id
      * @return \Illuminate\Http\Response
      */
-    public function show(Order $order): Response
+    public function show(int $order_id): Response
     {
-        $order = $order->load([
-            'paymentMethod',
-            'client',
-            'orderItems' => [
-                'product:id,title,price' => [
-                    'thumbnail'
-                ]
-            ],
-        ]);
+        $order = $this->orderService->getBydId($order_id);
 
-        $order = $this->calculateTotals($order);
-
-        $order->orderItems->each(
-            function (OrderItem $orderItem) {
-                $orderItem->product->thumbnail->url = $orderItem->product->thumbnail->imageUrl();
-            }
-        );
-
-        $order->orderItems->each(function (OrderItem $orderItem) {
-            $orderItem->url = route(
-                'order-items.show',
-                ['order' => $orderItem->order_id, 'order_item' => $orderItem->id]
-            );
-
-            $orderItem->increment_quantity_url =  route(
-                'order-items.increment-quantity',
-                ['order' => $orderItem->order_id, 'order_item' => $orderItem->id]
-            );
-
-            $orderItem->decrement_quantity_url =  route(
-                'order-items.decrement-quantity',
-                ['order' => $orderItem->order_id, 'order_item' => $orderItem->id]
-            );
-        });
-
-        return response($order);
+        return response(new OrderResource($order));
     }
 
     /**

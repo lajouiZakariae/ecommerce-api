@@ -114,7 +114,7 @@ class DatabaseSeeder extends Seeder
         });
 
         foreach ($productsData as $product) {
-            $product = Product::create((array)$product);
+            $product = Product::create((array) $product);
 
             if (in_array($product->id, [1, 2])) continue;
 

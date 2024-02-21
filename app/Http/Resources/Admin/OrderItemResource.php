@@ -15,22 +15,23 @@ class OrderItemResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'order_id' => $this->order_id,
-            'product_id' => $this->product_id,
-            'quantity' => $this->quantity,
-            'product' => $this->whenLoaded('product'),
             "url" => route(
                 'order-items.show',
                 ['order' => $this->order_id, 'order_item' => $this->id]
             ),
-            "decrement_quantity_url" => route('order-items.decrement-quantity', [
-                'order' => $this->order_id,
-                'order_item' => $this->id
-            ]),
-            "increment_quantity_url" => route('order-items.increment-quantity', [
-                'order' => $this->order_id,
-                'order_item' => $this->id
-            ]),
+            'order_id' => $this->order_id,
+            'product_id' => $this->product_id,
+            'quantity' => $this->quantity,
+            'total_price' => $this->whenHas('total_price'),
+            'product' => new ProductResource($this->whenLoaded('product')),
+            // "decrement_quantity_url" => route('order-items.decrement-quantity', [
+            //     'order' => $this->order_id,
+            //     'order_item' => $this->id
+            // ]),
+            // "increment_quantity_url" => route('order-items.increment-quantity', [
+            //     'order' => $this->order_id,
+            //     'order_item' => $this->id
+            // ]),
         ];
     }
 }
