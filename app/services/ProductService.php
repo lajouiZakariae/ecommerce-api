@@ -82,7 +82,7 @@ class ProductService
             ->find($id);
 
         if ($product === null)
-            throw new ResourceNotFoundException("Product Not Fount !!");
+            throw new ResourceNotFoundException("Product Not Found !!");
 
         return $product;
     }
