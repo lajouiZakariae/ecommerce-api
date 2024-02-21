@@ -58,7 +58,7 @@ class ProductController extends Controller
 
         $validProductFilters = $this->filterAndReturnOnlyValidProductModelQueryFilters($productFilters);
 
-        return ProductResource::collection($this->productService->getAllProductsMatcheFilters($validProductFilters));
+        return ProductResource::collection($this->productService->getAllProductsMatchFilters($validProductFilters));
     }
 
     /**

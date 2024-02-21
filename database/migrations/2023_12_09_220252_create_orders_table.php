@@ -16,8 +16,9 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
 
-            $table->unsignedBigInteger('client_id')->nullable();
+            $table->timestamp('paid_at')->nullable();
 
+            $table->unsignedBigInteger('client_id')->nullable();
 
             $table
                 ->foreign('client_id')
@@ -26,9 +27,7 @@ return new class extends Migration
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 
-            $table->enum('status', [
-                "pending", "in transit", "delivered", "delivery attempt", "cancelled", "return to sender"
-            ]);
+            $table->enum('status', ["pending", "in transit", "delivered", "delivery attempt", "cancelled", "return to sender"]);
 
             $table->unsignedBigInteger('payment_method_id')->nullable();
 

@@ -55,13 +55,11 @@ class ProductService
      * @param array $filters
      * @return LengthAwarePaginator The paginated result set of products.
      */
-    public function getAllProductsMatcheFilters(array $filters): LengthAwarePaginator
+    public function getAllProductsMatchFilters(array $filters): LengthAwarePaginator
     {
         $products = $this
             ->queryFilters($filters)
-            ->with([
-                'thumbnail',
-            ])
+            ->with(['thumbnail'])
             ->withSum('inventory AS quantity', 'quantity')
             ->paginate(10);
 
@@ -78,6 +76,7 @@ class ProductService
     public function getById(int $id): Product | null
     {
         $product = Product::query()
+            ->with('thumbnail')
             ->withSum('inventory AS quantity', 'quantity')
             ->find($id);
 
