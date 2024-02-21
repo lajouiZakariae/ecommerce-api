@@ -8,29 +8,21 @@ use App\Http\Requests\Admin\OrderUpdateRequest;
 use App\Http\Resources\Admin\OrderResource;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Services\OrderService;
 use Illuminate\Http\Response;
 use Spatie\RouteAttributes\Attributes\ApiResource;
 
 /**
  * @group Orders
  */
-#[ApiResource('orders')]
+// #[ApiResource('orders')]
 class OrderController extends Controller
 {
-    private function calculateTotals(Order $order): Order
+    public function __construct(private OrderService $orderService)
     {
-        $order->orderItems->each(function (OrderItem $orderItem) {
-            $orderItem->setTotalPrice();
-        });
-
-        $order->setTotalUnitPrice();
-
-        $order->setTotalQuantity();
-
-        $order->setTotalPrice();
-
-        return $order;
     }
+
+
 
     /**
      * Display a listing of the orders.
@@ -39,19 +31,19 @@ class OrderController extends Controller
      */
     public function index(): Response
     {
-        $orders = Order::query()
-            ->with([
-                'client:id,first_name,last_name',
-                'orderItems' => [
-                    'product:id,title,price'
-                ],
-            ])
-            ->select(['id', 'client_id', 'status', 'created_at'])
-            ->get();
+        // $orders = Order::query()
+        //     ->with([
+        //         'client:id,first_name,last_name',
+        //         'orderItems' => [
+        //             'product:id,title,price'
+        //         ],
+        //     ])
+        //     ->select(['id', 'client_id', 'status', 'created_at'])
+        //     ->get();
 
-        $orders = $orders->map(fn (Order $order) => $this->calculateTotals($order));
+        // $orders = $orders->map(fn (Order $order) => $this->calculateTotals($order));
 
-        return response($orders);
+        return response($this->orderService->getAllFilteredOrders([]));
     }
 
     /**

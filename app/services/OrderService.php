@@ -1,0 +1,58 @@
+<?php
+
+namespace App\Services;
+
+use App\Models\Order;
+use App\Models\OrderItem;
+
+class OrderService
+{
+
+    private function calculateTotals(Order $order): Order
+    {
+        $order->orderItems->each(function (OrderItem $orderItem) {
+            $orderItem->setTotalPrice();
+            $total_price = $orderItem->product->price * $orderItem->quantity;
+            $orderItem->total_price = round($total_price, 2);
+        });
+
+        $total_quantity  = $order->orderItems->reduce(
+            fn ($acc, OrderItem $orderItem) => $acc + $orderItem->quantity,
+            0
+        );
+
+        $order->total_quantity = $total_quantity;
+
+        $total_unit_price  = $order->orderItems->reduce(
+            fn ($acc, OrderItem $orderItem) => $acc + $orderItem->product->price,
+            0
+        );
+
+        $order->total_unit_price = round($total_unit_price, 2);
+
+        $total_price = $order->orderItems->reduce(function ($acc, OrderItem $orderItem) {
+            return $acc + ($orderItem->quantity * $orderItem->product->price);
+        }, 0);
+
+        $order->total_price = round($total_price, 2);
+
+        return $order;
+    }
+
+    public function getAllFilteredOrders(array $filters)
+    {
+        $orders = Order::query()
+            ->with([
+                'client:id,first_name,last_name',
+                'orderItems' => [
+                    'product:id,title,price'
+                ],
+                'couponCode:id,code,amount'
+            ])
+            ->get();
+
+        $orders->map(fn ($order) => ($this->calculateTotals($order)));
+
+        return $orders;
+    }
+}
