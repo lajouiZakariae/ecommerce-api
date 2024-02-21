@@ -25,7 +25,7 @@ class ProductController extends Controller
     /**
      * Get valid filters only
      */
-    private function filterAndReturnOnlyValidProductModelQueryFilters(array $filters): array
+    private function getValidProductFilters(array $filters): array
     {
         return Validator::make(
             $filters,
@@ -56,7 +56,7 @@ class ProductController extends Controller
             'order' => request()->input('order'),
         ];
 
-        $validProductFilters = $this->filterAndReturnOnlyValidProductModelQueryFilters($productFilters);
+        $validProductFilters = $this->getValidProductFilters($productFilters);
 
         return ProductResource::collection($this->productService->getAllProductsMatchFilters($validProductFilters));
     }

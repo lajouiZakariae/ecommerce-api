@@ -228,8 +228,12 @@ class DatabaseSeeder extends Seeder
 
         ];
 
-        OrderItem::insert($order_items);
+        // OrderItem::insert($order_items);
 
+        collect($order_items)->each(function (array $orderItemAsArray) {
+            $orderItem = new OrderItem($orderItemAsArray);
+            $orderItem->save();
+        });
 
         for ($i = 1; $i <= 30; $i++) {
             Image::insert([

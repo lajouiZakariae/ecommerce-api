@@ -38,13 +38,20 @@ class OrderController extends Controller
      * @param  \App\Http\Requests\Admin\OrderStoreRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(OrderStoreRequest $request): Response
+    public function store()
     {
-        $data = $request->validated();
+        $data = [
+            "client_id" => 1,
+            "status" => fake()->randomElement(["pending", "in transit", "delivered", "delivery attempt", "cancelled", "return to sender"]),
+            "coupon_code_id" => 2,
+            "payment_method_id" => fake()->numberBetween(1, 2),
+            "order_items" => [
+                ["product_id" => 1, "quantity" => 2],
+                ["product_id" => 2, "quantity" => 3],
+            ]
+        ];
 
-        $order = Order::create($data);
-
-        return response($order, Response::HTTP_CREATED);
+        return $this->orderService->create($data);
     }
 
     /**

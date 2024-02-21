@@ -24,7 +24,7 @@ class ProductService
      *
      * @return Builder The Eloquent query builder instance.
      */
-    private function queryFilters(array $filters): Builder
+    private function filterAndReturnOnlyValidProductModelQueryFilters(array $filters): Builder
     {
         return Product::query()
             ->when(
@@ -58,7 +58,7 @@ class ProductService
     public function getAllProductsMatchFilters(array $filters): LengthAwarePaginator
     {
         $products = $this
-            ->queryFilters($filters)
+            ->filterAndReturnOnlyValidProductModelQueryFilters($filters)
             ->with(['thumbnail'])
             ->withSum('inventory AS quantity', 'quantity')
             ->paginate(10);

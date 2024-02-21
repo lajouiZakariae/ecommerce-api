@@ -18,8 +18,9 @@ return new class extends Migration
             $table->timestamps();
             $table->string('title');
             $table->text('description')->nullable();
-            $table->float('cost')->nullable();
-            $table->float('price')->nullable();
+
+            $table->unsignedFloat('cost')->nullable();
+            $table->unsignedFloat('price')->nullable();
 
             $table->boolean('published')->default(false);
 

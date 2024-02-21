@@ -16,6 +16,12 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
 
+            $table->unsignedBigInteger('total_quantity')->nullable()->default(0);
+
+            $table->unsignedFloat('total_price_per_unit')->nullable()->default(0);
+
+            $table->unsignedFloat('total_price')->nullable()->default(0);
+
             $table->timestamp('paid_at')->nullable();
 
             $table->unsignedBigInteger('client_id')->nullable();
