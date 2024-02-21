@@ -5,8 +5,8 @@ namespace App\Services;
 use App\Models\Product;
 use DB;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
 /**
  * Class ProductService
@@ -55,7 +55,7 @@ class ProductService
      * @param array $filters
      * @return LengthAwarePaginator The paginated result set of products.
      */
-    public function getAll(array $filters): LengthAwarePaginator
+    public function getAllProductsMatcheFilters(array $filters): LengthAwarePaginator
     {
         $products = $this
             ->queryFilters($filters)
@@ -80,6 +80,9 @@ class ProductService
         $product = Product::query()
             ->withSum('inventory AS quantity', 'quantity')
             ->find($id);
+
+        if ($product === null)
+            throw new ResourceNotFoundException("Product Not Fount !!");
 
         return $product;
     }

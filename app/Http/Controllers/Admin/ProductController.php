@@ -20,7 +20,7 @@ class ProductController extends Controller
     /**
      * Get valid filters only
      */
-    private function getValidFiltersOnly(array $filters): array
+    private function filterAndReturnOnlyValidProductModelQueryFilters(array $filters): array
     {
         return Validator::make(
             $filters,
@@ -42,7 +42,7 @@ class ProductController extends Controller
      */
     public function index(ProductService $productService)
     {
-        $filters = [
+        $productFilters = [
             'price_from' => request()->input('price_from'),
             'price_to' => request()->input('price_to'),
             'cost_from' => request()->input('cost_from'),
@@ -51,9 +51,9 @@ class ProductController extends Controller
             'order' => request()->input('order'),
         ];
 
-        $validFilters = $this->getValidFiltersOnly($filters);
+        $validProductFilters = $this->filterAndReturnOnlyValidProductModelQueryFilters($productFilters);
 
-        return ProductResource::collection($productService->getAll($validFilters));
+        return ProductResource::collection($productService->getAllProductsMatcheFilters($validProductFilters));
     }
 
     /**
@@ -80,7 +80,7 @@ class ProductController extends Controller
     {
         $product = $productService->getById($product_id);
 
-        abort_if(!$product, 404);
+        // abort_if(!$product, 404);
 
         return new ProductResource($product);
     }

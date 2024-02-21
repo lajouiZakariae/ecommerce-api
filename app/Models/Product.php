@@ -12,6 +12,8 @@ class Product extends Model
 {
     use HasFactory;
 
+    protected $notFoundMessage = 'The book could not be found';
+
     public $perPage = 10;
 
     /**

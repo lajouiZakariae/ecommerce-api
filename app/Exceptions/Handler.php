@@ -6,6 +6,7 @@ use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -30,10 +31,17 @@ class Handler extends ExceptionHandler
             //
         });
 
-        $this->renderable(function (NotFoundHttpException $e) {
+        // $this->renderable(function (NotFoundHttpException $e) {
 
-            if ($e->getStatusCode() === 404 && request()->accepts("application/json"))
-                return response("", Response::HTTP_NOT_FOUND);
+        //     if ($e->getStatusCode() === 404 && request()->accepts("application/json"))
+        //         return response($e->getMessage(), Response::HTTP_NOT_FOUND);
+        // });
+
+        $this->renderable(function (ResourceNotFoundException $e) {
+
+            if (request()->accepts("application/json"))
+                return response()
+                    ->json(["msg" => $e->getMessage()], Response::HTTP_NOT_FOUND);
         });
 
         // $this->renderable(function (MethodNotAllowedException $e) {
