@@ -25,6 +25,13 @@ class OrderService
         return OrderResource::collection($orders);
     }
 
+    /**
+     * Get an order by its ID or throw a ResourceNotFound Exception
+     *
+     * @param int $id The ID of the order.
+     * @return Order The order instance.
+     * @throws Symfony\Component\Routing\Exception\ResourceNotFoundException
+     */
     public function getBydId(int $id): Order
     {
         $order = Order::with([

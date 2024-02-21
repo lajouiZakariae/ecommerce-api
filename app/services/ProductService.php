@@ -66,12 +66,13 @@ class ProductService
         return $products;
     }
 
+
     /**
-     * Get a product by its ID.
+     * Get a product by its ID or throw a ResourceNotFound Exception
      *
      * @param int $id The ID of the product.
-     *
-     * @return Product|null The product instance if found, otherwise null.
+     * @return Product The product instance.
+     * @throws Symfony\Component\Routing\Exception\ResourceNotFoundException
      */
     public function getById(int $id): Product | null
     {
