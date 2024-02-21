@@ -32,7 +32,7 @@ class DatabaseSeeder extends Seeder
 
         Role::insert([
             ["name" => "admin"],
-            ["name" => "creator"]
+            ["name" => "sales_assistant"],
         ]);
 
         \App\Models\User::factory()->create([
@@ -46,24 +46,16 @@ class DatabaseSeeder extends Seeder
         \App\Models\User::factory()->create([
             'first_name' => 'Ilham',
             'last_name' => 'El Maimouni',
-            'role_id' => EnumsRole::ADMIN,
+            'role_id' => EnumsRole::SALES_ASSISTANT,
             'email' => 'ilhammaimouni269@gmail.com',
             'password' => Hash::make('1234')
         ]);
 
         Client::factory(5)->create();
 
-        // \App\Models\User::factory()->create([
-        //     'first_name' => 'Zakariae',
-        //     'last_name' => 'Lajoui',
-        //     'role_id' => EnumsRole::ADMIN,
-        //     'email' => 'lajoui.zakariae.1@gmail.com',
-        //     'password' => Hash::make('1234')
-        // ]);
-
         $payment_methods = [
-            ["name" => "cheque"],
-            ["name" => "cash"],
+            ["name" => "Credit Card"],
+            ["name" => "Cash On Delivery"],
         ];
 
         PaymentMethod::insert($payment_methods);
@@ -121,7 +113,7 @@ class DatabaseSeeder extends Seeder
             return $product;
         });
 
-        foreach ($productsData as  $product) {
+        foreach ($productsData as $product) {
             $product = Product::create((array)$product);
 
             if (in_array($product->id, [1, 2])) continue;

@@ -17,6 +17,11 @@ use Validator;
 // #[ApiResource('products')]
 class ProductController extends Controller
 {
+
+    public function __construct(private ProductService $productService)
+    {
+    }
+
     /**
      * Get valid filters only
      */
@@ -40,7 +45,7 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(ProductService $productService)
+    public function index()
     {
         $productFilters = [
             'price_from' => request()->input('price_from'),
@@ -53,7 +58,7 @@ class ProductController extends Controller
 
         $validProductFilters = $this->filterAndReturnOnlyValidProductModelQueryFilters($productFilters);
 
-        return ProductResource::collection($productService->getAllProductsMatcheFilters($validProductFilters));
+        return ProductResource::collection($this->productService->getAllProductsMatcheFilters($validProductFilters));
     }
 
     /**
@@ -61,11 +66,11 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function store(ProductStoreRequest $request, ProductService $productService)
+    public function store(ProductStoreRequest $request)
     {
         $data = $request->validated();
 
-        $product = $productService->create($data);
+        $product = $this->productService->create($data);
 
         return response(new ProductResource($product), Response::HTTP_CREATED);
     }
@@ -76,11 +81,9 @@ class ProductController extends Controller
      * @param  int $product_id
      * @return \Illuminate\Http\Response
      */
-    public function show(ProductService $productService, $product_id): ProductResource
+    public function show($product_id): ProductResource
     {
-        $product = $productService->getById($product_id);
-
-        // abort_if(!$product, 404);
+        $product = $this->productService->getById($product_id);
 
         return new ProductResource($product);
     }
@@ -92,11 +95,11 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function update(ProductUpdateRequest $request, ProductService $productService, $product_id): Response
+    public function update(ProductUpdateRequest $request,  $product_id): Response
     {
         $data = $request->validated();
 
-        $productService->update($product_id, $data);
+        $this->productService->update($product_id, $data);
 
         return response()->noContent();
     }
@@ -108,11 +111,9 @@ class ProductController extends Controller
      * @param  int  $product_id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ProductService $productService, int $product_id): Response
+    public function destroy(int $product_id): Response
     {
-        $deleted = $productService->deleteById($product_id);
-
-        abort_if(!$deleted, 404);
+        $this->productService->deleteById($product_id);
 
         return response()->noContent();
     }
@@ -124,11 +125,9 @@ class ProductController extends Controller
      * @param  int  $product_id
      * @return \Illuminate\Http\Response
      */
-    public function togglePublish(ProductService $productService, int $product_id)
+    public function togglePublish(int $product_id)
     {
-        $toggled = $productService->togglePublishedState($product_id);
-
-        abort_if(!$toggled, 404);
+        $this->productService->togglePublishedState($product_id);
 
         return response()->noContent();
     }
@@ -139,9 +138,9 @@ class ProductController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function categoryProducts(ProductService $productService, $category_id)
+    public function categoryProducts($category_id)
     {
-        return $productService->getByCategory($category_id);
+        return $this->productService->getByCategory($category_id);
     }
 
     /**

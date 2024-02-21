@@ -128,7 +128,10 @@ class ProductService
     {
         $affectedRowsCount = Product::where('id', $id)->update($data);
 
-        return $affectedRowsCount !== 0;
+        if ($affectedRowsCount === 0)
+            throw new ResourceNotFoundException('Product Not Found!!');
+
+        return true;
     }
 
     /**
@@ -142,7 +145,10 @@ class ProductService
     {
         $affectedRowsCount = Product::where('id', $id)->delete();
 
-        return $affectedRowsCount !== 0;
+        if ($affectedRowsCount === 0)
+            throw new ResourceNotFoundException('Product Not Found!!');
+
+        return true;
     }
 
     /**
@@ -158,6 +164,10 @@ class ProductService
             ':id' => $id
         ]);
 
-        return $affectedRowsCount !== 0;
+        if ($affectedRowsCount === 0) {
+            throw new ResourceNotFoundException('Product Not Found!!');
+        };
+
+        return true;
     }
 }

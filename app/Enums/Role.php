@@ -6,5 +6,5 @@ enum Role: int
 {
     case ADMIN = 1;
 
-    case CREATOR = 2;
+    case SALES_ASSISTANT = 2;
 }
