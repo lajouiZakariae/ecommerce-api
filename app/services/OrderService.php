@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 class OrderService
 {
 
-    private function calculateTotals(Order $order): Order
+    private function calculateTotalsOfOrderAndOrderItems(Order $order): Order
     {
         $order->orderItems->each(function (OrderItem $orderItem) {
             $orderItem->setTotalPrice();
@@ -51,7 +51,7 @@ class OrderService
             ])
             ->get();
 
-        $orders->map(fn ($order) => ($this->calculateTotals($order)));
+        $orders->map(fn ($order) => ($this->calculateTotalsOfOrderAndOrderItems($order)));
 
         return $orders;
     }
@@ -71,6 +71,6 @@ class OrderService
         if ($order === null)
             throw new ResourceNotFoundException("Order Not Found");
 
-        return $this->calculateTotals($order);
+        return $this->calculateTotalsOfOrderAndOrderItems($order);
     }
 }
