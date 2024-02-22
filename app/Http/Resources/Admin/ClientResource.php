@@ -19,9 +19,9 @@ class ClientResource extends JsonResource
             'last_name' => $this->last_name,
             'email' => $this->whenHas('email'),
             'phone_number' => $this->whenHas('phone_number'),
+            'address' => $this->whenHas('address'),
             'city' => $this->whenHas('city'),
             'zip_code' => $this->whenHas('zip_code'),
-            'address' => $this->whenHas('address'),
         ];
     }
 }
