@@ -7,7 +7,7 @@ use App\Models\Product;
 
 class OrderItemService
 {
-    function assingOrderItemsToOrder(Order $order, array $orderItems)
+    function assingOrderItemsToOrder(Order $order, array $orderItems): Order
     {
         $productIdsInOrderItemsCollection = collect($orderItems)->pluck('product_id');
 
@@ -26,5 +26,6 @@ class OrderItemService
         $orderItems = array_map($assignProductPriceToOrderItem, $orderItems);
 
         $order->orderItems()->createMany($orderItems);
+        return $order;
     }
 }

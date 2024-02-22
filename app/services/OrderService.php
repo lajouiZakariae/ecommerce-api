@@ -82,9 +82,7 @@ class OrderService
 
             if (!$saved) throw new ResourceNotCreatedException("Order could not be created");
 
-            $this->orderItemService->assingOrderItemsToOrder($order, $data['order_items']);
-
-            return $order;
+            return $this->orderItemService->assingOrderItemsToOrder($order, $data['order_items']);
         });
 
 
