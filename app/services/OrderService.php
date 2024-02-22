@@ -81,11 +81,11 @@ class OrderService
 
             $productIdsInOrderItemsCollection = collect($data["order_items"])->pluck('product_id');
 
-            dump($productIdsInOrderItemsCollection);
+            // dump($productIdsInOrderItemsCollection);
 
             $products = Product::query()->whereIn('id', $productIdsInOrderItemsCollection)->get(['id', 'price']);
 
-            dump($products->toArray());
+            // dump($products->toArray());
 
             $data['order_items'] = array_map(
                 function ($orderItem) use ($products) {
@@ -100,7 +100,7 @@ class OrderService
                 $data['order_items']
             );
 
-            dd($data['order_items']);
+            // dd($data['order_items']);
 
             $order->orderItems()->createMany($data["order_items"]);
 

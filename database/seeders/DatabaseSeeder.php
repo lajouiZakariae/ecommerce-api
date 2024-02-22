@@ -219,12 +219,36 @@ class DatabaseSeeder extends Seeder
         }
 
         $order_items = [
-            ["order_id" => 1, "product_id" => 1, "quantity" => 5],
-            ["order_id" => 1, "product_id" => 2, "quantity" => 3],
-            ["order_id" => 2, "product_id" => 2, "quantity" => 3],
-            ["order_id" => 1, "product_id" => 3, "quantity" => 8],
-            ["order_id" => 2, "product_id" => 4, "quantity" => 2],
-            ["order_id" => 2, "product_id" => 5, "quantity" => 2],
+            [
+                "order_id" => 1,
+                "product_id" => 1,
+                "quantity" => 5,
+                "product_price" => Product::find(1)->price
+            ],
+            [
+                "order_id" => 1,
+                "product_id" => 2,
+                "quantity" => 3,
+                "product_price" => Product::find(2)->price
+            ],
+            [
+                "order_id" => 1,
+                "product_id" => 3,
+                "quantity" => 8,
+                "product_price" => Product::find(3)->price
+            ],
+            [
+                "order_id" => 2,
+                "product_id" => 4,
+                "quantity" => 2,
+                "product_price" => Product::find(4)->price
+            ],
+            [
+                "order_id" => 2,
+                "product_id" => 5,
+                "quantity" => 2,
+                "product_price" => Product::find(5)->price
+            ],
 
         ];
 
