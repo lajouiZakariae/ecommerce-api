@@ -27,23 +27,11 @@ class Handler extends ExceptionHandler
     {
         $this->reportable(function (BusinessException $e) {
         });
-        // $this->renderable(function (NotFoundHttpException $e) {
-
-        //     if ($e->getStatusCode() === 404 && request()->accepts("application/json"))
-        //         return response($e->getMessage(), Response::HTTP_NOT_FOUND);
-        // });
 
         $this->renderable(function (BusinessException $e) {
             if ($e instanceof ResourceNotCreatedException && request()->accepts("application/json"))
                 return response()
                     ->json(["message" => $e->getMessage()], Response::HTTP_BAD_REQUEST);
         });
-
-
-
-        // $this->renderable(function (MethodNotAllowedException $e) {
-        //     if (request()->accepts("application/json"))
-        //         return response("", Response::HTTP_METHOD_NOT_ALLOWED);
-        // });
     }
 }

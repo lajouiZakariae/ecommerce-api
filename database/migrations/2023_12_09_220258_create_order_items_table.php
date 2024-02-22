@@ -34,6 +34,8 @@ return new class extends Migration
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 
+            $table->unsignedBigInteger('product_price');
+
             $table->unsignedBigInteger('quantity');
             $table->timestamps();
         });
