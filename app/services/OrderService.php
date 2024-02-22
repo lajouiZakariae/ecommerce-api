@@ -13,6 +13,10 @@ use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
 class OrderService
 {
+    public function __construct(private OrderItemService $orderItemService)
+    {
+    }
+
     /**
      * Get a list of paginated orders
      * that matches the provided filters
@@ -78,7 +82,7 @@ class OrderService
 
             if (!$saved) throw new ResourceNotCreatedException("Order could not be created");
 
-
+            $this->orderItemService->assingOrderItemsToOrder($order, $data['order_items']);
 
             return $order;
         });
