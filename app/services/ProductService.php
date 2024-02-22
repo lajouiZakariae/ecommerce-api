@@ -18,6 +18,8 @@ use Symfony\Component\Routing\Exception\ResourceNotFoundException;
  */
 class ProductService
 {
+    private $notFoundMessage = "Product Not Found";
+
     /**
      * Apply filters to the product query.
      *
@@ -83,7 +85,7 @@ class ProductService
             ->find($id);
 
         if ($product === null)
-            throw new ResourceNotFoundException("Product Not Found !!");
+            throw new ResourceNotFoundException($this->notFoundMessage);
 
         return $product;
     }
@@ -120,7 +122,7 @@ class ProductService
         $affectedRowsCount = Product::where('id', $id)->update($data);
 
         if ($affectedRowsCount === 0)
-            throw new ResourceNotFoundException('Product Not Found!!');
+            throw new ResourceNotFoundException($this->notFoundMessage);
 
         return true;
     }
@@ -137,7 +139,7 @@ class ProductService
         $affectedRowsCount = Product::where('id', $id)->delete();
 
         if ($affectedRowsCount === 0)
-            throw new ResourceNotFoundException('Product Not Found!!');
+            throw new ResourceNotFoundException($this->notFoundMessage);
 
         return true;
     }
@@ -155,9 +157,8 @@ class ProductService
             ':id' => $id
         ]);
 
-        if ($affectedRowsCount === 0) {
-            throw new ResourceNotFoundException('Product Not Found!!');
-        };
+        if ($affectedRowsCount === 0)
+            throw new ResourceNotFoundException($this->notFoundMessage);
 
         return true;
     }

@@ -10,11 +10,13 @@ use App\Models\Order;
 use App\Services\OrderService;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Http\Response;
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
 class OrderController extends Controller
 {
-    public function __construct(private OrderService $orderService)
-    {
+    public function __construct(
+        private OrderService $orderService,
+    ) {
     }
 
     /**
@@ -60,11 +62,11 @@ class OrderController extends Controller
      * @param  \App\Models\Order $order
      * @return \Illuminate\Http\Response
      */
-    public function update(OrderUpdateRequest $request, Order $order): Response
+    public function update(OrderUpdateRequest $request, int $order_id): Response
     {
         $data = $request->validated();
 
-        $order->update($data);
+        $this->orderService->update($order_id, $data);
 
         return response()->noContent();
     }

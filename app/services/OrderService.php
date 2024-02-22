@@ -4,18 +4,19 @@ namespace App\Services;
 
 use App\Enums\Status;
 use App\Exceptions\ResourceNotCreatedException;
-use App\Http\Resources\Admin\OrderResource;
 use App\Models\Order;
 use App\Models\OrderItem;
-use DB;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Http\Resources\Json\ResourceCollection;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
+use DB;
 
 class OrderService
 {
-    public function __construct(private OrderItemService $orderItemService)
-    {
+    private $notFoundMessage = 'Order Not Found';
+
+    public function __construct(
+        private OrderItemService $orderItemService
+    ) {
     }
 
     /**
@@ -60,7 +61,7 @@ class OrderService
         ])->find($id);
 
         if ($order === null)
-            throw new ResourceNotFoundException("Order Not Found");
+            throw new ResourceNotFoundException($this->notFoundMessage);
 
         return $this->calculateTotalsOfOrderAndOrderItems($order);
     }
@@ -94,6 +95,13 @@ class OrderService
         ]);
     }
 
+    function update(int $order_id, array $data)
+    {
+        $affectedRowCount = Order::where('id', $order_id)->update($data);
+
+        if ($affectedRowCount === 0) throw new ResourceNotFoundException($this->notFoundMessage);
+    }
+
     /**
      * Delete a product by its ID.
      *
@@ -106,7 +114,7 @@ class OrderService
         $affectedRowsCount = Order::where('id', $id)->delete();
 
         if ($affectedRowsCount === 0)
-            throw new ResourceNotFoundException('Order Not Found!!');
+            throw new ResourceNotFoundException($this->notFoundMessage);
 
         return true;
     }
