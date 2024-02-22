@@ -7,7 +7,6 @@ use App\Exceptions\ResourceNotCreatedException;
 use App\Http\Resources\Admin\OrderResource;
 use App\Models\Order;
 use App\Models\OrderItem;
-use App\Models\Product;
 use DB;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
@@ -79,24 +78,7 @@ class OrderService
 
             if (!$saved) throw new ResourceNotCreatedException("Order could not be created");
 
-            $productIdsInOrderItemsCollection = collect($data["order_items"])->pluck('product_id');
 
-            $products = Product::query()->whereIn('id', $productIdsInOrderItemsCollection)->get(['id', 'price']);
-
-            $data['order_items'] = array_map(
-                function ($orderItem) use ($products) {
-
-                    $productFound = $products->first(
-                        fn (Product $product) => $product->id === $orderItem["product_id"]
-                    );
-
-                    $orderItem["product_price"] = $productFound->price;
-                    return $orderItem;
-                },
-                $data['order_items']
-            );
-
-            $order->orderItems()->createMany($data["order_items"]);
 
             return $order;
         });
