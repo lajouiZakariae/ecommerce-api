@@ -3,14 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\OrderStoreRequest;
+use App\Http\Requests\OrderStoreRequest;
 use App\Http\Requests\Admin\OrderUpdateRequest;
 use App\Http\Resources\Admin\OrderResource;
 use App\Models\Order;
-use App\Models\OrderItem;
 use App\Services\OrderService;
 use Illuminate\Http\Response;
-use Spatie\RouteAttributes\Attributes\ApiResource;
 
 /**
  * @group Orders
@@ -35,20 +33,12 @@ class OrderController extends Controller
     /**
      * Store a newly created order in storage.
      *
-     * @param  \App\Http\Requests\Admin\OrderStoreRequest  $request
+     * @param  \App\Http\Requests\OrderStoreRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store()
+    public function store(OrderStoreRequest $request)
     {
-        $data = [
-            "client_id" => 1,
-            "coupon_code_id" => 2,
-            "payment_method_id" => fake()->numberBetween(1, 2),
-            "order_items" => [
-                ["product_id" => 1, "quantity" => 2],
-                ["product_id" => 2, "quantity" => 3],
-            ]
-        ];
+        $data = $request->validated();
 
         return $this->orderService->create($data);
     }
