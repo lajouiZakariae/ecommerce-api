@@ -124,7 +124,7 @@ class OrderService
     private function calculateTotalsOfOrderAndOrderItems(Order $order): Order
     {
         $order->orderItems->each(function (OrderItem $orderItem) {
-            $total_price = $orderItem->product->price * $orderItem->quantity;
+            $total_price = $orderItem->product_price * $orderItem->quantity;
             $orderItem->total_price = round($total_price, 2);
         });
 
@@ -136,14 +136,18 @@ class OrderService
         $order->total_quantity = $total_quantity;
 
         $total_unit_price  = $order->orderItems->reduce(
-            fn ($acc, OrderItem $orderItem) => $acc + $orderItem->product->price,
+            fn ($acc, OrderItem $orderItem) => $acc + $orderItem->product_price,
             0
         );
 
         $order->total_unit_price = round($total_unit_price, 2);
 
+        $avg_unit_price = ($total_unit_price) / $order->orderItems->count();
+
+        $order->avg_unit_price = round($avg_unit_price, 2);
+
         $total_price = $order->orderItems->reduce(function ($acc, OrderItem $orderItem) {
-            return $acc + ($orderItem->quantity * $orderItem->product->price);
+            return $acc + ($orderItem->quantity * $orderItem->product_price);
         }, 0);
 
         $order->total_price = round($total_price, 2);

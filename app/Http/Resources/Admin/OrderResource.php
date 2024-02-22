@@ -21,6 +21,7 @@ class OrderResource extends JsonResource
             "total_price" => $this->whenHas('total_price'),
             "total_quantity" => $this->whenHas('total_quantity'),
             "total_unit_price" => $this->whenHas('total_unit_price'),
+            "avg_unit_price" => $this->whenHas('avg_unit_price'),
             "order_items" => OrderItemResource::collection($this->whenLoaded('orderItems')),
         ];
     }
