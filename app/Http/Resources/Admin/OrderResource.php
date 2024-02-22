@@ -16,11 +16,11 @@ class OrderResource extends JsonResource
             "id" => $this->id,
             "url" => route('orders.show', ['order' => $this->id]),
             "created_at" => $this->created_at,
+            "client" => new ClientResource($this->whenLoaded('client')),
             "status" => $this->status,
             "total_price" => $this->whenHas('total_price'),
             "total_quantity" => $this->whenHas('total_quantity'),
             "total_unit_price" => $this->whenHas('total_unit_price'),
-            "client" => new ClientResource($this->whenLoaded('client')),
             "order_items" => OrderItemResource::collection($this->whenLoaded('orderItems')),
         ];
     }

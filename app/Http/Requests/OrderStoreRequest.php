@@ -30,4 +30,17 @@ class OrderStoreRequest extends FormRequest
             'order_items.*.quantity' => ['required', 'integer'],
         ];
     }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     */
+    function messages()
+    {
+        return [
+            'order_items.*.product_id' => "Missing product",
+            'order_items.*.quantity' => "Quantity should be a valid number",
+        ];
+    }
 }

@@ -40,7 +40,7 @@ class OrderController extends Controller
     {
         $data = $request->validated();
 
-        return $this->orderService->create($data);
+        return new OrderResource($this->orderService->create($data));
     }
 
     /**

@@ -83,11 +83,11 @@ class OrderService
             return $order;
         });
 
-        return ['order' => $order->load([
+        return $order->load([
             'orderItems' => [
                 'product'
             ]
-        ])];
+        ]);
     }
 
 
