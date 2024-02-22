@@ -75,7 +75,7 @@ class ProductService
      * @return Product The product instance.
      * @throws Symfony\Component\Routing\Exception\ResourceNotFoundException
      */
-    public function getById(int $id): Product | null
+    public function getById(int $id): Product
     {
         $product = Product::query()
             ->with('thumbnail')
@@ -86,18 +86,6 @@ class ProductService
             throw new ResourceNotFoundException("Product Not Found !!");
 
         return $product;
-    }
-
-    /**
-     * Get a product by its ID.
-     *
-     * @param int $id The ID of the product.
-     *
-     * @return Product|null The product instance if found, otherwise null.
-     */
-    public function getByCategory(int $caetgory_id): LengthAwarePaginator
-    {
-        return Product::where('category_id', $caetgory_id)->paginate();
     }
 
     /**
@@ -172,5 +160,29 @@ class ProductService
         };
 
         return true;
+    }
+
+    /**
+     * Get stores by store.
+     *
+     * @param int $store_id The ID of the store.
+     *
+     * @return LengthAwarePaginator.
+     */
+    public function getByCategory(int $caetgory_id): LengthAwarePaginator
+    {
+        return Product::where('category_id', $caetgory_id)->paginate();
+    }
+
+    /**
+     * Get products by store.
+     *
+     * @param int $store_id The ID of the store.
+     *
+     * @return LengthAwarePaginator
+     */
+    public function getByStore(int $store_id): LengthAwarePaginator
+    {
+        return Product::where('category_id', $store_id)->paginate();
     }
 }

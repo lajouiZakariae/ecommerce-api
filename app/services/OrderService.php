@@ -8,6 +8,7 @@ use App\Http\Resources\Admin\OrderResource;
 use App\Models\Order;
 use App\Models\OrderItem;
 use DB;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
@@ -23,7 +24,7 @@ class OrderService
      * @param $filters
      * @return \Illuminate\Http\Resources\Json\ResourceCollection
      */
-    public function getAllFilteredOrders(array $filters): ResourceCollection
+    public function getAllFilteredOrders(array $filters): Collection
     {
         $orders = Order::query()
             ->with([
@@ -36,7 +37,7 @@ class OrderService
 
         $orders = $orders->map(fn ($order) => ($this->calculateTotalsOfOrderAndOrderItems($order)));
 
-        return OrderResource::collection($orders);
+        return $orders;
     }
 
     /**
@@ -93,6 +94,22 @@ class OrderService
         ]);
     }
 
+    /**
+     * Delete a product by its ID.
+     *
+     * @param int $id The ID of the product to be deleted.
+     *
+     * @return bool True if the deletion is successful, otherwise false.
+     */
+    function deleteById(int $id)
+    {
+        $affectedRowsCount = Order::where('id', $id)->delete();
+
+        if ($affectedRowsCount === 0)
+            throw new ResourceNotFoundException('Order Not Found!!');
+
+        return true;
+    }
 
     /**
      * Calculates Totals of Order and Order Items and returns the order.

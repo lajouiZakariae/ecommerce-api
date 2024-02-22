@@ -8,12 +8,9 @@ use App\Http\Requests\Admin\OrderUpdateRequest;
 use App\Http\Resources\Admin\OrderResource;
 use App\Models\Order;
 use App\Services\OrderService;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Http\Response;
 
-/**
- * @group Orders
- */
-// #[ApiResource('orders')]
 class OrderController extends Controller
 {
     public function __construct(private OrderService $orderService)
@@ -23,11 +20,11 @@ class OrderController extends Controller
     /**
      * Display a listing of the orders.
      *
-     * @return \Illuminate\Http\Response
+     * @return ResourceCollection
      */
-    public function index(): Response
+    public function index(): ResourceCollection
     {
-        return response($this->orderService->getAllFilteredOrders([]));
+        return OrderResource::collection($this->orderService->getAllFilteredOrders([]));
     }
 
     /**
@@ -59,8 +56,8 @@ class OrderController extends Controller
     /**
      * Update the specified order in storage.
      *
-     * @param  \App\Http\Requests\Admin\OrderUpdateRequest  $request
-     * @param  \App\Models\Order  $order
+     * @param  \App\Http\Requests\OrderUpdateRequest  $request
+     * @param  \App\Models\Order $order
      * @return \Illuminate\Http\Response
      */
     public function update(OrderUpdateRequest $request, Order $order): Response
@@ -78,9 +75,9 @@ class OrderController extends Controller
      * @param  \App\Models\Order  $order
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Order $order): Response
+    public function destroy(int $order_id): Response
     {
-        $order->delete();
+        $this->orderService->deleteById($order_id);
 
         return response()->noContent();
     }

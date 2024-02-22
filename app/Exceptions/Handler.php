@@ -5,6 +5,7 @@ namespace App\Exceptions;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Response;
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -26,6 +27,13 @@ class Handler extends ExceptionHandler
     public function register(): void
     {
         $this->reportable(function (BusinessException $e) {
+        });
+
+        $this->renderable(function (ResourceNotFoundException $e) {
+            if (request()->acceptsJson()) {
+                return response()
+                    ->json(["message" => $e->getMessage()], Response::HTTP_NOT_FOUND);
+            }
         });
 
         $this->renderable(function (BusinessException $e) {

@@ -7,14 +7,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\ProductStoreRequest;
 use App\Http\Requests\Admin\ProductUpdateRequest;
 use App\Http\Resources\Admin\ProductResource;
-use App\Models\Store;
 use App\Services\ProductService;
 use Illuminate\Http\Response;
 use Illuminate\Validation\Rule;
-use Spatie\RouteAttributes\Attributes\Get;
 use Validator;
 
-// #[ApiResource('products')]
 class ProductController extends Controller
 {
 
@@ -135,23 +132,22 @@ class ProductController extends Controller
     /**
      * Display a listing of products for a specific category.
      *
-     * @param  \App\Models\Category  $category
+     * @param  int  $category_id
      * @return \Illuminate\Http\Response
      */
-    public function categoryProducts($category_id)
+    public function productsByCategory($category_id)
     {
         return $this->productService->getByCategory($category_id);
     }
 
     /**
-     * Display a listing of products for a specific store.
+     * Display a listing of products for a specific Store.
      *
-     * @param  \App\Models\Store  $store
+     * @param  int  $store_id
      * @return \Illuminate\Http\Response
      */
-    #[Get('/stores/{store}/products')]
-    public function storeProducts(Store $store)
+    public function productsByStore($category_id)
     {
-        return ProductResource::collection($store->products)->withoutWrapping();
+        return $this->productService->getByCategory($category_id);
     }
 }
