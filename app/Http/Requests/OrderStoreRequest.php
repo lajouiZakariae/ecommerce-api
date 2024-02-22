@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\ValidIntegerTypeRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class OrderStoreRequest extends FormRequest
@@ -22,25 +23,14 @@ class OrderStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'client_id' => ['required', 'exists:clients,id'],
-            'coupon_code_id' => ['required', 'exists:coupon_codes,id'],
-            'payment_method_id' => ['required', 'exists:payment_methods,id'],
+            'client_id' => ['required', 'integer', new ValidIntegerTypeRule, 'min:1', 'exists:clients,id'],
+            'coupon_code_id' => ['required', 'integer', new ValidIntegerTypeRule, 'min:1', 'exists:coupon_codes,id'],
+            'payment_method_id' => ['required', 'integer', new ValidIntegerTypeRule, 'min:1', 'exists:payment_methods,id'],
 
-            'order_items.*.product_id' => ['required', 'exists:products,id'],
-            'order_items.*.quantity' => ['required', 'integer'],
-        ];
-    }
-
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
-    function messages()
-    {
-        return [
-            'order_items.*.product_id' => "Missing product",
-            'order_items.*.quantity' => "Quantity should be a valid number",
+            'order_items.*.product_id' => [
+                'required', 'integer', new ValidIntegerTypeRule, 'min:1', 'distinct', 'exists:products,id'
+            ],
+            'order_items.*.quantity' => ['required', 'integer', new ValidIntegerTypeRule, 'min:1'],
         ];
     }
 }
