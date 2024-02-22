@@ -17,11 +17,11 @@ class ClientResource extends JsonResource
             'url' => route('clients.show', ['client' => $this->id]),
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
-            'email' => $this->email,
-            'phone_number' => $this->phone_number,
-            'city' => $this->city,
-            'zip_code' => $this->zip_code,
-            'address' => $this->address,
+            'email' => $this->whenHas('email'),
+            'phone_number' => $this->whenHas('phone_number'),
+            'city' => $this->whenHas('city'),
+            'zip_code' => $this->whenHas('zip_code'),
+            'address' => $this->whenHas('address'),
         ];
     }
 }
