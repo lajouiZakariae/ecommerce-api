@@ -2,11 +2,9 @@
 
 namespace App\Exceptions;
 
+use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Routing\Exception\MethodNotAllowedException;
-use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -27,29 +25,21 @@ class Handler extends ExceptionHandler
      */
     public function register(): void
     {
-        $this->reportable(function (Throwable $e) {
-            //
+        $this->reportable(function (BusinessException $e) {
         });
-
         // $this->renderable(function (NotFoundHttpException $e) {
 
         //     if ($e->getStatusCode() === 404 && request()->accepts("application/json"))
         //         return response($e->getMessage(), Response::HTTP_NOT_FOUND);
         // });
 
-        $this->renderable(function (ResourceNotFoundException $e) {
-
-            if (request()->accepts("application/json"))
+        $this->renderable(function (BusinessException $e) {
+            if ($e instanceof ResourceNotCreatedException && request()->accepts("application/json"))
                 return response()
-                    ->json(["message" => $e->getMessage()], Response::HTTP_NOT_FOUND);
+                    ->json(["message" => $e->getMessage()], Response::HTTP_BAD_REQUEST);
         });
 
-        // $this->renderable(function (ResourceNotCreatedException $e) {
 
-        //     if (request()->accepts("application/json"))
-        //         return response()
-        //             ->json(["message" => $e->getMessage()], Response::HTTP_NOT_FOUND);
-        // });
 
         // $this->renderable(function (MethodNotAllowedException $e) {
         //     if (request()->accepts("application/json"))

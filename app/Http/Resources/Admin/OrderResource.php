@@ -2,10 +2,8 @@
 
 namespace App\Http\Resources\Admin;
 
-use App\Models\OrderItem;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use League\CommonMark\Extension\TableOfContents\Normalizer\FlatNormalizerStrategy;
 
 class OrderResource extends JsonResource
 {
@@ -20,6 +18,8 @@ class OrderResource extends JsonResource
             "created_at" => $this->created_at,
             "status" => $this->status,
             "total_price" => $this->whenHas('total_price'),
+            "total_quantity" => $this->whenHas('total_quantity'),
+            "total_unit_price" => $this->whenHas('total_unit_price'),
             "client" => new ClientResource($this->whenLoaded('client')),
             "order_items" => OrderItemResource::collection($this->whenLoaded('orderItems')),
         ];

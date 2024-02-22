@@ -21,9 +21,6 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
-        OrderItemsHasChanged::class => [
-            UpdateTotalsOfOrder::class
-        ]
     ];
 
     /**
@@ -31,7 +28,6 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        OrderItem::observe(OrderItemObserver::class);
     }
 
     /**

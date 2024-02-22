@@ -42,7 +42,6 @@ class OrderController extends Controller
     {
         $data = [
             "client_id" => 1,
-            "status" => fake()->randomElement(["pending", "in transit", "delivered", "delivery attempt", "cancelled", "return to sender"]),
             "coupon_code_id" => 2,
             "payment_method_id" => fake()->numberBetween(1, 2),
             "order_items" => [

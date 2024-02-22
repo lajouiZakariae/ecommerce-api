@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Exceptions\ResourceNotCreatedException;
 use App\Models\Product;
 use DB;
 use Illuminate\Database\Eloquent\Builder;
@@ -110,7 +111,9 @@ class ProductService
     {
         $product = new Product($data);
 
-        $product->save();
+        $saved = $product->save();
+
+        if (!$saved) throw new ResourceNotCreatedException("Product Could not be Created");
 
         return $product;
     }

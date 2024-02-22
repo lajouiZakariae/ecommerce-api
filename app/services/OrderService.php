@@ -2,18 +2,24 @@
 
 namespace App\Services;
 
-use App\Events\OrderItemsHasChanged;
+use App\Enums\Status;
 use App\Exceptions\ResourceNotCreatedException;
 use App\Http\Resources\Admin\OrderResource;
 use App\Models\Order;
 use App\Models\OrderItem;
 use DB;
-use Exception;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
 class OrderService
 {
-    public function getAllFilteredOrders(array $filters)
+    /**
+     * Get a list of paginated orders
+     * that matches the provided filters
+     * @param $filters
+     * @return \Illuminate\Http\Resources\Json\ResourceCollection
+     */
+    public function getAllFilteredOrders(array $filters): ResourceCollection
     {
         $orders = Order::query()
             ->with([
@@ -57,31 +63,31 @@ class OrderService
     /**
      * Creates a new Order
      */
-    function create(array $data): Order
+    function create(array $data)
     {
         $order = DB::transaction(function () use ($data) {
+
             $order = new Order([
                 "client_id" => $data["client_id"],
-                "status" => $data["status"],
+                "status" => Status::PENDING,
                 "coupon_code_id" => $data["coupon_code_id"],
                 "payment_method_id" => $data["payment_method_id"],
             ]);
 
-            if (!$order->save()) throw new ResourceNotCreatedException("Order could not be created");
+            $saved = $order->save();
+
+            if (!$saved) throw new ResourceNotCreatedException("Order could not be created");
 
             $order->orderItems()->createMany($data["order_items"]);
-
-            OrderItemsHasChanged::dispatch($order);
 
             return $order;
         });
 
-
-        return $order->load([
+        return ['order' => $order->load([
             'orderItems' => [
                 'product'
             ]
-        ]);
+        ])];
     }
 
 
