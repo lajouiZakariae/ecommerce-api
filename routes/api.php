@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\Admin\OrderItemController;
 use App\Http\Controllers\Admin\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -35,4 +36,8 @@ Route::group([
     Route::apiResource('orders', OrderController::class)->whereNumber('order');
 
     Route::patch('orders/{order}/cancel', [OrderController::class, 'cancelOrder']);
+
+    Route::group(['prefix' => 'orders/{order}'], function () {
+        Route::apiResource('order-items', OrderItemController::class)->whereNumber('order_item');
+    });
 });

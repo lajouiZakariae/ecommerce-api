@@ -157,20 +157,23 @@ class OrderService
         if (!$orderToBeCanceled)
             throw new ResourceNotFoundException($this->notFoundMessage);
 
-        $uncancelableStatus = [
-            Status::CANCELLED, Status::SHIPPING, Status::DELIVERED, Status::DELIVERY_ATTEMPT, Status::RETURN_TO_SENDER
+        $uncancelableStatusEnumList = [
+            Status::CANCELLED,
+            Status::SHIPPING,
+            Status::DELIVERED,
+            Status::DELIVERY_ATTEMPT,
+            Status::RETURN_TO_SENDER
         ];
 
-        $uncancelableValues = array_column($uncancelableStatus, 'value');
+        $uncancelableStatusList = array_column($uncancelableStatusEnumList, 'value');
 
-        if (in_array($orderToBeCanceled->status, $uncancelableValues))
+        if (in_array($orderToBeCanceled->status, $uncancelableStatusList))
             throw new BadRequestException("Order Can't be Cancelled");
 
         return $this->updateOrder($orderId, ['status' => Status::CANCELLED]);
     }
 
     /**
-     * Calculates Totals of Order and Order Items and returns the order.
      * @param \App\Models\Order $order
      * @return \App\Models\Order
      */

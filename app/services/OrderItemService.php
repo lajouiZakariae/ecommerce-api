@@ -12,6 +12,32 @@ class OrderItemService
 {
     private $notFoundMessage = "Order Item Not Found";
 
+    public function getAllOrderItemsOfOrder(int $orderId)
+    {
+        $order = Order::find($orderId);
+
+        if (!$order) throw new ResourceNotFoundException("Order Not Found");
+
+        $orderItems = $order
+            ->orderItems()
+            ->with(['product:id,title,price' => ['thumbnail']])
+            ->get();
+
+        return $orderItems;
+    }
+
+    function getOrderItemOfOrderById(int $orderId, int $orderItemId): OrderItem
+    {
+        $orderItem = OrderItem::query()
+            ->where('order_id', $orderId)
+            ->where('id', $orderItemId)
+            ->first();
+
+        if (!$orderItem) throw new ResourceNotFoundException($this->notFoundMessage);
+
+        return $orderItem;
+    }
+
     /**
      * Creates a list of order items in the database
      * and assigns them to aspecific Order

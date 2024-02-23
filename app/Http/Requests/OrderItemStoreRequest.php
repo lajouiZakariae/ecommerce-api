@@ -24,7 +24,7 @@ class OrderItemStoreRequest extends FormRequest
     {
         return [
             'product_id' => [
-                'required', new ValidIntegerTypeRule, 'min:1', 'distinct', 'exists:products,id'
+                'required', new ValidIntegerTypeRule, 'min:1', 'exists:products,id'
             ],
             'quantity' => ['required', new ValidIntegerTypeRule, 'min:1'],
         ];

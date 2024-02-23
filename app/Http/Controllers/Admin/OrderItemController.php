@@ -5,38 +5,27 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\OrderItemStoreRequest;
 use App\Http\Resources\Admin\OrderItemResource;
-use App\Models\Order;
 use App\Models\OrderItem;
-use Illuminate\Http\Response;
-use Spatie\RouteAttributes\Attributes\Get;
-use Spatie\RouteAttributes\Attributes\Patch;
-use Spatie\RouteAttributes\Attributes\ScopeBindings;
+use App\Services\OrderItemService;
+use Illuminate\Http\Resources\Json\ResourceCollection;
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
 class OrderItemController extends Controller
 {
+    public function __construct(private OrderItemService $orderItemService)
+    {
+    }
+
     /**
-     * Display a listing of order items for a specific order.
-     *
-     * @param  \App\Models\Order  $order
-     * @return \Illuminate\Http\Response
+     * @param int $orderId
+     * @return ResourceCollection
      */
-    // public function index(Order $order): Response
-    // {
-    //     $orderItems = $order
-    //         ->orderItems()
-    //         ->with([
-    //             'product:id,title,price' => ['thumbnail']
-    //         ])
-    //         ->get();
-
-    //     $order->orderItems->each(
-    //         function (OrderItem $orderItem) {
-    //             $orderItem->product->thumbnail->url = $orderItem->product->thumbnail->imageUrl();
-    //         }
-    //     );
-
-    //     return response(OrderItemResource::collection($orderItems));
-    // }
+    public function index(int $orderId): ResourceCollection
+    {
+        return OrderItemResource::collection(
+            $this->orderItemService->getAllOrderItemsOfOrder($orderId)
+        );
+    }
 
     /**
      * @param  \App\Models\Order  $order
@@ -53,10 +42,12 @@ class OrderItemController extends Controller
      * @param  \App\Models\OrderItem  $orderItem
      * @return \Illuminate\Http\Response
      */
-    // public function show(Order $order, OrderItem $orderItem): Response
-    // {
-    //     return response(new OrderItemResource($orderItem));
-    // }
+    public function show(int $orderId, int $orderItemId)
+    {
+        $orderItem = $this->orderItemService->getOrderItemOfOrderById($orderId, $orderItemId);
+
+        return new OrderItemResource($orderItem);
+    }
 
     /**
      * Update the specified order item in storage for a specific order.
