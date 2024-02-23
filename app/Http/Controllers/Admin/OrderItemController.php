@@ -5,10 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\OrderItemStoreRequest;
 use App\Http\Resources\Admin\OrderItemResource;
-use App\Models\OrderItem;
 use App\Services\OrderItemService;
 use Illuminate\Http\Resources\Json\ResourceCollection;
-use Symfony\Component\Routing\Exception\ResourceNotFoundException;
+use Illuminate\Http\Response;
 
 class OrderItemController extends Controller
 {
@@ -33,6 +32,11 @@ class OrderItemController extends Controller
      */
     public function store(OrderItemStoreRequest $request)
     {
+        $orderItemPayload = $request->validated();
+
+        $orderItem = $this->orderItemService->createOrderItem($orderItemPayload);
+
+        return response(OrderItemResource::make($orderItem), Response::HTTP_CREATED);
     }
 
     /**
