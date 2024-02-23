@@ -6,13 +6,13 @@ enum Status: string
 {
 	case PENDING = "pending";
 
-	case IN_TRANSIT = "in transit";
+	case SHIPPING = "shipping";
 
-	case DELIVERED = "delivered";
+	case CANCELLED = "cancelled";
 
 	case DELIVERY_ATTEMPT = "delivery attempt";
 
-	case CANCELLED = "cancelled";
+	case DELIVERED = "delivered";
 
 	case RETURN_TO_SENDER = "return to sender";
 }

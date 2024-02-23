@@ -27,7 +27,7 @@ return new class extends Migration
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 
-            $table->enum('status', ["pending", "in transit", "delivered", "delivery attempt", "cancelled", "return to sender"]);
+            $table->enum('status', ["pending", "shipping", "delivered", "delivery attempt", "cancelled", "return to sender"]);
 
             $table->unsignedBigInteger('payment_method_id')->nullable();
 

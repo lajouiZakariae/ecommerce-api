@@ -69,7 +69,7 @@ class ProductController extends Controller
 
         $product = $this->productService->create($data);
 
-        return response(new ProductResource($product), Response::HTTP_CREATED);
+        return response(ProductResource::make($product), Response::HTTP_CREATED);
     }
 
     /**
@@ -82,7 +82,7 @@ class ProductController extends Controller
     {
         $product = $this->productService->getById($product_id);
 
-        return new ProductResource($product);
+        return ProductResource::make($product);
     }
 
     /**

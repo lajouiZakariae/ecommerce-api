@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Enums\Role as EnumsRole;
+use App\Enums\Status;
 use App\Models\Category;
 use App\Models\Client;
 use App\Models\CouponCode;
@@ -38,7 +39,7 @@ class DatabaseSeeder extends Seeder
         \App\Models\User::factory()->create([
             'first_name' => 'Zakariae',
             'last_name' => 'Lajoui',
-            'role_id' => EnumsRole::ADMIN,
+            'role_id' => EnumsRole::ADMIN->value,
             'email' => 'lajoui.zakariae.1@gmail.com',
             'password' => Hash::make('1234')
         ]);
@@ -46,7 +47,7 @@ class DatabaseSeeder extends Seeder
         \App\Models\User::factory()->create([
             'first_name' => 'Ilham',
             'last_name' => 'El Maimouni',
-            'role_id' => EnumsRole::SALES_ASSISTANT,
+            'role_id' => EnumsRole::SALES_ASSISTANT->value,
             'email' => 'ilhammaimouni269@gmail.com',
             'password' => Hash::make('1234')
         ]);
@@ -202,13 +203,19 @@ class DatabaseSeeder extends Seeder
         $orders = [
             [
                 "client_id" => 1,
-                "status" => fake()->randomElement(["pending", "in transit", "delivered", "delivery attempt", "cancelled", "return to sender"]),
+                "status" => fake()->randomElement(["pending", "shipping", "delivered", "delivery attempt", "cancelled", "return to sender"]),
                 "coupon_code_id" => 1,
                 "payment_method_id" => fake()->numberBetween(1, 2),
             ],
             [
                 "client_id" => 1,
-                "status" => fake()->randomElement(["pending", "in transit", "delivered", "delivery attempt", "cancelled", "return to sender"]),
+                "status" => fake()->randomElement(["pending", "shipping", "delivered", "delivery attempt", "cancelled", "return to sender"]),
+                "coupon_code_id" => 2,
+                "payment_method_id" => fake()->numberBetween(1, 2),
+            ],
+            [
+                "client_id" => 1,
+                "status" => Status::PENDING,
                 "coupon_code_id" => 2,
                 "payment_method_id" => fake()->numberBetween(1, 2),
             ],

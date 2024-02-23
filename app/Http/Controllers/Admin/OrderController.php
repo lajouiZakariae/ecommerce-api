@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exceptions\CannotCancelOrderException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\OrderStoreRequest;
 use App\Http\Requests\Admin\OrderUpdateRequest;
 use App\Http\Resources\Admin\OrderResource;
-use App\Models\Order;
 use App\Services\OrderService;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Http\Response;
-use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
 class OrderController extends Controller
 {
@@ -33,33 +32,33 @@ class OrderController extends Controller
      * Store a newly created order in storage.
      *
      * @param  \App\Http\Requests\OrderStoreRequest  $request
-     * @return \Illuminate\Http\Response
+     * @return \App\Http\Resources
      */
     public function store(OrderStoreRequest $request)
     {
         $data = $request->validated();
 
-        return new OrderResource($this->orderService->create($data));
+        return  OrderResource::make($this->orderService->create($data));
     }
 
     /**
      * Display the specified order.
      *
      * @param int $order_id
-     * @return \Illuminate\Http\Response
+     * @return OrderResource
      */
-    public function show(int $order_id): Response
+    public function show(int $order_id): OrderResource
     {
         $order = $this->orderService->getBydId($order_id);
 
-        return response(new OrderResource($order));
+        return OrderResource::make($order);
     }
 
     /**
      * Update the specified order in storage.
      *
      * @param  \App\Http\Requests\OrderUpdateRequest  $request
-     * @param  \App\Models\Order $order
+     * @param  int $order_id
      * @return \Illuminate\Http\Response
      */
     public function update(OrderUpdateRequest $request, int $order_id): Response
@@ -74,12 +73,32 @@ class OrderController extends Controller
     /**
      * Remove the specified order from storage.
      *
-     * @param  \App\Models\Order  $order
+     * @param  int  $order_id
      * @return \Illuminate\Http\Response
      */
     public function destroy(int $order_id): Response
     {
         $this->orderService->deleteById($order_id);
+
+        return response()->noContent();
+    }
+
+    /**
+     * Cancel the specified order from storage.
+     *
+     * @param  int  $order_id
+     * @return \Illuminate\Http\Response
+     */
+    public function cancelOrder(int $order_id): Response
+    {
+        try {
+            $this->orderService->cancelOrder($order_id);
+        } catch (CannotCancelOrderException $e) {
+            return response()->make(
+                ["message" => $e->getMessage()],
+                Response::HTTP_BAD_REQUEST
+            );
+        }
 
         return response()->noContent();
     }

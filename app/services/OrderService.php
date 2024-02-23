@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Enums\Status;
+use App\Exceptions\CannotCancelOrderException;
 use App\Exceptions\ResourceNotCreatedException;
 use App\Models\Order;
 use App\Models\OrderItem;
@@ -64,7 +65,19 @@ class OrderService
         if ($order === null)
             throw new ResourceNotFoundException($this->notFoundMessage);
 
-        return $this->calculateTotalsOfOrderAndOrderItems($order);
+        return $order;
+    }
+
+    /**
+     * Get an order by its ID or throw a ResourceNotFound Exception
+     *
+     * @param int $id The ID of the order.
+     * @return Order The order instance.
+     * @throws Symfony\Component\Routing\Exception\ResourceNotFoundException
+     */
+    public function getBydIdWithTotalsCalculated(int $id): Order
+    {
+        return $this->calculateTotalsOfOrderAndOrderItems($this->getBydId($id));
     }
 
     /**
@@ -130,6 +143,9 @@ class OrderService
      */
     function cancelOrder(int $order_id): bool
     {
+        if ($this->getBydId($order_id)->status !== Status::PENDING->value)
+            throw new CannotCancelOrderException("Order Can't be Cancelled");
+
         return $this->update($order_id, ['status' => Status::CANCELLED]);
     }
 
