@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\OrderItemStoreRequest;
 use App\Http\Resources\Admin\OrderItemResource;
 use App\Models\Order;
 use App\Models\OrderItem;
@@ -38,23 +39,11 @@ class OrderItemController extends Controller
     // }
 
     /**
-     * Store a newly created order item in storage for a specific order.
-     *
      * @param  \App\Models\Order  $order
      * @return \Illuminate\Http\Response
      */
-    public function store(Order $order): Response
+    public function store(OrderItemStoreRequest $request)
     {
-        $data = request()->validate([
-            'product_id' => ['required', 'exists:products,id'],
-            'quantity' => ['required', 'integer'],
-        ]);
-
-        $orderItem = new OrderItem($data);
-
-        $order->orderItems()->save($orderItem);
-
-        return response('', Response::HTTP_CREATED);
     }
 
     /**
