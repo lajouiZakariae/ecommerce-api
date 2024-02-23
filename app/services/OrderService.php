@@ -176,33 +176,43 @@ class OrderService
      */
     private function calculateTotalsOfOrderAndOrderItems(Order $order): Order
     {
-        $order->orderItems->each(function (OrderItem $orderItem) {
-            $total_price = $orderItem->product_price * $orderItem->quantity;
-            $orderItem->total_price = round($total_price, 2);
-        });
+        $hasOrderItems = $order->orderItems->count() > 0;
 
-        $totalQuantity = $order->orderItems->reduce(
-            fn ($acc, OrderItem $orderItem) => $acc + $orderItem->quantity,
-            0
-        );
+        if ($hasOrderItems) {
+            $order->orderItems->each(function (OrderItem $orderItem) {
+                $total_price = $orderItem->product_price * $orderItem->quantity;
+                $orderItem->total_price = round($total_price, 2);
+            });
+        }
+
+        $totalQuantity = $hasOrderItems
+            ?  $order->orderItems->reduce(
+                fn ($acc, OrderItem $orderItem) => $acc + $orderItem->quantity,
+                0
+            )
+            : 0;
 
         $order->total_quantity = $totalQuantity;
 
-        $totalUnitPrice  = $order->orderItems->reduce(
-            fn ($acc, OrderItem $orderItem) => $acc + $orderItem->product_price,
-            0
-        );
+        $totalUnitPrice  = $hasOrderItems
+            ? $order->orderItems->reduce(
+                fn ($acc, OrderItem $orderItem) => $acc + $orderItem->product_price,
+                0
+            )
+            : 0;
 
         $order->total_unit_price = round($totalUnitPrice, 2);
 
-        $avgUnitPrice = ($totalUnitPrice) / $order->orderItems->count();
+        $avgUnitPrice = $hasOrderItems ? ($totalUnitPrice) / $order->orderItems->count() : 0;
 
         $order->avg_unit_price = round($avgUnitPrice, 2);
 
-        $total_price = $order->orderItems->reduce(
-            fn ($acc, OrderItem $orderItem) => $acc + ($orderItem->quantity * $orderItem->product_price),
-            0
-        );
+        $total_price = $hasOrderItems
+            ? $order->orderItems->reduce(
+                fn ($acc, OrderItem $orderItem) => $acc + ($orderItem->quantity * $orderItem->product_price),
+                0
+            )
+            : 0;
 
         $order->total_price = round($total_price, 2);
 
