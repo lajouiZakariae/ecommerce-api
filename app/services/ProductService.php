@@ -2,20 +2,13 @@
 
 namespace App\Services;
 
-use App\Exceptions\ResourceNotCreatedException;
+use App\Exceptions\AppExceptions\BadRequestException;
 use App\Models\Product;
 use DB;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
-/**
- * Class ProductService
- *
- * This class provides functionality for managing products.
- *
- * @package App\Services
- */
 class ProductService
 {
     private $notFoundMessage = "Product Not Found";
@@ -23,45 +16,43 @@ class ProductService
     /**
      * Apply filters to the product query.
      *
-     * @param array $filters
+     * @param array $productFilters
      *
      * @return Builder The Eloquent query builder instance.
      */
-    private function filterAndReturnOnlyValidProductModelQueryFilters(array $filters): Builder
+    private function filterAndReturnOnlyValidProductModelQueryFilters(array $productFilters): Builder
     {
         return Product::query()
             ->when(
-                isset($filters['price_from']),
-                fn (Builder $query) => $query->where('price', '>=', $filters['price_from'])
+                isset($productFilters['price_from']),
+                fn (Builder $query) => $query->where('price', '>=', $productFilters['price_from'])
             )
             ->when(
-                isset($filters['price_to']),
-                fn (Builder $query) => $query->where('price', '<=', $filters['price_to'])
+                isset($productFilters['price_to']),
+                fn (Builder $query) => $query->where('price', '<=', $productFilters['price_to'])
             )
             ->when(
-                isset($filters['cost_from']),
-                fn (Builder $query) => $query->where('cost', '>=', $filters['cost_from'])
+                isset($productFilters['cost_from']),
+                fn (Builder $query) => $query->where('cost', '>=', $productFilters['cost_from'])
             )
             ->when(
-                isset($filters['cost_to']),
-                fn (Builder $query) => $query->where('cost', '<=', $filters['cost_to'])
+                isset($productFilters['cost_to']),
+                fn (Builder $query) => $query->where('cost', '<=', $productFilters['cost_to'])
             )
             ->when(
-                isset($filters['sort_by']),
-                fn (Builder $query) => $query->orderBy($filters['sort_by'], $filters['order'] ?? 'asc')
+                isset($productFilters['sort_by']),
+                fn (Builder $query) => $query->orderBy($productFilters['sort_by'], $productFilters['order'] ?? 'asc')
             );
     }
 
     /**
-     * Get a paginated list of products based on specified filters.
-     *
-     * @param array $filters
+     * @param array $productFilters
      * @return LengthAwarePaginator The paginated result set of products.
      */
-    public function getAllProductsMatchFilters(array $filters): LengthAwarePaginator
+    public function getAllProductsMatchFilters(array $productFilters): LengthAwarePaginator
     {
         $products = $this
-            ->filterAndReturnOnlyValidProductModelQueryFilters($filters)
+            ->filterAndReturnOnlyValidProductModelQueryFilters($productFilters)
             ->with(['thumbnail'])
             ->withSum('inventory AS quantity', 'quantity')
             ->paginate(10);
@@ -71,18 +62,16 @@ class ProductService
 
 
     /**
-     * Get a product by its ID or throw a ResourceNotFound Exception
-     *
-     * @param int $id The ID of the product.
-     * @return Product The product instance.
+     * @param int $product_id
+     * @return Product
      * @throws Symfony\Component\Routing\Exception\ResourceNotFoundException
      */
-    public function getById(int $id): Product
+    public function getProductById(int $product_id): Product
     {
         $product = Product::query()
             ->with('thumbnail')
             ->withSum('inventory AS quantity', 'quantity')
-            ->find($id);
+            ->find($product_id);
 
         if ($product === null)
             throw new ResourceNotFoundException($this->notFoundMessage);
@@ -91,35 +80,31 @@ class ProductService
     }
 
     /**
-     * Create a new product.
-     *
-     * @param array $data An associative array of data for creating the product.
+     * @param array $productPayload
      *
      * @return Product The created product instance.
      */
-    public function create(array $data): Product
+    public function createProduct(array $productPayload): Product
     {
-        $product = new Product($data);
+        $product = new Product($productPayload);
 
         $saved = $product->save();
 
-        if (!$saved) throw new ResourceNotCreatedException("Product Could not be Created");
+        if (!$saved) throw new BadRequestException("Product Could not be Created");
 
         return $product;
     }
 
     /**
-     * Update a product by its ID.
-     *
-     * @param int $id The ID of the product to be updated.
+     * @param int $product_id
      * 
-     * @param array $data
+     * @param array $productPayload
      *
      * @return bool True if the update was successful, otherwise false.
      */
-    public function update(int $id, array $data): bool
+    public function updateProduct(int $product_id, array $productPayload): bool
     {
-        $affectedRowsCount = Product::where('id', $id)->update($data);
+        $affectedRowsCount = Product::where('id', $product_id)->update($productPayload);
 
         if ($affectedRowsCount === 0)
             throw new ResourceNotFoundException($this->notFoundMessage);
@@ -128,15 +113,13 @@ class ProductService
     }
 
     /**
-     * Delete a product by its ID.
+     * @param int $product_id
      *
-     * @param int $id The ID of the product to be deleted.
-     *
-     * @return bool True if the deletion is successful, otherwise false.
+     * @return bool 
      */
-    public function deleteById(int $id): bool
+    public function deleteProductById(int $product_id): bool
     {
-        $affectedRowsCount = Product::where('id', $id)->delete();
+        $affectedRowsCount = Product::where('id', $product_id)->delete();
 
         if ($affectedRowsCount === 0)
             throw new ResourceNotFoundException($this->notFoundMessage);
@@ -147,14 +130,14 @@ class ProductService
     /**
      * Toggle the published state of a product by its ID.
      *
-     * @param int $id The ID of the product to toggle the published state.
+     * @param int $product_id
      *
      * @return bool True if the state toggle is successful, otherwise false.
      */
-    public function togglePublishedState(int $id): bool
+    public function togglePublishedState(int $product_id): bool
     {
         $affectedRowsCount = DB::update("UPDATE products SET published = !published WHERE id = :id ;", [
-            ':id' => $id
+            ':id' => $product_id
         ]);
 
         if ($affectedRowsCount === 0)
@@ -164,25 +147,21 @@ class ProductService
     }
 
     /**
-     * Get stores by store.
-     *
-     * @param int $store_id The ID of the store.
+     * @param int $category_id
      *
      * @return LengthAwarePaginator.
      */
-    public function getByCategory(int $caetgory_id): LengthAwarePaginator
+    public function getProductsByCategory(int $caetgory_id): LengthAwarePaginator
     {
         return Product::where('category_id', $caetgory_id)->paginate();
     }
 
     /**
-     * Get products by store.
-     *
-     * @param int $store_id The ID of the store.
+     * @param int $store_id 
      *
      * @return LengthAwarePaginator
      */
-    public function getByStore(int $store_id): LengthAwarePaginator
+    public function getProductsByStore(int $store_id): LengthAwarePaginator
     {
         return Product::where('category_id', $store_id)->paginate();
     }

@@ -67,7 +67,7 @@ class ProductController extends Controller
     {
         $data = $request->validated();
 
-        $product = $this->productService->create($data);
+        $product = $this->productService->createProduct($data);
 
         return response(ProductResource::make($product), Response::HTTP_CREATED);
     }
@@ -80,7 +80,7 @@ class ProductController extends Controller
      */
     public function show($product_id): ProductResource
     {
-        $product = $this->productService->getById($product_id);
+        $product = $this->productService->getProductById($product_id);
 
         return ProductResource::make($product);
     }
@@ -96,7 +96,7 @@ class ProductController extends Controller
     {
         $data = $request->validated();
 
-        $this->productService->update($product_id, $data);
+        $this->productService->updateProduct($product_id, $data);
 
         return response()->noContent();
     }
@@ -110,7 +110,7 @@ class ProductController extends Controller
      */
     public function destroy(int $product_id): Response
     {
-        $this->productService->deleteById($product_id);
+        $this->productService->deleteProductById($product_id);
 
         return response()->noContent();
     }
@@ -138,7 +138,7 @@ class ProductController extends Controller
     public function productsByCategory($category_id)
     {
         return ProductResource::collection(
-            $this->productService->getByCategory($category_id)
+            $this->productService->getProductsByCategory($category_id)
         );
     }
 
@@ -151,7 +151,7 @@ class ProductController extends Controller
     public function productsByStore($category_id)
     {
         return ProductResource::collection(
-            $this->productService->getByCategory($category_id)
+            $this->productService->getProductsByCategory($category_id)
         );
     }
 }

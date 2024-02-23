@@ -28,7 +28,9 @@ Route::group([
 
     Route::patch('products/{product}/toggle-publish', [ProductController::class, 'togglePublish'])->whereNumber('product');
 
-    Route::get('categories/{category}/products', [ProductController::class, 'categoryProducts'])->whereNumber('category');
+    Route::get('categories/{category}/products', [ProductController::class, 'productsByCategory'])->whereNumber('category');
+
+    Route::get('stores/{store}/products', [ProductController::class, 'productsByStore'])->whereNumber('store');
 
     Route::apiResource('orders', OrderController::class)->whereNumber('order');
 
