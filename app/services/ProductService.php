@@ -151,9 +151,9 @@ class ProductService
      *
      * @return LengthAwarePaginator.
      */
-    public function getProductsByCategory(int $caetgory_id): LengthAwarePaginator
+    public function getProductsByCategory(int $category_id): LengthAwarePaginator
     {
-        return Product::where('category_id', $caetgory_id)->paginate();
+        return Product::where('category_id', $category_id)->paginate();
     }
 
     /**
