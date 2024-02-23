@@ -24,7 +24,9 @@ class OrderController extends Controller
      */
     public function index(): ResourceCollection
     {
-        return OrderResource::collection($this->orderService->getAllFilteredOrdersWithTotalsCalculated([]));
+        return OrderResource::collection(
+            $this->orderService->getAllFilteredOrdersWithTotalsCalculated([])
+        );
     }
 
     /**
@@ -37,7 +39,9 @@ class OrderController extends Controller
     {
         $data = $request->validated();
 
-        return  OrderResource::make($this->orderService->placeOrder($data));
+        return  OrderResource::make(
+            $this->orderService->placeOrder($data)
+        );
     }
 
     /**

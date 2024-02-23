@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Admin;
 
 use App\Enums\Status;
+use App\Rules\ValidIntegerTypeRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -22,16 +23,14 @@ class OrderUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'full_name' => ['string', 'min:1', 'max:255'],
-            'email' => ['string', 'min:1', 'max:255'],
-            'phone_number' => ['string', 'min:1', 'max:255'],
-            'status' => ['required', 'string', Rule::enum(Status::class)],
-            'city' => ['string', 'min:1', 'max:255'],
-            'payment_method_id' => ['exists:payment_methods,id'],
-            'zip_code' => ['string', 'min:1', 'max:255'],
-            'coupon_code_id' => ['exists:coupon_codes,id'],
-            'address' => ['string', 'min:1', 'max:255'],
-            'delivery' => ['boolean']
+            'client_id' => [new ValidIntegerTypeRule, 'min:1', 'exists:clients,id'],
+            'coupon_code_id' => [new ValidIntegerTypeRule, 'min:1', 'exists:coupon_codes,id'],
+            'payment_method_id' => [new ValidIntegerTypeRule, 'min:1', 'exists:payment_methods,id'],
+
+            'order_items.*.product_id' => [
+                new ValidIntegerTypeRule, 'min:1', 'distinct', 'exists:products,id'
+            ],
+            'order_items.*.quantity' => [new ValidIntegerTypeRule, 'min:1'],
         ];
     }
 }
