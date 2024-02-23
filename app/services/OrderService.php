@@ -9,6 +9,7 @@ use App\Models\OrderItem;
 use Illuminate\Database\Eloquent\Collection;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use DB;
+use phpDocumentor\Reflection\PseudoTypes\True_;
 
 class OrderService
 {
@@ -95,11 +96,13 @@ class OrderService
         ]);
     }
 
-    function update(int $order_id, array $data)
+    function update(int $order_id, array $data): bool
     {
         $affectedRowCount = Order::where('id', $order_id)->update($data);
 
         if ($affectedRowCount === 0) throw new ResourceNotFoundException($this->notFoundMessage);
+
+        return true;
     }
 
     /**
@@ -107,7 +110,7 @@ class OrderService
      *
      * @param int $id The ID of the product to be deleted.
      *
-     * @return bool True if the deletion is successful, otherwise false.
+     * @return bool
      */
     function deleteById(int $id)
     {
@@ -117,6 +120,17 @@ class OrderService
             throw new ResourceNotFoundException($this->notFoundMessage);
 
         return true;
+    }
+
+    /**
+     * Cancel an Order by it's ID
+     * @param int $id
+     * 
+     * @return bool
+     */
+    function cancelOrder(int $order_id): bool
+    {
+        return $this->update($order_id, ['status' => Status::CANCELLED]);
     }
 
     /**

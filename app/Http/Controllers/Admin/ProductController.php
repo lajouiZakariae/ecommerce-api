@@ -137,7 +137,9 @@ class ProductController extends Controller
      */
     public function productsByCategory($category_id)
     {
-        return $this->productService->getByCategory($category_id);
+        return ProductResource::collection(
+            $this->productService->getByCategory($category_id)
+        );
     }
 
     /**
@@ -148,6 +150,8 @@ class ProductController extends Controller
      */
     public function productsByStore($category_id)
     {
-        return $this->productService->getByCategory($category_id);
+        return ProductResource::collection(
+            $this->productService->getByCategory($category_id)
+        );
     }
 }
