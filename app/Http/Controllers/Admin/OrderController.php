@@ -38,7 +38,7 @@ class OrderController extends Controller
     {
         $data = $request->validated();
 
-        return  OrderResource::make($this->orderService->create($data));
+        return  OrderResource::make($this->orderService->placeOrder($data));
     }
 
     /**
@@ -49,7 +49,7 @@ class OrderController extends Controller
      */
     public function show(int $order_id): OrderResource
     {
-        $order = $this->orderService->getBydId($order_id);
+        $order = $this->orderService->getOrderBydIdWithTotalsCalculated($order_id);
 
         return OrderResource::make($order);
     }
@@ -65,7 +65,7 @@ class OrderController extends Controller
     {
         $data = $request->validated();
 
-        $this->orderService->update($order_id, $data);
+        $this->orderService->updateOrderUseCase($order_id, $data);
 
         return response()->noContent();
     }
@@ -78,7 +78,7 @@ class OrderController extends Controller
      */
     public function destroy(int $order_id): Response
     {
-        $this->orderService->deleteById($order_id);
+        $this->orderService->deleteOrderById($order_id);
 
         return response()->noContent();
     }
@@ -91,14 +91,7 @@ class OrderController extends Controller
      */
     public function cancelOrder(int $order_id): Response
     {
-        try {
-            $this->orderService->cancelOrder($order_id);
-        } catch (CannotCancelOrderException $e) {
-            return response()->make(
-                ["message" => $e->getMessage()],
-                Response::HTTP_BAD_REQUEST
-            );
-        }
+        $this->orderService->cancelOrder($order_id);
 
         return response()->noContent();
     }

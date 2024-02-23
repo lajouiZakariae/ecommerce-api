@@ -2,6 +2,8 @@
 
 namespace App\Exceptions;
 
+use App\Exceptions\AppExceptions\BadRequestException;
+use App\Exceptions\AppExceptions\BusinessException;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Response;
@@ -37,7 +39,7 @@ class Handler extends ExceptionHandler
         });
 
         $this->renderable(function (BusinessException $e) {
-            if ($e instanceof ResourceNotCreatedException && request()->accepts("application/json"))
+            if ($e instanceof BadRequestException && request()->accepts("application/json"))
                 return response()
                     ->json(["message" => $e->getMessage()], Response::HTTP_BAD_REQUEST);
         });

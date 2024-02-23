@@ -3,14 +3,13 @@
 namespace App\Services;
 
 use App\Enums\Status;
+use App\Exceptions\AppExceptions\BadRequestException;
 use App\Exceptions\CannotCancelOrderException;
-use App\Exceptions\ResourceNotCreatedException;
 use App\Models\Order;
 use App\Models\OrderItem;
 use Illuminate\Database\Eloquent\Collection;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use DB;
-use phpDocumentor\Reflection\PseudoTypes\True_;
 
 class OrderService
 {
@@ -50,7 +49,7 @@ class OrderService
      * @return Order The order instance.
      * @throws Symfony\Component\Routing\Exception\ResourceNotFoundException
      */
-    public function getBydId(int $id): Order
+    public function getOrderBydIdWithTotalsCalculated(int $order_id): Order
     {
         $order = Order::with([
             "paymentMethod",
@@ -60,45 +59,33 @@ class OrderService
                     "thumbnail"
                 ]
             ],
-        ])->find($id);
+        ])->find($order_id);
 
         if ($order === null)
             throw new ResourceNotFoundException($this->notFoundMessage);
 
-        return $order;
-    }
-
-    /**
-     * Get an order by its ID or throw a ResourceNotFound Exception
-     *
-     * @param int $id The ID of the order.
-     * @return Order The order instance.
-     * @throws Symfony\Component\Routing\Exception\ResourceNotFoundException
-     */
-    public function getBydIdWithTotalsCalculated(int $id): Order
-    {
-        return $this->calculateTotalsOfOrderAndOrderItems($this->getBydId($id));
+        return $this->calculateTotalsOfOrderAndOrderItems($order);
     }
 
     /**
      * Creates a new Order
      */
-    function create(array $data)
+    public function placeOrder(array $orderPayload)
     {
-        $order = DB::transaction(function () use ($data) {
+        $order = DB::transaction(function () use ($orderPayload) {
 
             $order = new Order([
-                "client_id" => $data["client_id"],
+                "client_id" => $orderPayload["client_id"],
                 "status" => Status::PENDING,
-                "coupon_code_id" => $data["coupon_code_id"],
-                "payment_method_id" => $data["payment_method_id"],
+                "coupon_code_id" => $orderPayload["coupon_code_id"],
+                "payment_method_id" => $orderPayload["payment_method_id"],
             ]);
 
             $saved = $order->save();
 
-            if (!$saved) throw new ResourceNotCreatedException("Order could not be created");
+            if (!$saved) throw new BadRequestException("Order could not be created");
 
-            return $this->orderItemService->assingOrderItemsToOrder($order, $data['order_items']);
+            return $this->orderItemService->assingOrderItemsToOrder($order, $orderPayload['order_items']);
         });
 
 
@@ -109,7 +96,28 @@ class OrderService
         ]);
     }
 
-    function update(int $order_id, array $data): bool
+    /**
+     * Update an order by its ID.
+     *
+     * @param int $order_id
+     * @param array $data
+     *
+     * @return bool
+     */
+    public function updateOrderUseCase(int $order_id, array $data): bool
+    {
+        return $this->updateOrder($order_id, $data);
+    }
+
+    /**
+     * Update an order by its ID.
+     *
+     * @param int $order_id
+     * @param array $data
+     *
+     * @return bool
+     */
+    private function updateOrder(int $order_id, array $data): bool
     {
         $affectedRowCount = Order::where('id', $order_id)->update($data);
 
@@ -125,7 +133,7 @@ class OrderService
      *
      * @return bool
      */
-    function deleteById(int $id)
+    public function deleteOrderById(int $id)
     {
         $affectedRowsCount = Order::where('id', $id)->delete();
 
@@ -141,12 +149,17 @@ class OrderService
      * 
      * @return bool
      */
-    function cancelOrder(int $order_id): bool
+    public function cancelOrder(int $order_id): bool
     {
-        if ($this->getBydId($order_id)->status !== Status::PENDING->value)
-            throw new CannotCancelOrderException("Order Can't be Cancelled");
+        $orderToBeCanceled = Order::find($order_id, ['status']);
 
-        return $this->update($order_id, ['status' => Status::CANCELLED]);
+        if (!$orderToBeCanceled)
+            throw new ResourceNotFoundException($this->notFoundMessage);
+
+        if ($orderToBeCanceled->status !== Status::PENDING->value)
+            throw new BadRequestException("Order Can't be Cancelled");
+
+        return $this->updateOrder($order_id, ['status' => Status::CANCELLED]);
     }
 
     /**
