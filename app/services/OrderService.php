@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Enums\Status;
 use App\Exceptions\AppExceptions\BadRequestException;
-use App\Exceptions\CannotCancelOrderException;
 use App\Models\Order;
 use App\Models\OrderItem;
 use Illuminate\Database\Eloquent\Collection;

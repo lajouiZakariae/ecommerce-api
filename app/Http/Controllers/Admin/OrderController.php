@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Exceptions\CannotCancelOrderException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\OrderStoreRequest;
 use App\Http\Requests\Admin\OrderUpdateRequest;
@@ -44,12 +43,12 @@ class OrderController extends Controller
     /**
      * Display the specified order.
      *
-     * @param int $order_id
+     * @param int $orderId
      * @return OrderResource
      */
-    public function show(int $order_id): OrderResource
+    public function show(int $orderId): OrderResource
     {
-        $order = $this->orderService->getOrderBydIdWithTotalsCalculated($order_id);
+        $order = $this->orderService->getOrderBydIdWithTotalsCalculated($orderId);
 
         return OrderResource::make($order);
     }
@@ -58,14 +57,14 @@ class OrderController extends Controller
      * Update the specified order in storage.
      *
      * @param  \App\Http\Requests\OrderUpdateRequest  $request
-     * @param  int $order_id
+     * @param  int $orderId
      * @return \Illuminate\Http\Response
      */
-    public function update(OrderUpdateRequest $request, int $order_id): Response
+    public function update(OrderUpdateRequest $request, int $orderId): Response
     {
         $data = $request->validated();
 
-        $this->orderService->updateOrderUseCase($order_id, $data);
+        $this->orderService->updateOrderUseCase($orderId, $data);
 
         return response()->noContent();
     }
@@ -73,12 +72,12 @@ class OrderController extends Controller
     /**
      * Remove the specified order from storage.
      *
-     * @param  int  $order_id
+     * @param  int  $orderId
      * @return \Illuminate\Http\Response
      */
-    public function destroy(int $order_id): Response
+    public function destroy(int $orderId): Response
     {
-        $this->orderService->deleteOrderById($order_id);
+        $this->orderService->deleteOrderById($orderId);
 
         return response()->noContent();
     }
@@ -86,12 +85,12 @@ class OrderController extends Controller
     /**
      * Cancel the specified order from storage.
      *
-     * @param  int  $order_id
+     * @param  int  $orderId
      * @return \Illuminate\Http\Response
      */
-    public function cancelOrder(int $order_id): Response
+    public function cancelOrder(int $orderId): Response
     {
-        $this->orderService->cancelOrder($order_id);
+        $this->orderService->cancelOrder($orderId);
 
         return response()->noContent();
     }

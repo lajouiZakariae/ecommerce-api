@@ -75,12 +75,12 @@ class ProductController extends Controller
     /**
      * Display the specified product.
      *
-     * @param  int $product_id
+     * @param  int $productId
      * @return \Illuminate\Http\Response
      */
-    public function show($product_id): ProductResource
+    public function show($productId): ProductResource
     {
-        $product = $this->productService->getProductById($product_id);
+        $product = $this->productService->getProductById($productId);
 
         return ProductResource::make($product);
     }
@@ -92,11 +92,11 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function update(ProductUpdateRequest $request,  $product_id): Response
+    public function update(ProductUpdateRequest $request,  $productId): Response
     {
         $data = $request->validated();
 
-        $this->productService->updateProduct($product_id, $data);
+        $this->productService->updateProduct($productId, $data);
 
         return response()->noContent();
     }
@@ -105,12 +105,12 @@ class ProductController extends Controller
      * Remove the specified product from storage.
      *
      * @param  \App\Services\ProductService  $productService
-     * @param  int  $product_id
+     * @param  int  $productId
      * @return \Illuminate\Http\Response
      */
-    public function destroy(int $product_id): Response
+    public function destroy(int $productId): Response
     {
-        $this->productService->deleteProductById($product_id);
+        $this->productService->deleteProductById($productId);
 
         return response()->noContent();
     }
@@ -119,12 +119,12 @@ class ProductController extends Controller
      * Toggle publish state of the specified product.
      *
      * @param  \App\Services\ProductService  $productService
-     * @param  int  $product_id
+     * @param  int  $productId
      * @return \Illuminate\Http\Response
      */
-    public function togglePublish(int $product_id)
+    public function togglePublish(int $productId)
     {
-        $this->productService->togglePublishedState($product_id);
+        $this->productService->togglePublishedState($productId);
 
         return response()->noContent();
     }

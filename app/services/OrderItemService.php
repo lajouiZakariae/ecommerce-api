@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Exceptions\AppExceptions\BadRequestException;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
@@ -41,6 +42,32 @@ class OrderItemService
         $order->orderItems()->createMany($orderItems);
         return $order;
     }
+
+    /**
+     * @param array $orderItemPayload
+     *
+     * @return OrderItem
+     */
+    public function createOrderItem(array $orderItemPayload): OrderItem
+    {
+        $orderItem = new OrderItem($orderItemPayload);
+
+        $foundProduct = Product::query()->find(
+            $orderItemPayload['product_id'],
+            ['id', 'price']
+        );
+
+
+        dd($foundProduct);
+        $orderItem['product_price'] = $foundProduct->price;
+
+        $saved = $orderItem->save();
+
+        if (!$saved) throw new BadRequestException("Order Item Could not be Created");
+
+        return $orderItem;
+    }
+
 
     /**
      * @param int $orderItemId
