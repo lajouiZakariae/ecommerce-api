@@ -14,12 +14,12 @@ class OrderItemService
 
     public function getAllOrderItemsOfOrder(int $orderId)
     {
-        $order = Order::find($orderId);
+        $order = Order::exists($orderId);
 
         if (!$order) throw new ResourceNotFoundException("Order Not Found");
 
-        $orderItems = $order
-            ->orderItems()
+        $orderItems = OrderItem::query()
+            ->where('order_id', $orderId)
             ->with(['product:id,title,price' => ['thumbnail']])
             ->get();
 
@@ -51,10 +51,10 @@ class OrderItemService
     {
         $productIdsInOrderItemsCollection = collect($orderItems)->pluck('product_id');
 
-        $products = Product::whereIn('id', $productIdsInOrderItemsCollection)->get(['id', 'price']);
+        $products = Product::whereIn('id', $productIdsInOrderItemsCollection)
+            ->get(['id', 'price']);
 
         $assignProductPriceToOrderItem = function ($orderItem) use ($products) {
-
             $productFound = $products->first(
                 fn (Product $product) => $product->id === $orderItem['product_id']
             );
@@ -78,7 +78,7 @@ class OrderItemService
     {
         $orderItem = new OrderItem($orderItemPayload);
 
-        $order = Order::find($orderId);
+        $order = Order::exists($orderId);
 
         if (!$order) throw new ResourceNotFoundException('Order Not Found');
 
@@ -87,6 +87,7 @@ class OrderItemService
             ['id', 'price']
         );
 
+        $orderItem['order_id'] = $orderId;
         $orderItem['product_price'] = $foundProduct->price;
 
         $saved = $orderItem->save();
@@ -103,9 +104,11 @@ class OrderItemService
      *
      * @return bool
      */
-    private function updateOrderItem(int $orderItemId, array $orderItemPayload): bool
+    public function updateOrderItem(int $orderId, int $orderItemId, array $orderItemPayload): bool
     {
-        $affectedRowCount = OrderItem::where('id', $orderItemId)->update($orderItemPayload);
+        if ($orderId)
+
+            $affectedRowCount = OrderItem::where('id', $orderItemId)->update($orderItemPayload);
 
         if ($affectedRowCount === 0) throw new ResourceNotFoundException($this->notFoundMessage);
 

@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Rules\ValidIntegerTypeRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class OrderItemStoreRequest extends FormRequest
 {
@@ -22,9 +23,14 @@ class OrderItemStoreRequest extends FormRequest
      */
     public function rules(): array
     {
+        // dump();
         return [
             'product_id' => [
-                'required', new ValidIntegerTypeRule, 'min:1', 'exists:products,id'
+                'required',
+                new ValidIntegerTypeRule,
+                'min:1',
+                'exists:products,id',
+                Rule::unique('order_items', 'product_id')->where('order_id', request()->route('order'))
             ],
             'quantity' => ['required', new ValidIntegerTypeRule, 'min:1'],
         ];

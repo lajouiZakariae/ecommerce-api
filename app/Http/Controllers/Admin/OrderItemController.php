@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\OrderItemStoreRequest;
+use App\Http\Requests\OrderItemUpdateRequest;
 use App\Http\Resources\Admin\OrderItemResource;
 use App\Services\OrderItemService;
 use Illuminate\Http\Resources\Json\ResourceCollection;
@@ -60,17 +61,14 @@ class OrderItemController extends Controller
      * @param  \App\Models\OrderItem  $orderItem
      * @return \Illuminate\Http\Response
      */
-    // public function update($order, OrderItem $orderItem): Response
-    // {
-    //     $data = request()->validate([
-    //         'product_id' => ['required', 'exists:products,id'],
-    //         'quantity' => ['required', 'integer'],
-    //     ]);
+    public function update(OrderItemUpdateRequest $request, int $orderId, int $orderItemId): Response
+    {
+        $orderItemPayload = $request->validated();
 
-    //     $orderItem->update($data);
+        $this->orderItemService->updateOrderItem($orderId, $orderItemId, $orderItemPayload);
 
-    //     return response()->noContent();
-    // }
+        return response()->noContent();
+    }
 
     /**
      * Remove the specified order item from storage for a specific order.
