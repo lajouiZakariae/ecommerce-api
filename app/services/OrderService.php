@@ -111,23 +111,6 @@ class OrderService
     }
 
     /**
-     * Update an order by its ID.
-     *
-     * @param int $orderId
-     * @param array $data
-     *
-     * @return bool
-     */
-    private function updateOrder(int $orderId, array $data): bool
-    {
-        $affectedRowCount = Order::where('id', $orderId)->update($data);
-
-        if ($affectedRowCount === 0) throw new ResourceNotFoundException($this->notFoundMessage);
-
-        return true;
-    }
-
-    /**
      * Cancel an Order by it's ID
      * @param int $id
      * 
@@ -154,6 +137,23 @@ class OrderService
             throw new BadRequestException("Order Can't be Cancelled");
 
         return $this->updateOrder($orderId, ['status' => Status::CANCELLED]);
+    }
+
+    /**
+     * Update an order by its ID.
+     *
+     * @param int $orderId
+     * @param array $data
+     *
+     * @return bool
+     */
+    private function updateOrder(int $orderId, array $data): bool
+    {
+        $affectedRowCount = Order::where('id', $orderId)->update($data);
+
+        if ($affectedRowCount === 0) throw new ResourceNotFoundException($this->notFoundMessage);
+
+        return true;
     }
 
     /**
