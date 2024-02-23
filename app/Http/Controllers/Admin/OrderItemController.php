@@ -30,11 +30,11 @@ class OrderItemController extends Controller
      * @param  \App\Models\Order  $order
      * @return \Illuminate\Http\Response
      */
-    public function store(OrderItemStoreRequest $request)
+    public function store(OrderItemStoreRequest $request, int $orderId)
     {
         $orderItemPayload = $request->validated();
 
-        $orderItem = $this->orderItemService->createOrderItem($orderItemPayload);
+        $orderItem = $this->orderItemService->addOrderItemToOrder($orderId, $orderItemPayload);
 
         return response(OrderItemResource::make($orderItem), Response::HTTP_CREATED);
     }

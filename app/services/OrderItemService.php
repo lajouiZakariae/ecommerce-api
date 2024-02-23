@@ -47,7 +47,7 @@ class OrderItemService
      * 
      * @return Order
      */
-    function assingOrderItemsToOrder(Order $order, array $orderItems): Order
+    public function addOrderItemsToOrder(Order $order, array $orderItems): Order
     {
         $productIdsInOrderItemsCollection = collect($orderItems)->pluck('product_id');
 
@@ -74,17 +74,19 @@ class OrderItemService
      *
      * @return OrderItem
      */
-    public function createOrderItem(array $orderItemPayload): OrderItem
+    public function addOrderItemToOrder(int $orderId, array $orderItemPayload): OrderItem
     {
         $orderItem = new OrderItem($orderItemPayload);
+
+        $order = Order::find($orderId);
+
+        if (!$order) throw new ResourceNotFoundException('Order Not Found');
 
         $foundProduct = Product::query()->find(
             $orderItemPayload['product_id'],
             ['id', 'price']
         );
 
-
-        dd($foundProduct);
         $orderItem['product_price'] = $foundProduct->price;
 
         $saved = $orderItem->save();

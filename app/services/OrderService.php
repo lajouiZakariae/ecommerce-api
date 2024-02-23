@@ -24,9 +24,9 @@ class OrderService
      * that matches the provided orderFilters
      * 
      * @param $orderFilters
-     * @return \Illuminate\Http\Resources\Json\ResourceCollection
+     * @return Collection<int,Order>
      */
-    public function getAllFilteredOrders(array $orderFilters): Collection
+    public function getAllFilteredOrdersWithTotalsCalculated(array $orderFilters): Collection
     {
         $orders = Order::query()
             ->with([
@@ -86,7 +86,7 @@ class OrderService
 
             if (!$saved) throw new BadRequestException("Order could not be created");
 
-            return $this->orderItemService->assingOrderItemsToOrder($order, $orderPayload['order_items']);
+            return $this->orderItemService->addOrderItemsToOrder($order, $orderPayload['order_items']);
         });
 
 
@@ -128,23 +128,6 @@ class OrderService
     }
 
     /**
-     * Delete a product by its ID.
-     *
-     * @param int $id The ID of the product to be deleted.
-     *
-     * @return bool
-     */
-    public function deleteOrderById(int $id)
-    {
-        $affectedRowsCount = Order::where('id', $id)->delete();
-
-        if ($affectedRowsCount === 0)
-            throw new ResourceNotFoundException($this->notFoundMessage);
-
-        return true;
-    }
-
-    /**
      * Cancel an Order by it's ID
      * @param int $id
      * 
@@ -171,6 +154,20 @@ class OrderService
             throw new BadRequestException("Order Can't be Cancelled");
 
         return $this->updateOrder($orderId, ['status' => Status::CANCELLED]);
+    }
+
+    /**
+     * @param int $id The ID of the product to be deleted.
+     * @return bool
+     */
+    public function deleteOrderById(int $id)
+    {
+        $affectedRowsCount = Order::where('id', $id)->delete();
+
+        if ($affectedRowsCount === 0)
+            throw new ResourceNotFoundException($this->notFoundMessage);
+
+        return true;
     }
 
     /**

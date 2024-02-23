@@ -24,7 +24,7 @@ class OrderController extends Controller
      */
     public function index(): ResourceCollection
     {
-        return OrderResource::collection($this->orderService->getAllFilteredOrders([]));
+        return OrderResource::collection($this->orderService->getAllFilteredOrdersWithTotalsCalculated([]));
     }
 
     /**
