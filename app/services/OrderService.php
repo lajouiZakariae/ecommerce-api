@@ -22,11 +22,12 @@ class OrderService
 
     /**
      * Get a list of paginated orders
-     * that matches the provided filters
-     * @param $filters
+     * that matches the provided orderFilters
+     * 
+     * @param $orderFilters
      * @return \Illuminate\Http\Resources\Json\ResourceCollection
      */
-    public function getAllFilteredOrders(array $filters): Collection
+    public function getAllFilteredOrders(array $orderFilters): Collection
     {
         $orders = Order::query()
             ->with([
@@ -45,11 +46,11 @@ class OrderService
     /**
      * Get an order by its ID or throw a ResourceNotFound Exception
      *
-     * @param int $id The ID of the order.
+     * @param int $orderId The ID of the order.
      * @return Order The order instance.
      * @throws Symfony\Component\Routing\Exception\ResourceNotFoundException
      */
-    public function getOrderBydIdWithTotalsCalculated(int $order_id): Order
+    public function getOrderBydIdWithTotalsCalculated(int $orderId): Order
     {
         $order = Order::with([
             "paymentMethod",
@@ -59,7 +60,7 @@ class OrderService
                     "thumbnail"
                 ]
             ],
-        ])->find($order_id);
+        ])->find($orderId);
 
         if ($order === null)
             throw new ResourceNotFoundException($this->notFoundMessage);
@@ -68,9 +69,10 @@ class OrderService
     }
 
     /**
-     * Creates a new Order
+     * @param array $orderPayload
+     * @return Order 
      */
-    public function placeOrder(array $orderPayload)
+    public function placeOrder(array $orderPayload): Order
     {
         $order = DB::transaction(function () use ($orderPayload) {
 
@@ -99,27 +101,27 @@ class OrderService
     /**
      * Update an order by its ID.
      *
-     * @param int $order_id
+     * @param int $orderId
      * @param array $data
      *
      * @return bool
      */
-    public function updateOrderUseCase(int $order_id, array $data): bool
+    public function updateOrderUseCase(int $orderId, array $data): bool
     {
-        return $this->updateOrder($order_id, $data);
+        return $this->updateOrder($orderId, $data);
     }
 
     /**
      * Update an order by its ID.
      *
-     * @param int $order_id
+     * @param int $orderId
      * @param array $data
      *
      * @return bool
      */
-    private function updateOrder(int $order_id, array $data): bool
+    private function updateOrder(int $orderId, array $data): bool
     {
-        $affectedRowCount = Order::where('id', $order_id)->update($data);
+        $affectedRowCount = Order::where('id', $orderId)->update($data);
 
         if ($affectedRowCount === 0) throw new ResourceNotFoundException($this->notFoundMessage);
 
@@ -149,17 +151,23 @@ class OrderService
      * 
      * @return bool
      */
-    public function cancelOrder(int $order_id): bool
+    public function cancelOrder(int $orderId): bool
     {
-        $orderToBeCanceled = Order::find($order_id, ['status']);
+        $orderToBeCanceled = Order::find($orderId, ['status']);
 
         if (!$orderToBeCanceled)
             throw new ResourceNotFoundException($this->notFoundMessage);
 
-        if ($orderToBeCanceled->status !== Status::PENDING->value)
+        $uncancelableStatus = [
+            Status::CANCELLED, Status::SHIPPING, Status::DELIVERED, Status::DELIVERY_ATTEMPT, Status::RETURN_TO_SENDER
+        ];
+
+        $uncancelableValues = array_column($uncancelableStatus, 'value');
+
+        if (in_array($orderToBeCanceled->status, $uncancelableValues))
             throw new BadRequestException("Order Can't be Cancelled");
 
-        return $this->updateOrder($order_id, ['status' => Status::CANCELLED]);
+        return $this->updateOrder($orderId, ['status' => Status::CANCELLED]);
     }
 
     /**
@@ -174,27 +182,28 @@ class OrderService
             $orderItem->total_price = round($total_price, 2);
         });
 
-        $total_quantity = $order->orderItems->reduce(
+        $totalQuantity = $order->orderItems->reduce(
             fn ($acc, OrderItem $orderItem) => $acc + $orderItem->quantity,
             0
         );
 
-        $order->total_quantity = $total_quantity;
+        $order->total_quantity = $totalQuantity;
 
-        $total_unit_price  = $order->orderItems->reduce(
+        $totalUnitPrice  = $order->orderItems->reduce(
             fn ($acc, OrderItem $orderItem) => $acc + $orderItem->product_price,
             0
         );
 
-        $order->total_unit_price = round($total_unit_price, 2);
+        $order->total_unit_price = round($totalUnitPrice, 2);
 
-        $avg_unit_price = ($total_unit_price) / $order->orderItems->count();
+        $avgUnitPrice = ($totalUnitPrice) / $order->orderItems->count();
 
-        $order->avg_unit_price = round($avg_unit_price, 2);
+        $order->avg_unit_price = round($avgUnitPrice, 2);
 
-        $total_price = $order->orderItems->reduce(function ($acc, OrderItem $orderItem) {
-            return $acc + ($orderItem->quantity * $orderItem->product_price);
-        }, 0);
+        $total_price = $order->orderItems->reduce(
+            fn ($acc, OrderItem $orderItem) => $acc + ($orderItem->quantity * $orderItem->product_price),
+            0
+        );
 
         $order->total_price = round($total_price, 2);
 

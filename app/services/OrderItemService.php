@@ -43,6 +43,21 @@ class OrderItemService
     }
 
     /**
+     * @param int $orderItemId
+     * @param array $orderItemPayload
+     *
+     * @return bool
+     */
+    private function updateOrderItem(int $orderItemId, array $orderItemPayload): bool
+    {
+        $affectedRowCount = OrderItem::where('id', $orderItemId)->update($orderItemPayload);
+
+        if ($affectedRowCount === 0) throw new ResourceNotFoundException($this->notFoundMessage);
+
+        return true;
+    }
+
+    /**
      * Delete an order item By it's ID from the storage
      * 
      * @param int $id
