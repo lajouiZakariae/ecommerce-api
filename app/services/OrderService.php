@@ -71,7 +71,7 @@ class OrderService
      * @param array $orderPayload
      * @return Order 
      */
-    public function placeOrder(array $orderPayload): Order
+    public function placeOrderWithOrderItems(array $orderPayload): Order
     {
         $order = DB::transaction(function () use ($orderPayload) {
 
@@ -133,7 +133,7 @@ class OrderService
      * 
      * @return bool
      */
-    public function cancelOrder(int $orderId): bool
+    public function cancelOrderById(int $orderId): bool
     {
         $orderToBeCanceled = Order::find($orderId, ['status']);
 

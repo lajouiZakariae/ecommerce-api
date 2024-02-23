@@ -40,7 +40,7 @@ class OrderController extends Controller
         $data = $request->validated();
 
         return  OrderResource::make(
-            $this->orderService->placeOrder($data)
+            $this->orderService->placeOrderWithOrderItems($data)
         );
     }
 
@@ -94,7 +94,7 @@ class OrderController extends Controller
      */
     public function cancelOrder(int $orderId): Response
     {
-        $this->orderService->cancelOrder($orderId);
+        $this->orderService->cancelOrderById($orderId);
 
         return response()->noContent();
     }
