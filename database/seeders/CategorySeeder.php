@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Category;
+use File;
 use Illuminate\Database\Seeder;
 
 class CategorySeeder extends Seeder
@@ -12,6 +13,10 @@ class CategorySeeder extends Seeder
      */
     public function run(): void
     {
-        Category::factory()->count(5)->create();
+        $categories = collect(json_decode(File::get(base_path('json/categories.json'))));
+
+        $categories->each(function (object $category) {
+            Category::create((array) $category);
+        });
     }
 }

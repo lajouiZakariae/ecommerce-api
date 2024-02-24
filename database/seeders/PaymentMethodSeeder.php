@@ -12,6 +12,11 @@ class PaymentMethodSeeder extends Seeder
      */
     public function run(): void
     {
-        PaymentMethod::factory()->count(5)->create();
+        $payment_methods = [
+            ["name" => "Credit Card"],
+            ["name" => "Cash On Delivery"],
+        ];
+
+        PaymentMethod::insert($payment_methods);
     }
 }

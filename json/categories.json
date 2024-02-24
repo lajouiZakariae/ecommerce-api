@@ -1,0 +1,22 @@
+[
+    {
+        "name": "Smartphones",
+        "description": "Cutting-edge mobile devices with advanced features."
+    },
+    {
+        "name": "Laptops",
+        "description": "Portable computers for work, entertainment, and more."
+    },
+    {
+        "name": "Audio Devices",
+        "description": "Speakers, headphones, and other audio accessories."
+    },
+    {
+        "name": "Gaming Gear",
+        "description": "Consoles, controllers, and gaming peripherals."
+    },
+    {
+        "name": "Smart Home",
+        "description": "Devices for automating and enhancing home living."
+    }
+]

@@ -2,16 +2,17 @@
 
 namespace Database\Seeders;
 
-use App\Models\Media;
+use App\Models\Client;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class MediaSeeder extends Seeder
+class ClientSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        Media::factory()->count(5)->create();
+        Client::factory(5)->create();
     }
 }

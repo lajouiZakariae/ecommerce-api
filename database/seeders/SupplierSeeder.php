@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Supplier;
+use File;
 use Illuminate\Database\Seeder;
 
 class SupplierSeeder extends Seeder
@@ -12,6 +13,10 @@ class SupplierSeeder extends Seeder
      */
     public function run(): void
     {
-        Supplier::factory()->count(5)->create();
+        $suppliers = collect(json_decode(File::get(base_path('json/suppliers.json'))));
+
+        $suppliers->each(function (object $supplier) {
+            Supplier::create((array) $supplier);
+        });
     }
 }

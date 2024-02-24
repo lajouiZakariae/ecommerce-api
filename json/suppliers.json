@@ -1,0 +1,26 @@
+[
+    {
+        "name": "Tech Innovators",
+        "email": "techinnovators@example.com",
+        "phone_number": "+212612345678",
+        "address": "123 Tech Street, Cityville, Morocco"
+    },
+    {
+        "name": "ElectroTech Solutions",
+        "email": "electrotech@example.com",
+        "phone_number": "+212623456789",
+        "address": "456 Circuit Avenue, Innovation City, Morocco"
+    },
+    {
+        "name": "Gadget Galaxy",
+        "email": "gadgetgalaxy@example.com",
+        "phone_number": "+212634567890",
+        "address": "789 Device Lane, Tech Town, Morocco"
+    },
+    {
+        "name": "Digital Dynamics",
+        "email": "digitaldynamics@example.com",
+        "phone_number": "+212645678901",
+        "address": "1010 Byte Boulevard, Future City, Morocco"
+    }
+]
