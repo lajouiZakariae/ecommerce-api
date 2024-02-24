@@ -2,13 +2,8 @@
 
 namespace App\Services;
 
-use App\Exceptions\AppExceptions\BadRequestException;
 use App\Models\Client;
-use App\Models\Order;
-use App\Models\OrderItem;
-use App\Models\Product;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Collection as SupportCollection;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
 class ClientService
@@ -29,7 +24,7 @@ class ClientService
      * 
      * @return Client
      */
-    function getClientById(int $clientId) //: Client
+    public function getClientById(int $clientId) //: Client
     {
         $client = Client::find($clientId);
 

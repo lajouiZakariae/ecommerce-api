@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\OrderItemController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\StoreController;
+use App\Http\Controllers\Admin\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -25,8 +26,10 @@ Route::middleware(['auth:sanctum'])->get('/admin/user', function (Request $reque
 
 Route::group([
     'prefix' => 'admin',
-    'middlewear' => 'auth.sanctum'
+    'middlewear' => 'auth:sanctum'
 ], function () {
+    Route::apiResource('users', UserController::class)->whereNumber('user');
+
     Route::apiResource('categories', CategoryController::class)->whereNumber('category');
 
     Route::apiResource('stores', StoreController::class)->whereNumber('store');
