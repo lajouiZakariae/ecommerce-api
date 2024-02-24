@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\OrderItemController;
 use App\Http\Controllers\Admin\ProductController;
@@ -25,6 +26,8 @@ Route::group([
     'prefix' => 'admin',
     'middlewear' => 'auth.sanctum'
 ], function () {
+    Route::apiResource('categories', CategoryController::class)->whereNumber('category');
+
     Route::apiResource('products', ProductController::class)->whereNumber('product');
 
     Route::patch('products/{product}/toggle-publish', [ProductController::class, 'togglePublish'])->whereNumber('product');

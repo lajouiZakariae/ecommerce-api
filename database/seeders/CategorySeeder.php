@@ -16,6 +16,7 @@ class CategorySeeder extends Seeder
         $categories = collect(json_decode(File::get(base_path('json/categories.json'))));
 
         $categories->each(function (object $category) {
+            $category->slug = str($category->name)->slug();
             Category::create((array) $category);
         });
     }

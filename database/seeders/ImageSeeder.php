@@ -20,8 +20,6 @@ class ImageSeeder extends Seeder
             ]);
         }
 
-
-
         // foreach (File::allFiles(storage_path('app/public/products')) as $value) {
         //     Image::insert([
         //         'alt_text' => fake()->word,
