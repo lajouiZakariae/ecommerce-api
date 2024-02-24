@@ -2,83 +2,82 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exceptions\AppExceptions\BadRequestException;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\StoreStoreRequest;
-use App\Http\Requests\Admin\StoreUpdateRequest;
-use App\Http\Resources\Admin\StoreResource;
 use App\Models\Store;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Response;
-use Spatie\RouteAttributes\Attributes\ApiResource;
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
-/**
- * @group Stores
- */
-#[ApiResource('stores')]
 class StoreController extends Controller
 {
     /**
-     * Display a listing of stores.
+     * Display a listing of the stores.
      *
-     * @return \Illuminate\Http\Response
+     * @return Collection<int,Store>
      */
-    public function index(): Response
+    public function index(): Collection
     {
         $stores = Store::query();
 
-        $stores = request()->input('sortBy') === 'oldest'
+        $stores = request()->input("sortBy") === "oldest"
             ? $stores->oldest()
             : $stores->latest();
 
-        return response()->make(StoreResource::collection($stores->get()));
+        return $stores->get();
     }
 
-    /**
-     * Display the specified store.
-     *
-     * @param  \App\Models\Store  $store
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Store $store): Response
+    public function store()
     {
-        return response()->make(new StoreResource($store));
+        $storePayload = [
+            'name' => request()->input('name'),
+            'slug' => str(request()->input('name'))->slug(),
+            'address' => request()->input('address'),
+        ];
+
+        $storeValidator = validator()->make($storePayload, [
+            'name' => ['required', 'min:1', 'max:255'],
+            'slug' => ['required', 'min:1', 'max:255', 'unique:stores,slug'],
+            'address' => ['nullable', 'min:1', 'max:500'],
+        ]);
+
+        $validatedStorePayload = $storeValidator->validate();
+
+        $store = new Store($validatedStorePayload);
+
+        if (!$store->save()) throw new BadRequestException("Store Could not be created");
+
+        return $store;
     }
 
-    /**
-     * Store a newly created store in storage.
-     *
-     * @param  \App\Http\Requests\Admin\StoreStoreRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreStoreRequest $request): Response
+    public function update(int $store_id): Response
     {
-        $store = Store::create($request->validated());
+        $storePayload = [
+            'name' => request()->input('name'),
+            'slug' => str(request()->input('name'))->slug(),
+            'address' => request()->input('address'),
+        ];
 
-        return response()->make($store, Response::HTTP_CREATED);
-    }
+        $storeValidator = validator()->make($storePayload, [
+            'name' => ['required', 'min:1', 'max:255'],
+            'slug' => ['required', 'min:1', 'max:255', 'unique:stores,slug'],
+            'address' => ['nullable', 'min:1', 'max:500'],
+        ]);
 
-    /**
-     * Update the specified store in storage.
-     *
-     * @param  \App\Http\Requests\Admin\StoreUpdateRequest  $request
-     * @param  \App\Models\Store  $store
-     * @return \Illuminate\Http\Response
-     */
-    public function update(StoreUpdateRequest $request, Store $store): Response
-    {
-        $store->update($request->validated());
+        $validatedStorePayload = $storeValidator->validate();
+
+        $affectedRowsCount = Store::where('id', $store_id)->update($validatedStorePayload);
+
+        if ($affectedRowsCount === 0) throw new ResourceNotFoundException("Store Not Found");
 
         return response()->noContent();
     }
 
-    /**
-     * Remove the specified store from storage.
-     *
-     * @param  \App\Models\Store  $store
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Store $store): Response
+    public function destroy(int $store_id): Response
     {
-        $store->delete();
+        $affectedRowsCount = Store::destroy($store_id);
+
+        if ($affectedRowsCount === 0) throw new ResourceNotFoundException("Store Not Found");
 
         return response()->noContent();
     }

@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\OrderItemController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\StoreController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -27,6 +28,8 @@ Route::group([
     'middlewear' => 'auth.sanctum'
 ], function () {
     Route::apiResource('categories', CategoryController::class)->whereNumber('category');
+
+    Route::apiResource('stores', StoreController::class)->whereNumber('store');
 
     Route::apiResource('products', ProductController::class)->whereNumber('product');
 
