@@ -86,7 +86,9 @@ class OrderService
 
             if (!$saved) throw new BadRequestException("Order could not be created");
 
-            return $this->orderItemService->addOrderItemsToOrder($order, $orderPayload['order_items']);
+            $this->orderItemService->assignOrderItemsToOrderUseCase($order->id, $orderPayload['order_items']);
+
+            return $order;
         });
 
 

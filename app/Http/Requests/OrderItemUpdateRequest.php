@@ -12,7 +12,7 @@ class OrderItemUpdateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,9 +23,6 @@ class OrderItemUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'product_id' => [
-                new ValidIntegerTypeRule, 'min:1', 'distinct', 'exists:products,id'
-            ],
             'quantity' => [new ValidIntegerTypeRule, 'min:1'],
             'product_price' => ['numeric', 'min:0'],
         ];

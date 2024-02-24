@@ -23,16 +23,17 @@ class OrderItemStoreRequest extends FormRequest
      */
     public function rules(): array
     {
-        // dump();
         return [
-            'product_id' => [
+            '*.product_id' => [
                 'required',
                 new ValidIntegerTypeRule,
                 'min:1',
+                'distinct',
                 'exists:products,id',
-                Rule::unique('order_items', 'product_id')->where('order_id', request()->route('order'))
+                Rule::unique('order_items', 'product_id')
+                    ->where('order_id', request()->route('order'))
             ],
-            'quantity' => ['required', new ValidIntegerTypeRule, 'min:1'],
+            '*.quantity' => ['required', new ValidIntegerTypeRule, 'min:1'],
         ];
     }
 }

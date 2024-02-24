@@ -25,14 +25,6 @@ class OrderItemResource extends JsonResource
             'quantity' => $this->quantity,
             'total_price' => $this->whenHas('total_price'),
             'product' => new ProductResource($this->whenLoaded('product')),
-            // "decrement_quantity_url" => route('order-items.decrement-quantity', [
-            //     'order' => $this->order_id,
-            //     'order_item' => $this->id
-            // ]),
-            // "increment_quantity_url" => route('order-items.increment-quantity', [
-            //     'order' => $this->order_id,
-            //     'order_item' => $this->id
-            // ]),
         ];
     }
 }

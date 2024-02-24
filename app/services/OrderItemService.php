@@ -6,6 +6,7 @@ use App\Exceptions\AppExceptions\BadRequestException;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
+use Illuminate\Database\Eloquent\Collection;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
 class OrderItemService
@@ -39,34 +40,72 @@ class OrderItemService
     }
 
     /**
+     * @param int $orderId
+     * @param array $orderItemsPayload
+     * 
+     * @return Collection<int,OrderItem>
+     */
+    public function createOrderItemsInOrder($orderId, $orderItemPayload): Collection
+    {
+        $order = Order::exists($orderId);
+
+        if (!$order) throw new ResourceNotFoundException("Order Not Found");
+
+        $orderItems = $this->assignOrderItemsToOrder($orderId, $orderItemPayload);
+
+        return $orderItems;
+    }
+
+    /**
+     * @param Order $order
+     * @param array $orderItems
+     * @return Order
+     */
+    public function assignOrderItemsToOrderUseCase(int $orderId, array $orderItems)
+    {
+        return $this->assignOrderItemsToOrder($orderId, $orderItems);
+    }
+
+    /**
      * Creates a list of order items in the database
      * and assigns them to aspecific Order
      * 
-     * @param Order $order
+     * @param int $orderId
      * @param array $orderItems
      * 
-     * @return Order
+     * @return Collection<int,OrderItem>
      */
-    public function addOrderItemsToOrder(Order $order, array $orderItems): Order
+    public function assignOrderItemsToOrder(int $orderId, array $orderItems): Collection
     {
         $productIdsInOrderItemsCollection = collect($orderItems)->pluck('product_id');
 
-        $products = Product::whereIn('id', $productIdsInOrderItemsCollection)
+        $productsExistsInOrder = Product::whereIn('id', $productIdsInOrderItemsCollection)
             ->get(['id', 'price']);
 
-        $assignProductPriceToOrderItem = function ($orderItem) use ($products) {
-            $productFound = $products->first(
+        $assignProductPriceToEachOrderItem = function ($orderItem) use ($productsExistsInOrder) {
+
+            $productFound = $productsExistsInOrder->first(
                 fn (Product $product) => $product->id === $orderItem['product_id']
             );
 
             $orderItem['product_price'] = $productFound->price;
+
             return $orderItem;
         };
 
-        $orderItems = array_map($assignProductPriceToOrderItem, $orderItems);
+        $orderItemsWithPrices = array_map($assignProductPriceToEachOrderItem, $orderItems);
 
-        $order->orderItems()->createMany($orderItems);
-        return $order;
+        $assignOrderIdToEachOrderItem = function ($orderItemWithPrice) use ($orderId) {
+            $orderItemWithPrice['order_id'] = $orderId;
+
+            return $orderItemWithPrice;
+        };
+
+        $orderItemsWithOrderId = array_map($assignOrderIdToEachOrderItem, $orderItemsWithPrices);
+
+        $orderItems = OrderItem::query()->insert($orderItemsWithOrderId);
+
+        return $orderItems;
     }
 
     /**
@@ -99,16 +138,18 @@ class OrderItemService
 
 
     /**
+     * @param int $orderId
      * @param int $orderItemId
      * @param array $orderItemPayload
      *
      * @return bool
      */
-    public function updateOrderItem(int $orderId, int $orderItemId, array $orderItemPayload): bool
+    public function updateOrderItemOfOrder(int $orderId, int $orderItemId, array $orderItemPayload): bool
     {
-        if ($orderId)
-
-            $affectedRowCount = OrderItem::where('id', $orderItemId)->update($orderItemPayload);
+        $affectedRowCount = OrderItem::query()
+            ->where('id', $orderItemId)
+            ->where('order_id', $orderId)
+            ->update($orderItemPayload);
 
         if ($affectedRowCount === 0) throw new ResourceNotFoundException($this->notFoundMessage);
 
@@ -122,9 +163,12 @@ class OrderItemService
      * 
      * @return bool
      */
-    function deleteById(int $id)
+    public function deleteOrderItemOfOrderById(int $orderId, int $orderItemId)
     {
-        $affectedRowsCount = OrderItem::where('id', $id)->delete();
+        $affectedRowsCount = OrderItem::query()
+            ->where('order_id', $orderId)
+            ->where('id', $orderItemId)
+            ->delete();
 
         if ($affectedRowsCount === 0)
             throw new ResourceNotFoundException($this->notFoundMessage);

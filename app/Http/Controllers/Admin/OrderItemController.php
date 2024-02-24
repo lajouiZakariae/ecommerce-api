@@ -35,9 +35,9 @@ class OrderItemController extends Controller
     {
         $orderItemPayload = $request->validated();
 
-        $orderItem = $this->orderItemService->addOrderItemToOrder($orderId, $orderItemPayload);
+        $orderItems = $this->orderItemService->createOrderItemsInOrder($orderId, $orderItemPayload);
 
-        return response(OrderItemResource::make($orderItem), Response::HTTP_CREATED);
+        return response(OrderItemResource::collection($orderItems), Response::HTTP_CREATED);
     }
 
     /**
@@ -56,67 +56,33 @@ class OrderItemController extends Controller
 
     /**
      * Update the specified order item in storage for a specific order.
-     *
-     * @param  mixed  $order
-     * @param  \App\Models\OrderItem  $orderItem
+     * 
+     * @param  OrderItemUpdateRequest $request 
+     * @param  int $orderId 
+     * @param  int $orderItemId
      * @return \Illuminate\Http\Response
      */
     public function update(OrderItemUpdateRequest $request, int $orderId, int $orderItemId): Response
     {
-        $orderItemPayload = $request->validated();
-
-        $this->orderItemService->updateOrderItem($orderId, $orderItemId, $orderItemPayload);
+        $this->orderItemService->updateOrderItemOfOrder(
+            $orderId,
+            $orderItemId,
+            $request->validated()
+        );
 
         return response()->noContent();
     }
 
     /**
      * Remove the specified order item from storage for a specific order.
-     *
-     * @param  mixed  $order
-     * @param  \App\Models\OrderItem  $orderItem
+     * @param int $orderId
+     * @param int $orderItemId
      * @return \Illuminate\Http\Response
      */
-    // public function destroy($order, OrderItem $orderItem): Response
-    // {
-    //     $orderItem->delete();
+    public function destroy(int $orderId, int $orderItemId): Response
+    {
+        $this->orderItemService->deleteOrderItemOfOrderById($orderId, $orderItemId);
 
-    //     return response()->noContent();
-    // }
-
-    /**
-     * Increment the quantity of the specified order item for a specific order.
-     *
-     * @param  mixed  $order
-     * @param  \App\Models\OrderItem  $orderItem
-     * @return \Illuminate\Http\Response
-     */
-    // public function incrementQuantity($orderId, OrderItem $orderItem): Response
-    // {
-    //     if ($orderItem->quantity === 18_446_744_073_709_551_615) {
-    //         return response(['error' => 'maximum value reached'], Response::HTTP_BAD_REQUEST);
-    //     }
-
-    //     $orderItem->increment('quantity');
-
-    //     return response()->noContent();
-    // }
-
-    /**
-     * Decrement the quantity of the specified order item for a specific order.
-     *
-     * @param  mixed  $order
-     * @param  \App\Models\OrderItem  $orderItem
-     * @return \Illuminate\Http\Response
-     */
-    // public function decrementQuantity($orderId, OrderItem $orderItem): Response
-    // {
-    //     if ($orderItem->quantity === 0) {
-    //         return response(['error' => 'minimum value reached'], Response::HTTP_BAD_REQUEST);
-    //     }
-
-    //     $orderItem->decrement('quantity');
-
-    //     return response()->noContent();
-    // }
+        return response()->noContent();
+    }
 }
