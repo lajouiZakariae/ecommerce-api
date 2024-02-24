@@ -6,6 +6,7 @@ use App\Enums\Status;
 use App\Exceptions\AppExceptions\BadRequestException;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\Product;
 use Illuminate\Database\Eloquent\Collection;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use DB;
@@ -86,7 +87,23 @@ class OrderService
 
             if (!$saved) throw new BadRequestException("Order could not be created");
 
-            $this->orderItemService->assignOrderItemsToOrderUseCase($order->id, $orderPayload['order_items']);
+            $productIdsInOrderItemsCollection = collect($orderPayload['order_items'])->pluck('product_id');
+
+            $productsExistsInOrder = Product::whereIn('id', $productIdsInOrderItemsCollection)->get(['id', 'price']);
+
+            $orderItems = collect($orderPayload['order_items'])
+                ->map(function ($orderItem) use ($productsExistsInOrder) {
+
+                    $productFound = $productsExistsInOrder->first(
+                        fn (Product $product) => $product->id === $orderItem['product_id']
+                    );
+
+                    $orderItem['product_price'] = $productFound->price;
+
+                    return $orderItem;
+                });
+
+            $order->orderItems()->createMany($orderItems);
 
             return $order;
         });

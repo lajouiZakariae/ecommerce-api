@@ -7,6 +7,7 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection as SupportCollection;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
 class OrderItemService
@@ -45,65 +46,36 @@ class OrderItemService
      * 
      * @return Collection<int,OrderItem>
      */
-    public function createOrderItemsInOrder($orderId, $orderItemPayload): Collection
+    public function createOrderItemsInOrder($orderId, $orderItemsPayload): SupportCollection
     {
         $order = Order::exists($orderId);
 
         if (!$order) throw new ResourceNotFoundException("Order Not Found");
 
-        $orderItems = $this->assignOrderItemsToOrder($orderId, $orderItemPayload);
+        $productIdsInOrderItemsCollection = collect($orderItemsPayload)->pluck('product_id');
 
-        return $orderItems;
-    }
+        $productsExistsInOrder = Product::whereIn('id', $productIdsInOrderItemsCollection)->get(['id', 'price']);
 
-    /**
-     * @param Order $order
-     * @param array $orderItems
-     * @return Order
-     */
-    public function assignOrderItemsToOrderUseCase(int $orderId, array $orderItems)
-    {
-        return $this->assignOrderItemsToOrder($orderId, $orderItems);
-    }
+        $orderItems = collect($orderItemsPayload)
+            ->map(function ($orderItem) use ($productsExistsInOrder) {
 
-    /**
-     * Creates a list of order items in the database
-     * and assigns them to aspecific Order
-     * 
-     * @param int $orderId
-     * @param array $orderItems
-     * 
-     * @return Collection<int,OrderItem>
-     */
-    public function assignOrderItemsToOrder(int $orderId, array $orderItems): Collection
-    {
-        $productIdsInOrderItemsCollection = collect($orderItems)->pluck('product_id');
+                $productFound = $productsExistsInOrder->first(
+                    fn (Product $product) => $product->id === $orderItem['product_id']
+                );
 
-        $productsExistsInOrder = Product::whereIn('id', $productIdsInOrderItemsCollection)
-            ->get(['id', 'price']);
+                $orderItem['product_price'] = $productFound->price;
 
-        $assignProductPriceToEachOrderItem = function ($orderItem) use ($productsExistsInOrder) {
+                return $orderItem;
+            })
+            ->map(function ($orderItemWithPrice) use ($orderId) {
+                $orderItemWithPrice['order_id'] = $orderId;
 
-            $productFound = $productsExistsInOrder->first(
-                fn (Product $product) => $product->id === $orderItem['product_id']
-            );
+                $orderItem = new OrderItem($orderItemWithPrice);
 
-            $orderItem['product_price'] = $productFound->price;
+                $orderItem->save();
 
-            return $orderItem;
-        };
-
-        $orderItemsWithPrices = array_map($assignProductPriceToEachOrderItem, $orderItems);
-
-        $assignOrderIdToEachOrderItem = function ($orderItemWithPrice) use ($orderId) {
-            $orderItemWithPrice['order_id'] = $orderId;
-
-            return $orderItemWithPrice;
-        };
-
-        $orderItemsWithOrderId = array_map($assignOrderIdToEachOrderItem, $orderItemsWithPrices);
-
-        $orderItems = OrderItem::query()->insert($orderItemsWithOrderId);
+                return $orderItem;
+            });
 
         return $orderItems;
     }
