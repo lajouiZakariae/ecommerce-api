@@ -21,8 +21,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-
-
         $this->call([
             UserSeeder::class,
             ClientSeeder::class,
@@ -117,21 +115,9 @@ class DatabaseSeeder extends Seeder
 
         ];
 
-        // OrderItem::insert($order_items);
-
         collect($order_items)->each(function (array $orderItemAsArray) {
             $orderItem = new OrderItem($orderItemAsArray);
             $orderItem->save();
         });
-
-
-
-        // foreach (File::allFiles(storage_path('app/public/products')) as $value) {
-        //     Image::insert([
-        //         'alt_text' => fake()->word,
-        //         'path' => 'products/' . $value->getFilename(),
-        //         'product_id' => fake()->numberBetween(1, 20),
-        //     ]);
-        // }
     }
 }
