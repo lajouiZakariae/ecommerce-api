@@ -6,7 +6,7 @@ use App\Rules\ValidIntegerTypeRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class OrderItemStoreRequest extends FormRequest
+class OrderItemsStoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,8 +23,11 @@ class OrderItemStoreRequest extends FormRequest
      */
     public function rules(): array
     {
+
         return [
-            '*.product_id' => [
+            'order_items' => ['present', 'array', 'min:1'],
+
+            'order_items.*.product_id' => [
                 'required',
                 new ValidIntegerTypeRule,
                 'min:1',
@@ -33,7 +36,7 @@ class OrderItemStoreRequest extends FormRequest
                 Rule::unique('order_items', 'product_id')
                     ->where('order_id', request()->route('order'))
             ],
-            '*.quantity' => ['required', new ValidIntegerTypeRule, 'min:1'],
+            'order_items.*.quantity' => ['required', 'integer', new ValidIntegerTypeRule, 'min:1'],
         ];
     }
 }

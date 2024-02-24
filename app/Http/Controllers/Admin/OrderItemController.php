@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\OrderItemStoreRequest;
+use App\Http\Requests\OrderItemsStoreRequest;
 use App\Http\Requests\OrderItemUpdateRequest;
 use App\Http\Resources\Admin\OrderItemResource;
 use App\Services\OrderItemService;
@@ -31,9 +31,9 @@ class OrderItemController extends Controller
      * @param  \App\Models\Order  $order
      * @return \Illuminate\Http\Response
      */
-    public function store(OrderItemStoreRequest $request, int $orderId)
+    public function store(OrderItemsStoreRequest $request, int $orderId)
     {
-        $orderItemPayload = $request->validated();
+        $orderItemPayload = $request->validated('order_items');
 
         $orderItems = $this->orderItemService->createOrderItemsInOrder($orderId, $orderItemPayload);
 
