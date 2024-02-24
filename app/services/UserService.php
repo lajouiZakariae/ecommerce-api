@@ -27,7 +27,7 @@ class UserService
      * 
      * @return User
      */
-    public function createUser(array $userPayload): User
+    public function registerUser(array $userPayload): User
     {
         $user = new User($userPayload);
 

@@ -28,7 +28,7 @@ class OrderItemService
         return $orderItems;
     }
 
-    function getOrderItemOfOrderById(int $orderId, int $orderItemId): OrderItem
+    public function getOrderItemOfOrderById(int $orderId, int $orderItemId): OrderItem
     {
         $orderItem = OrderItem::query()
             ->where('order_id', $orderId)
