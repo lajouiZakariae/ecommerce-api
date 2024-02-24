@@ -33,8 +33,7 @@ class OrderItemsStoreRequest extends FormRequest
                 'min:1',
                 'distinct',
                 'exists:products,id',
-                Rule::unique('order_items', 'product_id')
-                    ->where('order_id', request()->route('order'))
+                Rule::unique('order_items', 'product_id')->where('order_id', request()->route('order'))
             ],
             'order_items.*.quantity' => ['required', 'integer', new ValidIntegerTypeRule, 'min:1'],
         ];

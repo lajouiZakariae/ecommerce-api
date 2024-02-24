@@ -51,7 +51,7 @@ class OrderItemController extends Controller
     {
         $orderItem = $this->orderItemService->getOrderItemOfOrderById($orderId, $orderItemId);
 
-        return new OrderItemResource($orderItem);
+        return OrderItemResource::make($orderItem);
     }
 
     /**

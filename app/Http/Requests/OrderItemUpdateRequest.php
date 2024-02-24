@@ -23,7 +23,7 @@ class OrderItemUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'quantity' => [new ValidIntegerTypeRule, 'min:1'],
+            'quantity' => ['integer', new ValidIntegerTypeRule, 'min:1'],
             'product_price' => ['numeric', 'min:0'],
         ];
     }
