@@ -16,9 +16,9 @@ class OrderItemService
 
     public function getAllOrderItemsOfOrder(int $orderId)
     {
-        $order = Order::exists($orderId);
+        $orderExists = Order::exists($orderId);
 
-        if (!$order) throw new ResourceNotFoundException("Order Not Found");
+        if (!$orderExists) throw new ResourceNotFoundException("Order Not Found");
 
         $orderItems = OrderItem::query()
             ->where('order_id', $orderId)
@@ -35,7 +35,7 @@ class OrderItemService
             ->where('id', $orderItemId)
             ->first();
 
-        if (!$orderItem) throw new ResourceNotFoundException($this->notFoundMessage);
+        if ($orderItem === null) throw new ResourceNotFoundException($this->notFoundMessage);
 
         return $orderItem;
     }
@@ -48,9 +48,9 @@ class OrderItemService
      */
     public function createOrderItemsInOrder($orderId, $orderItemsPayload): SupportCollection
     {
-        $order = Order::exists($orderId);
+        $orderExists = Order::exists($orderId);
 
-        if (!$order) throw new ResourceNotFoundException("Order Not Found");
+        if (!$orderExists) throw new ResourceNotFoundException("Order Not Found");
 
         $productIdsInOrderItemsCollection = collect($orderItemsPayload)->pluck('product_id');
 
@@ -89,9 +89,9 @@ class OrderItemService
     {
         $orderItem = new OrderItem($orderItemPayload);
 
-        $order = Order::exists($orderId);
+        $orderExists = Order::exists($orderId);
 
-        if (!$order) throw new ResourceNotFoundException('Order Not Found');
+        if (!$orderExists) throw new ResourceNotFoundException('Order Not Found');
 
         $foundProduct = Product::query()->find(
             $orderItemPayload['product_id'],
@@ -107,7 +107,6 @@ class OrderItemService
 
         return $orderItem;
     }
-
 
     /**
      * @param int $orderId

@@ -85,7 +85,8 @@ class OrderService
 
             $saved = $order->save();
 
-            if (!$saved) throw new BadRequestException("Order could not be created");
+            if (!$saved)
+                throw new BadRequestException("Order could not be created");
 
             $productIdsInOrderItemsCollection = collect($orderPayload['order_items'])->pluck('product_id');
 
@@ -139,7 +140,7 @@ class OrderService
     {
         $orderToBeCanceled = Order::find($orderId, ['status']);
 
-        if (!$orderToBeCanceled)
+        if ($orderToBeCanceled === null)
             throw new ResourceNotFoundException($this->notFoundMessage);
 
         $uncancelableStatusEnumList = [
@@ -170,18 +171,19 @@ class OrderService
     {
         $affectedRowCount = Order::where('id', $orderId)->update($data);
 
-        if ($affectedRowCount === 0) throw new ResourceNotFoundException($this->notFoundMessage);
+        if ($affectedRowCount === 0)
+            throw new ResourceNotFoundException($this->notFoundMessage);
 
         return true;
     }
 
     /**
-     * @param int $id The ID of the product to be deleted.
+     * @param int $orderId The ID of the product to be deleted.
      * @return bool
      */
-    public function deleteOrderById(int $id)
+    public function deleteOrderById(int $orderId)
     {
-        $affectedRowsCount = Order::where('id', $id)->delete();
+        $affectedRowsCount = Order::destroy($orderId);
 
         if ($affectedRowsCount === 0)
             throw new ResourceNotFoundException($this->notFoundMessage);
