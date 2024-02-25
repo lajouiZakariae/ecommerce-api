@@ -2,85 +2,84 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exceptions\AppExceptions\BadRequestException;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Admin\CouponCodeResource;
 use App\Models\CouponCode;
+use App\Rules\ValidIntegerTypeRule;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Http\Response;
-use Spatie\RouteAttributes\Attributes\ApiResource;
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
-/**
- * @group Coupon Codes
- */
-#[ApiResource('coupon-codes')]
 class CouponCodeController extends Controller
 {
     /**
-     * Display a listing of coupon codes.
+     * Display a listing of the couponCodes.
      *
-     * @return \Illuminate\Http\Response
+     * @return Collection<int,CouponCode>
      */
-    public function index(): Response
+    public function index(): ResourceCollection
     {
-        $couponCodes = CouponCode::all();
+        $couponCodesQuery = CouponCode::query();
 
-        return response(CouponCodeResource::collection($couponCodes));
+        /**
+         * TODO: Filter By ranges of amount
+         */
+        $couponCodesQuery = request()->input("sortBy") === "oldest"
+            ? $couponCodesQuery->oldest()
+            : $couponCodesQuery->latest();
+
+        return CouponCodeResource::collection($couponCodesQuery->get());
     }
 
-    /**
-     * Store a newly created coupon code in storage.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function store(): Response
+    public function store(): CouponCodeResource
     {
-        $data = request()->validate([
-            'code' => ['required', 'string', 'min:1', 'max:255'],
-            'amount' => ['required', 'integer', 'min:0', 'max:100']
+        $couponCodePayload = [
+            'code' => request()->input('code'),
+            'amount' => request()->input('amount'),
+        ];
+
+        $couponCodeValidator = validator()->make($couponCodePayload, [
+            'code' => ['required', 'min:1', 'max:255', 'unique:coupon_codes,code'],
+            'amount' => ['required', 'integer', new ValidIntegerTypeRule, 'min:1', 'max:100'],
         ]);
 
-        $couponCode = CouponCode::create($data);
+        $validatedCouponCodePayload = $couponCodeValidator->validate();
 
-        return response(new CouponCodeResource($couponCode), Response::HTTP_CREATED);
+        $couponCode = new CouponCode($validatedCouponCodePayload);
+
+        if (!$couponCode->save()) throw new BadRequestException("Coupon code could not be created");
+
+        return CouponCodeResource::make($couponCode);
     }
 
-    /**
-     * Display the specified coupon code.
-     *
-     * @param  \App\Models\CouponCode  $couponCode
-     * @return \Illuminate\Http\Response
-     */
-    public function show(CouponCode $couponCode): Response
+    public function update(int $couponCodeId): Response
     {
-        return response(new CouponCodeResource($couponCode));
-    }
+        $couponCodePayload = [
+            'code' => request()->input('code'),
+            'amount' => request()->input('amount'),
+        ];
 
-    /**
-     * Update the specified coupon code in storage.
-     *
-     * @param  \App\Models\CouponCode  $couponCode
-     * @return \Illuminate\Http\Response
-     */
-    public function update(CouponCode $couponCode): Response
-    {
-        $data = request()->validate([
-            'code' => ['string', 'min:1', 'max:255'],
-            'amount' => ['integer', 'min:0', 'max:100']
+        $couponCodeValidator = validator()->make($couponCodePayload, [
+            'code' => ['required', 'min:1', 'max:255', 'unique:coupon_codes,code'],
+            'amount' => ['required', 'integer', new ValidIntegerTypeRule, 'min:1', 'max:100'],
         ]);
 
-        $couponCode->update($data);
+        $validatedCouponCodePayload = $couponCodeValidator->validate();
+
+        $affectedRowsCount = CouponCode::where('id', $couponCodeId)->update($validatedCouponCodePayload);
+
+        if ($affectedRowsCount === 0) throw new ResourceNotFoundException("Coupon Code Not Found");
 
         return response()->noContent();
     }
 
-    /**
-     * Remove the specified coupon code from storage.
-     *
-     * @param  \App\Models\CouponCode  $couponCode
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(CouponCode $couponCode): Response
+    public function destroy(int $couponCodeId): Response
     {
-        $couponCode->delete();
+        $affectedRowsCount = CouponCode::destroy($couponCodeId);
+
+        if ($affectedRowsCount === 0) throw new ResourceNotFoundException("Coupon Code Not Found");
 
         return response()->noContent();
     }

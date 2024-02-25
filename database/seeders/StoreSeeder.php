@@ -16,6 +16,7 @@ class StoreSeeder extends Seeder
         $stores = collect(json_decode(File::get(base_path('json/stores.json'))));
 
         $stores->each(function (object $store) {
+            $store->slug = str($store->name)->slug();
             Store::create((array) $store);
         });
     }

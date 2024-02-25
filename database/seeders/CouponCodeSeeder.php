@@ -23,6 +23,8 @@ class CouponCodeSeeder extends Seeder
             ["code" => "LOREM19", "amount" => 50],
         ];
 
-        CouponCode::insert($coupon_codes);
+        collect($coupon_codes)->each(function ($coupon_code) {
+            CouponCode::create($coupon_code);
+        });
     }
 }

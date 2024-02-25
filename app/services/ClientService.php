@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Http\Resources\Admin\ClientResource;
 use App\Models\Client;
 use Illuminate\Database\Eloquent\Collection;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
@@ -17,6 +18,9 @@ class ClientService
      */
     public function getFilteredClients(array $filters) //: Collection
     {
+        $clients = Client::query()->get();
+
+        return ClientResource::collection($clients);
     }
 
     /**

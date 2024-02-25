@@ -50,7 +50,7 @@ class StoreController extends Controller
         return $store;
     }
 
-    public function update(int $store_id): Response
+    public function update(int $storeId): Response
     {
         $storePayload = [
             'name' => request()->input('name'),
@@ -66,16 +66,16 @@ class StoreController extends Controller
 
         $validatedStorePayload = $storeValidator->validate();
 
-        $affectedRowsCount = Store::where('id', $store_id)->update($validatedStorePayload);
+        $affectedRowsCount = Store::where('id', $storeId)->update($validatedStorePayload);
 
         if ($affectedRowsCount === 0) throw new ResourceNotFoundException("Store Not Found");
 
         return response()->noContent();
     }
 
-    public function destroy(int $store_id): Response
+    public function destroy(int $storeId): Response
     {
-        $affectedRowsCount = Store::destroy($store_id);
+        $affectedRowsCount = Store::destroy($storeId);
 
         if ($affectedRowsCount === 0) throw new ResourceNotFoundException("Store Not Found");
 

@@ -16,6 +16,7 @@ class CouponCodeResource extends JsonResource
             'id' => $this->id,
             'code' => $this->code,
             'amount' => $this->amount,
+            'url' => route('coupon-codes.show', ['coupon_code' => $this->id]),
         ];
     }
 }

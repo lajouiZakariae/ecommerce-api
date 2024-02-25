@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\CouponCodeController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\OrderItemController;
 use App\Http\Controllers\Admin\ProductController;
@@ -28,7 +29,7 @@ Route::group([
     'prefix' => 'admin',
     'middlewear' => 'auth:sanctum'
 ], function () {
-    Route::apiResource('users', UserController::class)->whereNumber('user');
+    // Route::apiResource('users', UserController::class)->whereNumber('user');
 
     Route::apiResource('categories', CategoryController::class)->whereNumber('category');
 
@@ -41,6 +42,8 @@ Route::group([
     Route::get('categories/{category}/products', [ProductController::class, 'productsByCategory'])->whereNumber('category');
 
     Route::get('stores/{store}/products', [ProductController::class, 'productsByStore'])->whereNumber('store');
+
+    Route::apiResource('coupon-codes', CouponCodeController::class)->whereNumber('coupon_code');
 
     Route::apiResource('orders', OrderController::class)->whereNumber('order');
 
