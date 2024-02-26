@@ -5,12 +5,18 @@ namespace App\Http\Controllers\Admin;
 use App\Exceptions\AppExceptions\BadRequestException;
 use App\Http\Controllers\Controller;
 use App\Models\Store;
+use App\Services\StoreService;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Response;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
 class StoreController extends Controller
 {
+
+    public function __construct(private StoreService $storeService)
+    {
+    }
+
     /**
      * Display a listing of the stores.
      *
@@ -18,16 +24,10 @@ class StoreController extends Controller
      */
     public function index(): Collection
     {
-        $stores = Store::query();
-
-        $stores = request()->input("sortBy") === "oldest"
-            ? $stores->oldest()
-            : $stores->latest();
-
-        return $stores->get();
+        return $this->storeService->getAllStores();
     }
 
-    public function store()
+    public function store(): Store
     {
         $storePayload = [
             'name' => request()->input('name'),
@@ -43,11 +43,7 @@ class StoreController extends Controller
 
         $validatedStorePayload = $storeValidator->validate();
 
-        $store = new Store($validatedStorePayload);
-
-        if (!$store->save()) throw new BadRequestException("Store Could not be created");
-
-        return $store;
+        return $this->storeService->createStore($validatedStorePayload);
     }
 
     public function update(int $storeId): Response
@@ -75,9 +71,7 @@ class StoreController extends Controller
 
     public function destroy(int $storeId): Response
     {
-        $affectedRowsCount = Store::destroy($storeId);
-
-        if ($affectedRowsCount === 0) throw new ResourceNotFoundException("Store Not Found");
+        $this->storeService->deleteStoreById($storeId);
 
         return response()->noContent();
     }
