@@ -14,6 +14,9 @@ class OrderItemService
 {
     private $notFoundMessage = "Order Item Not Found";
 
+    /**
+     * 
+     */
     public function getAllOrderItemsOfOrder(int $orderId)
     {
         $orderExists = Order::exists($orderId);
@@ -81,6 +84,7 @@ class OrderItemService
     }
 
     /**
+     * @param int $orderId
      * @param array $orderItemPayload
      *
      * @return OrderItem
@@ -130,11 +134,12 @@ class OrderItemService
     /**
      * Delete an order item By it's ID from the storage
      * 
-     * @param int $id
+     * @param int $orderId
+     * @param int $orderItemId
      * 
      * @return bool
      */
-    public function deleteOrderItemOfOrderById(int $orderId, int $orderItemId)
+    public function deleteOrderItemOfOrderById(int $orderId, int $orderItemId): bool
     {
         $affectedRowsCount = OrderItem::query()
             ->where('order_id', $orderId)

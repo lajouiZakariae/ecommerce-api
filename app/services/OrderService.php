@@ -25,6 +25,7 @@ class OrderService
      * that matches the provided orderFilters
      * 
      * @param $orderFilters
+     * 
      * @return Collection<int,Order>
      */
     public function getAllFilteredOrdersWithTotalsCalculated(array $orderFilters): Collection
@@ -47,6 +48,7 @@ class OrderService
      * Get an order by its ID or throw a ResourceNotFound Exception
      *
      * @param int $orderId The ID of the order.
+     * 
      * @return Order The order instance.
      * @throws Symfony\Component\Routing\Exception\ResourceNotFoundException
      */
@@ -71,6 +73,7 @@ class OrderService
     /**
      * @param array $orderPayload
      * @return Order 
+     * @throws BadRequestException
      */
     public function placeOrderWithOrderItems(array $orderPayload): Order
     {
@@ -166,6 +169,7 @@ class OrderService
      * @param array $data
      *
      * @return bool
+     * @throws ResourceNotFoundException
      */
     private function updateOrder(int $orderId, array $data): bool
     {
@@ -180,6 +184,8 @@ class OrderService
     /**
      * @param int $orderId The ID of the product to be deleted.
      * @return bool
+     * 
+     * @throws ResourceNotFoundException
      */
     public function deleteOrderById(int $orderId)
     {
@@ -193,6 +199,7 @@ class OrderService
 
     /**
      * @param \App\Models\Order $order
+     * 
      * @return \App\Models\Order
      */
     private function calculateTotalsOfOrderAndOrderItems(Order $order): Order

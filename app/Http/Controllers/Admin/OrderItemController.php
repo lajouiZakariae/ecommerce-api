@@ -28,10 +28,11 @@ class OrderItemController extends Controller
     }
 
     /**
-     * @param  \App\Models\Order  $order
+     * @param OrderItemsStoreRequest $request
+     * @param int $orderId
      * @return \Illuminate\Http\Response
      */
-    public function store(OrderItemsStoreRequest $request, int $orderId)
+    public function store(OrderItemsStoreRequest $request, int $orderId): Response
     {
         $orderItemPayload = $request->validated('order_items');
 
@@ -47,7 +48,7 @@ class OrderItemController extends Controller
      * @param  \App\Models\OrderItem  $orderItem
      * @return \Illuminate\Http\Response
      */
-    public function show(int $orderId, int $orderItemId)
+    public function show(int $orderId, int $orderItemId): OrderItemResource
     {
         $orderItem = $this->orderItemService->getOrderItemOfOrderById($orderId, $orderItemId);
 
@@ -57,9 +58,10 @@ class OrderItemController extends Controller
     /**
      * Update the specified order item in storage for a specific order.
      * 
-     * @param  OrderItemUpdateRequest $request 
+     * @param  OrderItemUpdateRequest $request
      * @param  int $orderId 
      * @param  int $orderItemId
+     * 
      * @return \Illuminate\Http\Response
      */
     public function update(OrderItemUpdateRequest $request, int $orderId, int $orderItemId): Response
@@ -67,7 +69,7 @@ class OrderItemController extends Controller
         $this->orderItemService->updateOrderItemOfOrder(
             $orderId,
             $orderItemId,
-            $request->validated()
+            $request->validated(),
         );
 
         return response()->noContent();
@@ -77,6 +79,7 @@ class OrderItemController extends Controller
      * Remove the specified order item from storage for a specific order.
      * @param int $orderId
      * @param int $orderItemId
+     * 
      * @return \Illuminate\Http\Response
      */
     public function destroy(int $orderId, int $orderItemId): Response
