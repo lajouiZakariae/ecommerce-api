@@ -3,26 +3,26 @@
 namespace App\Services;
 
 use App\Exceptions\AppExceptions\BadRequestException;
-use App\Models\Store;
+use App\Models\Category;
 use Illuminate\Database\Eloquent\Collection;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
-class StoreService
+class CategoryService
 {
-    private $notFoundMessage = "Store Not Found";
+    private $notFoundMessage = "Category Not Found";
 
     /**
      * @return Collection
      */
-    public function getAllStores(): Collection
+    public function getAllCategories(): Collection
     {
-        $stores = Store::query();
+        $categories = Category::query();
 
-        $stores = request()->input("sortBy") === "oldest"
-            ? $stores->oldest()
-            : $stores->latest();
+        $categories = request()->input("sortBy") === "oldest"
+            ? $categories->oldest()
+            : $categories->latest();
 
-        return $stores->get();
+        return $categories->get();
     }
 
     /**

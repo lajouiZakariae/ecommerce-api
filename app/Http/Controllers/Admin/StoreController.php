@@ -70,9 +70,7 @@ class StoreController extends Controller
 
         $validatedStorePayload = $storeValidator->validate();
 
-        $affectedRowsCount = Store::where('id', $storeId)->update($validatedStorePayload);
-
-        if ($affectedRowsCount === 0) throw new ResourceNotFoundException("Store Not Found");
+        $this->storeService->updateStore($storeId, $validatedStorePayload);
 
         return response()->noContent();
     }

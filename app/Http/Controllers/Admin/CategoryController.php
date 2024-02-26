@@ -18,13 +18,7 @@ class CategoryController extends Controller
      */
     public function index(): Collection
     {
-        $categories = Category::query();
-
-        $categories = request()->input("sortBy") === "oldest"
-            ? $categories->oldest()
-            : $categories->latest();
-
-        return $categories->get();
+        return $this->categoryService->getAllCategories();
     }
 
     public function store()
