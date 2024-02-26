@@ -27,6 +27,14 @@ class StoreController extends Controller
         return $this->storeService->getAllStores();
     }
 
+    /**
+     * @return Store
+     */
+    public function show(int $storeId): Collection
+    {
+        return $this->storeService->getStoreById($storeId);
+    }
+
     public function store(): Store
     {
         $storePayload = [

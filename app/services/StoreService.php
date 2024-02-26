@@ -26,7 +26,20 @@ class StoreService
     }
 
     /**
-     * 
+     * @return Collection
+     */
+    public function getStoreById(int $storeId): Collection
+    {
+        $store = Store::find($storeId);
+
+        if ($store === null) throw new ResourceNotFoundException($this->notFoundMessage);
+
+        return $store;
+    }
+
+    /**
+     * @param array $storePayload
+     * @return Store
      */
     public function createStore(array $storePayload): Store
     {
@@ -37,11 +50,15 @@ class StoreService
         return $store;
     }
 
+    /**
+     * @param int $storeId
+     * @return bool
+     */
     public function deleteStoreById(int $storeId): bool
     {
         $affectedRowsCount = Store::destroy($storeId);
 
-        if ($affectedRowsCount === 0) throw new ResourceNotFoundException("Store Not Found");
+        if ($affectedRowsCount === 0) throw new ResourceNotFoundException($this->notFoundMessage);
 
         return true;
     }
