@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\Status;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -27,7 +28,7 @@ return new class extends Migration
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 
-            $table->enum('status', ["pending", "shipping", "delivered", "delivery attempt", "cancelled", "return to sender"]);
+            $table->enum('status', array_column(Status::cases(), 'value'));
 
             $table->unsignedBigInteger('payment_method_id')->nullable();
 

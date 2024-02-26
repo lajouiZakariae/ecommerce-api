@@ -4,6 +4,8 @@ namespace App\Enums;
 
 enum Status: string
 {
+	case REVIEW = "review";
+
 	case PENDING = "pending";
 
 	case SHIPPING = "shipping";
