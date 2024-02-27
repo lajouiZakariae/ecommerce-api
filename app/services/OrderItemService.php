@@ -117,7 +117,7 @@ class OrderItemService
      * @param int $orderItemId
      * @param array $orderItemPayload
      *
-     * @return bool
+     * @return OrderItem
      */
     public function updateOrderItemOfOrder(int $orderId, int $orderItemId, array $orderItemPayload): OrderItem
     {
