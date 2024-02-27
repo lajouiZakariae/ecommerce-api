@@ -100,7 +100,7 @@ class ProductService
      * 
      * @param array $productPayload
      *
-     * @return bool True if the update was successful, otherwise false.
+     * @return Product
      */
     public function updateProduct(int $productId, array $productPayload): Product
     {
