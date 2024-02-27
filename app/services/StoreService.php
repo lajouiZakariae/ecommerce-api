@@ -14,11 +14,11 @@ class StoreService
     /**
      * @return Collection
      */
-    public function getAllStores(): Collection
+    public function getAllStores(array $filters): Collection
     {
         $stores = Store::query();
 
-        $stores = request()->input("sortBy") === "oldest"
+        $stores = $filters['sortBy'] === "oldest"
             ? $stores->oldest()
             : $stores->latest();
 
@@ -26,27 +26,18 @@ class StoreService
     }
 
     /**
-     * @return Collection
+     * @param int $storeId
+     * 
+     * @return Store
+     * @throws ResourceNotFoundException
      */
-    public function getStoreById(int $storeId): Collection
+    public function getStoreById(int $storeId): Store
     {
         $store = Store::find($storeId);
 
         if ($store === null) throw new ResourceNotFoundException($this->notFoundMessage);
 
         return $store;
-    }
-
-    /**
-     * 
-     */
-    public function updateStore(int $storeId, $storePayload): bool
-    {
-        $affectedRowsCount = Store::where('id', $storeId)->update($storePayload);
-
-        if ($affectedRowsCount === 0) throw new ResourceNotFoundException("Store Not Found");
-
-        return true;
     }
 
     /**
@@ -64,7 +55,25 @@ class StoreService
 
     /**
      * @param int $storeId
+     * @param array $storePayload 
+     * 
      * @return bool
+     * @throws ResourceNotFoundException
+     */
+    public function updateStore(int $storeId, array $storePayload): bool
+    {
+        $affectedRowsCount = Store::where('id', $storeId)->update($storePayload);
+
+        if ($affectedRowsCount === 0) throw new ResourceNotFoundException($this->notFoundMessage);
+
+        return true;
+    }
+
+    /**
+     * @param int $storeId
+     * 
+     * @return bool
+     * @throws ResourceNotFoundException
      */
     public function deleteStoreById(int $storeId): bool
     {

@@ -2,15 +2,18 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Exceptions\AppExceptions\BadRequestException;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Services\CategoryService;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Response;
-use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
 class CategoryController extends Controller
 {
+    public function __construct(private CategoryService $categoryService)
+    {
+    }
+
     /**
      * Display a listing of the categories.
      *
@@ -18,10 +21,12 @@ class CategoryController extends Controller
      */
     public function index(): Collection
     {
-        return $this->categoryService->getAllCategories();
+        return $this->categoryService->getAllCategories([
+            'sortBy' => request()->input('sortBy', 'oldest')
+        ]);
     }
 
-    public function store()
+    public function store(): Category
     {
         $categoryPayload = [
             'name' => request()->input('name'),
@@ -37,14 +42,10 @@ class CategoryController extends Controller
 
         $validatedCategoryPayload = $categoryValidator->validate();
 
-        $category = new Category($validatedCategoryPayload);
-
-        if (!$category->save()) throw new BadRequestException("Category Could not be created");
-
-        return $category;
+        return $this->categoryService->createCategory($validatedCategoryPayload);
     }
 
-    public function update(int $category_id): Response
+    public function update(int $categoryId): Response
     {
         $categoryPayload = [
             'name' => request()->input('name'),
@@ -60,18 +61,14 @@ class CategoryController extends Controller
 
         $validatedCategoryPayload = $categoryValidator->validate();
 
-        $affectedRowsCount = Category::where('id', $category_id)->update($validatedCategoryPayload);
-
-        if ($affectedRowsCount === 0) throw new ResourceNotFoundException("Category Not Found");
+        $this->categoryService->updateCategory($categoryId, $validatedCategoryPayload);
 
         return response()->noContent();
     }
 
-    public function destroy(int $category_id): Response
+    public function destroy(int $categoryId): Response
     {
-        $affectedRowsCount = Category::destroy($category_id);
-
-        if ($affectedRowsCount === 0) throw new ResourceNotFoundException("Category Not Found");
+        $this->categoryService->deleteCatgoryById($categoryId);
 
         return response()->noContent();
     }

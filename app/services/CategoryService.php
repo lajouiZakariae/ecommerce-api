@@ -14,11 +14,11 @@ class CategoryService
     /**
      * @return Collection
      */
-    public function getAllCategories(): Collection
+    public function getAllCategories(array $filters): Collection
     {
         $categories = Category::query();
 
-        $categories = request()->input("sortBy") === "oldest"
+        $categories =  $filters['sortBy'] === "oldest"
             ? $categories->oldest()
             : $categories->latest();
 
@@ -28,47 +28,51 @@ class CategoryService
     /**
      * @return Collection
      */
-    public function getStoreById(int $storeId): Collection
+    public function getStoreById(int $categoryId): Collection
     {
-        $store = Store::find($storeId);
+        $category = Category::find($categoryId);
 
-        if ($store === null) throw new ResourceNotFoundException($this->notFoundMessage);
+        if ($category === null) throw new ResourceNotFoundException($this->notFoundMessage);
 
-        return $store;
+        return $category;
+    }
+
+
+    /**
+     * @param array $storePayload
+     * @return Category
+     */
+    public function createCategory(array $categoryPayload): Category
+    {
+        $category = new Category($categoryPayload);
+
+        if (!$category->save()) throw new BadRequestException("Category Could not be created");
+
+        return $category;
     }
 
     /**
-     * 
+     * @param int $categoryId
+     * @param array $categoryPayload
+     * @return bool
      */
-    public function updateStore(int $storeId, $storePayload): bool
+    public function updateCategory(int $categoryId, array $categoryPayload): bool
     {
-        $affectedRowsCount = Store::where('id', $storeId)->update($storePayload);
+        $affectedRowsCount = Category::where('id', $categoryId)->update($categoryPayload);
 
-        if ($affectedRowsCount === 0) throw new ResourceNotFoundException("Store Not Found");
+        if ($affectedRowsCount === 0) throw new ResourceNotFoundException($this->notFoundMessage);
 
         return true;
     }
 
-    /**
-     * @param array $storePayload
-     * @return Store
-     */
-    public function createStore(array $storePayload): Store
-    {
-        $store = new Store($storePayload);
-
-        if (!$store->save()) throw new BadRequestException("Store Could not be created");
-
-        return $store;
-    }
 
     /**
      * @param int $storeId
      * @return bool
      */
-    public function deleteStoreById(int $storeId): bool
+    public function deleteCatgoryById(int $categoryId): bool
     {
-        $affectedRowsCount = Store::destroy($storeId);
+        $affectedRowsCount = Category::destroy($categoryId);
 
         if ($affectedRowsCount === 0) throw new ResourceNotFoundException($this->notFoundMessage);
 

@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\Admin\CouponCodeResource;
 use App\Models\CouponCode;
 use App\Rules\ValidIntegerTypeRule;
+use App\Services\CouponCodeService;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Http\Response;
@@ -14,6 +15,10 @@ use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
 class CouponCodeController extends Controller
 {
+    public function __construct(private CouponCodeService $couponCodeService)
+    {
+    }
+
     /**
      * Display a listing of the couponCodes.
      *
@@ -21,16 +26,11 @@ class CouponCodeController extends Controller
      */
     public function index(): ResourceCollection
     {
-        $couponCodesQuery = CouponCode::query();
+        $couponCodes = $this->couponCodeService->getAllCouponCodes([
+            'sortBy' => request()->input("sortBy")
+        ]);
 
-        /**
-         * TODO: Filter By ranges of amount
-         */
-        $couponCodesQuery = request()->input("sortBy") === "oldest"
-            ? $couponCodesQuery->oldest()
-            : $couponCodesQuery->latest();
-
-        return CouponCodeResource::collection($couponCodesQuery->get());
+        return CouponCodeResource::collection($couponCodes);
     }
 
     public function store(): CouponCodeResource
@@ -47,11 +47,7 @@ class CouponCodeController extends Controller
 
         $validatedCouponCodePayload = $couponCodeValidator->validate();
 
-        $couponCode = new CouponCode($validatedCouponCodePayload);
-
-        if (!$couponCode->save()) throw new BadRequestException("Coupon code could not be created");
-
-        return CouponCodeResource::make($couponCode);
+        return CouponCodeResource::make($this->couponCodeService->createCouponCode($validatedCouponCodePayload));
     }
 
     public function update(int $couponCodeId): Response
@@ -68,18 +64,14 @@ class CouponCodeController extends Controller
 
         $validatedCouponCodePayload = $couponCodeValidator->validate();
 
-        $affectedRowsCount = CouponCode::where('id', $couponCodeId)->update($validatedCouponCodePayload);
-
-        if ($affectedRowsCount === 0) throw new ResourceNotFoundException("Coupon Code Not Found");
+        $this->couponCodeService->updateCouponCode($couponCodeId, $validatedCouponCodePayload);
 
         return response()->noContent();
     }
 
     public function destroy(int $couponCodeId): Response
     {
-        $affectedRowsCount = CouponCode::destroy($couponCodeId);
-
-        if ($affectedRowsCount === 0) throw new ResourceNotFoundException("Coupon Code Not Found");
+        $this->couponCodeService->deleteCouponCodeById($couponCodeId);
 
         return response()->noContent();
     }

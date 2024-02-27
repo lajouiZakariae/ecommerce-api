@@ -24,13 +24,15 @@ class StoreController extends Controller
      */
     public function index(): Collection
     {
-        return $this->storeService->getAllStores();
+        return $this->storeService->getAllStores([
+            "sortBy" => request()->input("sortBy")
+        ]);
     }
 
     /**
      * @return Store
      */
-    public function show(int $storeId): Collection
+    public function show(int $storeId): Store
     {
         return $this->storeService->getStoreById($storeId);
     }
