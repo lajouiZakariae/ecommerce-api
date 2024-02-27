@@ -56,7 +56,7 @@ class StoreController extends Controller
         return $this->storeService->createStore($validatedStorePayload);
     }
 
-    public function update(int $storeId): Response
+    public function update(int $storeId): Store
     {
         $storePayload = [
             'name' => request()->input('name'),
@@ -72,9 +72,9 @@ class StoreController extends Controller
 
         $validatedStorePayload = $storeValidator->validate();
 
-        $this->storeService->updateStore($storeId, $validatedStorePayload);
+        $updatedStore = $this->storeService->updateStore($storeId, $validatedStorePayload);
 
-        return response()->noContent();
+        return $updatedStore;
     }
 
     public function destroy(int $storeId): Response
