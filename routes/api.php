@@ -26,7 +26,7 @@ Route::middleware(['auth:sanctum'])->get('/admin/user', function (Request $reque
 });
 
 Route::group([
-    'prefix' => 'admin',
+    'prefix' => 'v1',
     'middlewear' => 'auth:sanctum'
 ], function () {
     // Route::apiResource('users', UserController::class)->whereNumber('user');

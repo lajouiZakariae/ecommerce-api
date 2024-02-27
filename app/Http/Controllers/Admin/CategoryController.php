@@ -45,7 +45,7 @@ class CategoryController extends Controller
         return $this->categoryService->createCategory($validatedCategoryPayload);
     }
 
-    public function update(int $categoryId): Response
+    public function update(int $categoryId): Category
     {
         $categoryPayload = [
             'name' => request()->input('name'),
@@ -61,9 +61,9 @@ class CategoryController extends Controller
 
         $validatedCategoryPayload = $categoryValidator->validate();
 
-        $this->categoryService->updateCategory($categoryId, $validatedCategoryPayload);
+        $updatedCategory = $this->categoryService->updateCategory($categoryId, $validatedCategoryPayload);
 
-        return response()->noContent();
+        return $updatedCategory;
     }
 
     public function destroy(int $categoryId): Response

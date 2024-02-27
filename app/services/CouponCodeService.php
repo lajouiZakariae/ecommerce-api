@@ -5,6 +5,8 @@ namespace App\Services;
 use App\Exceptions\AppExceptions\BadRequestException;
 use App\Models\CouponCode;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
+use LengthException;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
 class CouponCodeService
@@ -12,9 +14,11 @@ class CouponCodeService
     private $notFoundMessage = "Coupon Code Not Found";
 
     /**
+     *
+     * @param  mixed $filters
      * @return Collection
      */
-    public function getAllCouponCodes(array $filters): Collection
+    public function getAllCouponCodes(array $filters): LengthAwarePaginator
     {
         $couponCodes = CouponCode::query();
 
@@ -22,13 +26,17 @@ class CouponCodeService
             ? $couponCodes->oldest()
             : $couponCodes->latest();
 
-        return $couponCodes->get();
+        return $couponCodes->paginate(10);
     }
 
+
     /**
+     * @param  mixed $couponCodeId
+     * 
      * @return Collection
+     * @throws ResourceNotFoundException
      */
-    public function getStoreById(int $couponCodeId): Collection
+    public function getCouponCodeById(int $couponCodeId): Collection
     {
         $couponCode = CouponCode::find($couponCodeId);
 
@@ -39,8 +47,10 @@ class CouponCodeService
 
 
     /**
-     * @param array $storePayload
+     * @param array $couponCodePayload
+     * 
      * @return CouponCode
+     * @throws BadRequestException
      */
     public function createCouponCode(array $couponCodePayload): CouponCode
     {
@@ -54,7 +64,9 @@ class CouponCodeService
     /**
      * @param int $couponCodeId
      * @param array $couponCodePayload
+     * 
      * @return bool
+     * @throws ResourceNotFoundException
      */
     public function updateCouponCode(int $couponCodeId, array $couponCodePayload): bool
     {
@@ -67,15 +79,15 @@ class CouponCodeService
 
 
     /**
-     * @param int $storeId
+     * @param int $couponCodeId
+     * 
      * @return bool
+     * @throws ResourceNotFoundException
      */
-    public function deleteCouponCodeById(int $couponCodeId): bool
+    public function deleteCouponCodeById(int $couponCodeId): void
     {
         $affectedRowsCount = CouponCode::destroy($couponCodeId);
 
         if ($affectedRowsCount === 0) throw new ResourceNotFoundException($this->notFoundMessage);
-
-        return true;
     }
 }

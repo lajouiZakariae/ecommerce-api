@@ -19,11 +19,6 @@ class CouponCodeController extends Controller
     {
     }
 
-    /**
-     * Display a listing of the couponCodes.
-     *
-     * @return Collection<int,CouponCode>
-     */
     public function index(): ResourceCollection
     {
         $couponCodes = $this->couponCodeService->getAllCouponCodes([

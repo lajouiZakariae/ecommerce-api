@@ -54,28 +54,26 @@ class CategoryService
     /**
      * @param int $categoryId
      * @param array $categoryPayload
-     * @return bool
+     * @return Category
      */
-    public function updateCategory(int $categoryId, array $categoryPayload): bool
+    public function updateCategory(int $categoryId, array $categoryPayload): Category
     {
         $affectedRowsCount = Category::where('id', $categoryId)->update($categoryPayload);
 
         if ($affectedRowsCount === 0) throw new ResourceNotFoundException($this->notFoundMessage);
 
-        return true;
+        return Category::find($categoryId);
     }
 
 
     /**
      * @param int $storeId
-     * @return bool
+     * @return void
      */
-    public function deleteCatgoryById(int $categoryId): bool
+    public function deleteCatgoryById(int $categoryId): void
     {
         $affectedRowsCount = Category::destroy($categoryId);
 
         if ($affectedRowsCount === 0) throw new ResourceNotFoundException($this->notFoundMessage);
-
-        return true;
     }
 }

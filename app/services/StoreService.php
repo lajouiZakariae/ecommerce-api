@@ -11,7 +11,9 @@ class StoreService
 {
     private $notFoundMessage = "Store Not Found";
 
+
     /**
+     * @param  mixed $filters
      * @return Collection
      */
     public function getAllStores(array $filters): Collection
@@ -24,6 +26,7 @@ class StoreService
 
         return $stores->get();
     }
+
 
     /**
      * @param int $storeId
@@ -40,9 +43,12 @@ class StoreService
         return $store;
     }
 
+
     /**
      * @param array $storePayload
+     * 
      * @return Store
+     * @throws BadRequestException
      */
     public function createStore(array $storePayload): Store
     {
@@ -72,15 +78,13 @@ class StoreService
     /**
      * @param int $storeId
      * 
-     * @return bool
+     * @return void
      * @throws ResourceNotFoundException
      */
-    public function deleteStoreById(int $storeId): bool
+    public function deleteStoreById(int $storeId): void
     {
         $affectedRowsCount = Store::destroy($storeId);
 
         if ($affectedRowsCount === 0) throw new ResourceNotFoundException($this->notFoundMessage);
-
-        return true;
     }
 }
