@@ -63,16 +63,16 @@ class StoreService
      * @param int $storeId
      * @param array $storePayload 
      * 
-     * @return bool
+     * @return Store
      * @throws ResourceNotFoundException
      */
-    public function updateStore(int $storeId, array $storePayload): bool
+    public function updateStore(int $storeId, array $storePayload): Store
     {
         $affectedRowsCount = Store::where('id', $storeId)->update($storePayload);
 
         if ($affectedRowsCount === 0) throw new ResourceNotFoundException($this->notFoundMessage);
 
-        return true;
+        return Store::find($storeId);
     }
 
     /**
