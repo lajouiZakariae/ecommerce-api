@@ -65,16 +65,16 @@ class CouponCodeService
      * @param int $couponCodeId
      * @param array $couponCodePayload
      * 
-     * @return bool
+     * @return CouponCode
      * @throws ResourceNotFoundException
      */
-    public function updateCouponCode(int $couponCodeId, array $couponCodePayload): bool
+    public function updateCouponCode(int $couponCodeId, array $couponCodePayload): CouponCode
     {
         $affectedRowsCount = CouponCode::where('id', $couponCodeId)->update($couponCodePayload);
 
         if ($affectedRowsCount === 0) throw new ResourceNotFoundException($this->notFoundMessage);
 
-        return true;
+        return CouponCode::find($couponCodeId);
     }
 
 
