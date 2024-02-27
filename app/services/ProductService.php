@@ -115,16 +115,14 @@ class ProductService
     /**
      * @param int $productId
      *
-     * @return bool 
+     * @return void
      */
-    public function deleteProductById(int $productId): bool
+    public function deleteProductById(int $productId): void
     {
         $affectedRowsCount = Product::where('id', $productId)->delete();
 
         if ($affectedRowsCount === 0)
             throw new ResourceNotFoundException($this->notFoundMessage);
-
-        return true;
     }
 
     /**
@@ -132,9 +130,9 @@ class ProductService
      *
      * @param int $productId
      *
-     * @return bool True if the state toggle is successful, otherwise false.
+     * @return void
      */
-    public function togglePublishedState(int $productId): bool
+    public function togglePublishedState(int $productId): void
     {
         $affectedRowsCount = DB::update("UPDATE products SET published = !published WHERE id = :id ;", [
             ':id' => $productId
@@ -142,8 +140,6 @@ class ProductService
 
         if ($affectedRowsCount === 0)
             throw new ResourceNotFoundException($this->notFoundMessage);
-
-        return true;
     }
 
     /**

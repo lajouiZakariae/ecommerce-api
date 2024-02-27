@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\ProductStoreRequest;
 use App\Http\Requests\Admin\ProductUpdateRequest;
 use App\Http\Resources\Admin\ProductResource;
+use App\Models\Product;
 use App\Services\ProductService;
 use Illuminate\Http\Response;
 use Illuminate\Validation\Rule;
@@ -90,15 +91,15 @@ class ProductController extends Controller
      *
      * @param  \App\Http\Requests\Admin\ProductUpdateRequest  $request
      * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
+     * @return Product
      */
-    public function update(ProductUpdateRequest $request,  $productId): Response
+    public function update(ProductUpdateRequest $request,  $productId): Product
     {
         $data = $request->validated();
 
-        $this->productService->updateProduct($productId, $data);
+        $updatedProduct = $this->productService->updateProduct($productId, $data);
 
-        return response()->noContent();
+        return $updatedProduct;
     }
 
     /**
