@@ -119,16 +119,17 @@ class OrderItemService
      *
      * @return bool
      */
-    public function updateOrderItemOfOrder(int $orderId, int $orderItemId, array $orderItemPayload): bool
+    public function updateOrderItemOfOrder(int $orderId, int $orderItemId, array $orderItemPayload): OrderItem
     {
-        $affectedRowCount = OrderItem::query()
-            ->where('id', $orderItemId)
+        $affectedRowCount = OrderItem::where('id', $orderItemId)
             ->where('order_id', $orderId)
             ->update($orderItemPayload);
 
         if ($affectedRowCount === 0) throw new ResourceNotFoundException($this->notFoundMessage);
 
-        return true;
+        return OrderItem::where('id', $orderItemId)
+            ->where('order_id', $orderId)
+            ->first();
     }
 
     /**

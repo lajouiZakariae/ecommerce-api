@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\OrderItemsStoreRequest;
 use App\Http\Requests\OrderItemUpdateRequest;
 use App\Http\Resources\Admin\OrderItemResource;
+use App\Models\OrderItem;
 use App\Services\OrderItemService;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Http\Response;
@@ -62,17 +63,17 @@ class OrderItemController extends Controller
      * @param  int $orderId 
      * @param  int $orderItemId
      * 
-     * @return \Illuminate\Http\Response
+     * @return OrderItem
      */
-    public function update(OrderItemUpdateRequest $request, int $orderId, int $orderItemId): Response
+    public function update(OrderItemUpdateRequest $request, int $orderId, int $orderItemId): OrderItem
     {
-        $this->orderItemService->updateOrderItemOfOrder(
+        $updatedOrderItem = $this->orderItemService->updateOrderItemOfOrder(
             $orderId,
             $orderItemId,
             $request->validated(),
         );
 
-        return response()->noContent();
+        return $updatedOrderItem;
     }
 
     /**
