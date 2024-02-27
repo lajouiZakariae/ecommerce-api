@@ -2,9 +2,8 @@
 
 namespace App\Services;
 
-use App\Http\Resources\Admin\ClientResource;
 use App\Models\Client;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
 class ClientService
@@ -14,13 +13,13 @@ class ClientService
     /**
      * @param array $filters
      * 
-     * @return Collection<int,Client>
+     * @return LengthAwarePaginator
      */
-    public function getFilteredClients(array $filters) //: Collection
+    public function getFilteredClients(array $filters): LengthAwarePaginator
     {
-        $clients = Client::query()->get();
+        $clients = Client::query()->paginate(10);
 
-        return ClientResource::collection($clients);
+        return $clients;
     }
 
     /**
@@ -28,7 +27,7 @@ class ClientService
      * 
      * @return Client
      */
-    public function getClientById(int $clientId) //: Client
+    public function getClientById(int $clientId): Client
     {
         $client = Client::find($clientId);
 
@@ -42,38 +41,35 @@ class ClientService
      * 
      * @return Client
      */
-    public function createClient(array $clientPayload) //: Client
-    {
-    }
+    // public function createClient(array $clientPayload)
+    // {
+    // }
 
     /**
      * @param int $clientId
      * @param array $clientPayload
      *
-     * @return bool
+     * @return Client
      */
-    public function updateClient(int $clientId, array $clientPayload): bool
+    public function updateClient(int $clientId, array $clientPayload): Client
     {
         $affectedRowCount = Client::whereId($clientId)->update($clientPayload);
 
         if ($affectedRowCount === 0)
             throw new ResourceNotFoundException($this->notFoundMessage);
 
-        return true;
+        return Client::find($clientId);
     }
 
     /**
      * @param int $clientId
      * 
-     * @return bool
+     * @return void
      */
-    public function deleteClient(int $clientId)
+    public function deleteClientById(int $clientId): void
     {
         $affectedRowsCount = Client::destroy($clientId);
 
-        if ($affectedRowsCount === 0)
-            throw new ResourceNotFoundException($this->notFoundMessage);
-
-        return true;
+        if ($affectedRowsCount === 0) throw new ResourceNotFoundException($this->notFoundMessage);
     }
 }
