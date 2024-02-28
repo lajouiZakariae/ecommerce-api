@@ -18469,17 +18469,6 @@
      *
      */ 
         class Str {
-                    /**
-         * 
-         *
-         * @see \Zakalajo\ApiGenerator\ApiGeneratorServiceProvider::boot()
-         * @param mixed $string
-         * @static 
-         */ 
-        public static function modelName($string)
-        {
-                        return \Illuminate\Support\Str::modelName($string);
-        }
          
     }
      
