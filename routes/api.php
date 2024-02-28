@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\OrderItemController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\StoreController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Auth\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -21,13 +22,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware(['auth:sanctum'])->get('/admin/user', function (Request $request) {
+Route::middleware(['auth:api'])->get('/v1/user', function (Request $request) {
     return $request->user()->load('role');
 });
 
+
+
+Route::post('login', [AuthController::class, 'login']);
+Route::post('logout', [AuthController::class, 'logout']);
+
+
 Route::group([
     'prefix' => 'v1',
-    'middlewear' => 'auth:sanctum'
+    'middleware' => 'auth:api'
 ], function () {
     // Route::apiResource('users', UserController::class)->whereNumber('user');
 
