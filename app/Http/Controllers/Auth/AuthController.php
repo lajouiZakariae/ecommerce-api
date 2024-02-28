@@ -22,11 +22,16 @@ class AuthController extends Controller
         return Str::lower(request()->input('email')) . '|' . request()->ip();
     }
 
-    public function login(): array
+    private function checkRateLimit(): void
     {
         if (RateLimiter::tooManyAttempts($this->getThrottleKey(), 2)) {
             throw new TooManyRequestsHttpException(message: 'Too Many Attempts');
         };
+    }
+
+    public function login(): array
+    {
+        $this->checkRateLimit();
 
         request()->validate([
             'email' => 'required|string|email',
