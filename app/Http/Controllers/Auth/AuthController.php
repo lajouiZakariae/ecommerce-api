@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use Auth;
 
 class AuthController extends Controller
 {
@@ -20,24 +21,36 @@ class AuthController extends Controller
 
         $credentials = request()->only('email', 'password');
 
-        $token = auth()->attempt($credentials);
+        $token = Auth::attempt($credentials);
 
         if (!$token) {
             # code...
         }
 
         return [
-            'user' => auth()->user(),
+            'user' => Auth::user(),
             'token' => $token
         ];
     }
 
     public function logout()
     {
-        auth()->logout();
+        Auth::logout();
 
         return response()->json([
             'message' => 'Successfully logged out',
+        ]);
+    }
+
+    public function refresh()
+    {
+        return response()->json([
+            'status' => 'success',
+            'user' => Auth::user(),
+            'authorisation' => [
+                'token' => Auth::refresh(),
+                'type' => 'bearer',
+            ]
         ]);
     }
 }
