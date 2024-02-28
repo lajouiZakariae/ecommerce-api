@@ -19,8 +19,6 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote');
 
 Artisan::command('make:repo {repoClass}', function (string $repoClass) {
-    dump($repoClass);
-
     $dir_path = str(app_path('Repositories'));
 
     $file_path = $dir_path
@@ -42,8 +40,6 @@ Artisan::command('make:repo {repoClass}', function (string $repoClass) {
 });
 
 Artisan::command('make:service {serviceClass}', function (string $serviceClass) {
-    dump($serviceClass);
-
     $dir_path = str(app_path('Services'));
 
     $file_path = $dir_path
