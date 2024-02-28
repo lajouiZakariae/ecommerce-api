@@ -36,8 +36,6 @@ Artisan::command('make:repo {repoClass}', function (string $repoClass) {
         ->newLine(2)
         ->append("}");
 
-    dump($file_path, $content);
-
     if (!File::isDirectory($dir_path)) File::makeDirectory($dir_path);
 
     File::put($file_path, $content);
@@ -60,8 +58,6 @@ Artisan::command('make:service {serviceClass}', function (string $serviceClass) 
         ->append("class $serviceClass {")
         ->newLine(2)
         ->append("}");
-
-    dump($file_path, $content);
 
     if (!File::isDirectory($dir_path)) File::makeDirectory($dir_path);
 
