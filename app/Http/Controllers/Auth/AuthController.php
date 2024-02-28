@@ -4,6 +4,11 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Auth;
+use Illuminate\Auth\AuthenticationException;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Str;
+use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
 
 class AuthController extends Controller
 {
@@ -12,10 +17,19 @@ class AuthController extends Controller
         $this->middleware('auth:api', ['except' => ['login', 'register']]);
     }
 
+    private function getThrottleKey(): string
+    {
+        return Str::lower(request()->input('email')) . '|' . request()->ip();
+    }
+
     public function login(): array
     {
+        if (RateLimiter::tooManyAttempts($this->getThrottleKey(), 2)) {
+            throw new TooManyRequestsHttpException(message: 'Too Many Attempts');
+        };
+
         request()->validate([
-            'email' => 'required|string|email|exists:users,email',
+            'email' => 'required|string|email',
             'password' => 'required|string',
         ]);
 
@@ -24,7 +38,8 @@ class AuthController extends Controller
         $token = Auth::attempt($credentials);
 
         if (!$token) {
-            # code...
+            RateLimiter::hit($this->getThrottleKey());
+            throw new AuthenticationException('Bad credentials');
         }
 
         return [
@@ -33,7 +48,7 @@ class AuthController extends Controller
         ];
     }
 
-    public function logout()
+    public function logout(): JsonResponse
     {
         Auth::logout();
 

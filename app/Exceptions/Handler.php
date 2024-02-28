@@ -7,6 +7,7 @@ use App\Exceptions\AppExceptions\BusinessException;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Response;
+use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Throwable;
 
@@ -42,6 +43,12 @@ class Handler extends ExceptionHandler
             if ($e instanceof BadRequestException && request()->accepts("application/json"))
                 return response()
                     ->json(["message" => $e->getMessage()], Response::HTTP_BAD_REQUEST);
+        });
+
+        $this->renderable(function (TooManyRequestsHttpException $e) {
+            if (request()->accepts("application/json"))
+                return response()
+                    ->json(["message" => $e->getMessage()], $e->getStatusCode());
         });
     }
 }
