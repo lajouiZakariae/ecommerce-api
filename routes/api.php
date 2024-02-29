@@ -21,11 +21,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware(['auth:api'])->get('/v1/user', function (Request $request) {
-    return $request->user()->load('role');
-});
-
-
+Route::middleware(['auth:api'])->get('/v1/user', fn (Request $request) => $request->user()->load('role'));
 
 Route::post('login', [JWTAuthController::class, 'login']);
 Route::post('logout', [JWTAuthController::class, 'logout']);
@@ -36,8 +32,6 @@ Route::group([
     'prefix' => 'v1',
     'middleware' => 'auth:api'
 ], function () {
-    // Route::apiResource('users', UserController::class)->whereNumber('user');
-
     Route::apiResource('categories', CategoryController::class)->whereNumber('category');
 
     Route::apiResource('stores', StoreController::class)->whereNumber('store');
