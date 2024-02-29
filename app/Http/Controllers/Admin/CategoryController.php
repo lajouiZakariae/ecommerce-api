@@ -49,9 +49,7 @@ class CategoryController extends Controller
             'description' => ['nullable', 'min:1', 'max:500'],
         ]);
 
-        $updatedCategory = $this->categoryService->updateCategory($categoryId, $validatedCategoryPayload);
-
-        return $updatedCategory;
+        return $this->categoryService->updateCategory($categoryId, $validatedCategoryPayload);
     }
 
     public function destroy(int $categoryId): Response

@@ -39,7 +39,6 @@ class StoreController extends Controller
 
     public function store(): Store
     {
-
         request()->merge(['slug' => str(request()->input('name'))->slug()]);
 
         $validatedStorePayload = request()->validate([
@@ -53,23 +52,15 @@ class StoreController extends Controller
 
     public function update(int $storeId): Store
     {
-        $storePayload = [
-            'name' => request()->input('name'),
-            'slug' => str(request()->input('name'))->slug(),
-            'address' => request()->input('address'),
-        ];
+        request()->merge(['slug' => str(request()->input('name'))->slug()]);
 
-        $storeValidator = validator()->make($storePayload, [
+        $validatedStorePayload = request()->validate([
             'name' => ['required', 'min:1', 'max:255'],
             'slug' => ['required', 'min:1', 'max:255', 'unique:stores,slug'],
             'address' => ['nullable', 'min:1', 'max:500'],
         ]);
 
-        $validatedStorePayload = $storeValidator->validate();
-
-        $updatedStore = $this->storeService->updateStore($storeId, $validatedStorePayload);
-
-        return $updatedStore;
+        return $this->storeService->updateStore($storeId, $validatedStorePayload);
     }
 
     public function destroy(int $storeId): Response
