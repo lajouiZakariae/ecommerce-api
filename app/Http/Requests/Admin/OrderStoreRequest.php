@@ -25,7 +25,7 @@ class OrderStoreRequest extends FormRequest
             'full_name' => ['required', 'string', 'min:1', 'max:255'],
             'email' => ['required', 'string', 'min:1', 'max:255'],
             'phone_number' => ['required', 'string', 'min:1', 'max:255'],
-            'status' => ['required', 'string', Rule::enum(Status::class)],
+            'status' => ['required', 'string', Rule::enum(OrderStatus::class)],
             'city' => ['required', 'string', 'min:1', 'max:255'],
             'payment_method_id' => ['required', 'exists:payment_methods,id'],
             'zip_code' => ['required', 'string', 'min:1', 'max:255'],

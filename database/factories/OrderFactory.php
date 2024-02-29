@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
+use App\Enums\OrderStatus;
 use App\Models\Order;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -30,7 +31,7 @@ final class OrderFactory extends Factory
             'full_name' => fake()->name,
             'email' => fake()->safeEmail,
             'phone_number' => fake()->phoneNumber,
-            'status' => fake()->randomElement(['pending', 'in transit', 'delivered', 'delivery attempt', 'cancelled', 'return to sender']),
+            'status' => fake()->randomElement(OrderStatus::values()),
             'city' => fake()->city,
             'payment_method_id' => \App\Models\PaymentMethod::factory(),
             'zip_code' => fake()->word,

@@ -28,7 +28,7 @@ return new class extends Migration
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 
-            $table->enum('status', Status::values());
+            $table->enum('status', OrderStatus::values());
 
             $table->unsignedBigInteger('payment_method_id')->nullable();
 

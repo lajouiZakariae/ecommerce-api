@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum Status: string
+enum OrderStatus: string
 {
 	case REVIEW = "review";
 

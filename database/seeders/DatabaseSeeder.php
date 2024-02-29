@@ -2,16 +2,12 @@
 
 namespace Database\Seeders;
 
-use App\Enums\Role as EnumsRole;
-use App\Enums\Status;
+use App\Enums\OrderStatus;
 use App\Models\Order;
 use App\Models\OrderItem;
-use App\Models\PaymentMethod;
 use App\Models\Product;
 use App\Models\Purchase;
 use App\Models\PurchaseItem;
-use App\Models\Role;
-use Hash;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -59,19 +55,19 @@ class DatabaseSeeder extends Seeder
         $orders = [
             [
                 "client_id" => 1,
-                "status" => fake()->randomElement(["pending", "shipping", "delivered", "delivery attempt", "cancelled", "return to sender"]),
+                "status" => fake()->randomElement(OrderStatus::values()),
                 "coupon_code_id" => 1,
                 "payment_method_id" => fake()->numberBetween(1, 2),
             ],
             [
                 "client_id" => 1,
-                "status" => fake()->randomElement(["pending", "shipping", "delivered", "delivery attempt", "cancelled", "return to sender"]),
+                "status" => fake()->randomElement(OrderStatus::values()),
                 "coupon_code_id" => 2,
                 "payment_method_id" => fake()->numberBetween(1, 2),
             ],
             [
                 "client_id" => 1,
-                "status" => Status::PENDING,
+                "status" => OrderStatus::PENDING,
                 "coupon_code_id" => 2,
                 "payment_method_id" => fake()->numberBetween(1, 2),
             ],

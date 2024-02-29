@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Enums\Status;
+use App\Enums\OrderStatus;
 use App\Exceptions\AppExceptions\BadRequestException;
 use App\Models\Order;
 use App\Models\OrderItem;
@@ -81,7 +81,7 @@ class OrderService
 
             $order = new Order([
                 "client_id" => $orderPayload["client_id"],
-                "status" => Status::PENDING,
+                "status" => OrderStatus::PENDING,
                 "coupon_code_id" => $orderPayload["coupon_code_id"],
                 "payment_method_id" => $orderPayload["payment_method_id"],
             ]);
@@ -147,11 +147,11 @@ class OrderService
             throw new ResourceNotFoundException($this->notFoundMessage);
 
         $uncancelableStatusEnumList = [
-            Status::CANCELLED,
-            Status::SHIPPING,
-            Status::DELIVERED,
-            Status::DELIVERY_ATTEMPT,
-            Status::RETURN_TO_SENDER
+            OrderStatus::CANCELLED,
+            OrderStatus::SHIPPING,
+            OrderStatus::DELIVERED,
+            OrderStatus::DELIVERY_ATTEMPT,
+            OrderStatus::RETURN_TO_SENDER
         ];
 
         $uncancelableStatusList = array_column($uncancelableStatusEnumList, 'value');
@@ -159,7 +159,7 @@ class OrderService
         if (in_array($orderToBeCanceled->status, $uncancelableStatusList))
             throw new BadRequestException("Order Can't be Cancelled");
 
-        return $this->updateOrder($orderId, ['status' => Status::CANCELLED]);
+        return $this->updateOrder($orderId, ['status' => OrderStatus::CANCELLED]);
     }
 
     /**
