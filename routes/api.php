@@ -21,7 +21,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware(['auth:api'])->get('/v1/user', fn (Request $request) => $request->user()->load('role'));
 
 
 Route::controller(JWTAuthController::class)->group(function () {
@@ -34,6 +33,8 @@ Route::group([
     'prefix' => 'v1',
     'middleware' => 'auth:api'
 ], function () {
+    Route::get('/user', fn (Request $request) => $request->user()->load('role'));
+
     Route::apiResource('categories', CategoryController::class)->whereNumber('category');
 
     Route::apiResource('stores', StoreController::class)->whereNumber('store');
