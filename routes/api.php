@@ -23,10 +23,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth:api'])->get('/v1/user', fn (Request $request) => $request->user()->load('role'));
 
-Route::post('login', [JWTAuthController::class, 'login']);
-Route::post('logout', [JWTAuthController::class, 'logout']);
-Route::post('refresh', [JWTAuthController::class, 'refresh']);
 
+Route::controller(JWTAuthController::class)->group(function () {
+    Route::post('login', 'login');
+    Route::post('logout', 'logout');
+    Route::post('refresh', 'refresh');
+});
 
 Route::group([
     'prefix' => 'v1',
