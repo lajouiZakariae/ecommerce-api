@@ -21,8 +21,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
-
 Route::controller(JWTAuthController::class)->group(function () {
     Route::post('login', 'login');
     Route::post('logout', 'logout');
