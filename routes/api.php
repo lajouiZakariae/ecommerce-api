@@ -29,6 +29,7 @@ Route::middleware(['auth:api'])->get('/v1/user', function (Request $request) {
 
 Route::post('login', [JWTAuthController::class, 'login']);
 Route::post('logout', [JWTAuthController::class, 'logout']);
+Route::post('refresh', [JWTAuthController::class, 'refresh']);
 
 
 Route::group([
