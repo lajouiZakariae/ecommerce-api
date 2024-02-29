@@ -48,7 +48,6 @@ class StoreController extends Controller
             'address' => ['nullable', 'min:1', 'max:500'],
         ]);
 
-
         return $this->storeService->createStore($validatedStorePayload);
     }
 

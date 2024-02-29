@@ -28,38 +28,26 @@ class CategoryController extends Controller
 
     public function store(): Category
     {
-        $categoryPayload = [
-            'name' => request()->input('name'),
-            'slug' => str(request()->input('name'))->slug(),
-            'description' => request()->input('description'),
-        ];
+        request()->merge(['slug' => str(request()->input('name'))->slug()]);
 
-        $categoryValidator = validator()->make($categoryPayload, [
+        $validatedCategoryPayload = request()->validate([
             'name' => ['required', 'min:1', 'max:255'],
             'slug' => ['required', 'min:1', 'max:255', 'unique:categories,slug'],
             'description' => ['nullable', 'min:1', 'max:500'],
         ]);
-
-        $validatedCategoryPayload = $categoryValidator->validate();
 
         return $this->categoryService->createCategory($validatedCategoryPayload);
     }
 
     public function update(int $categoryId): Category
     {
-        $categoryPayload = [
-            'name' => request()->input('name'),
-            'slug' => str(request()->input('name'))->slug(),
-            'description' => request()->input('description'),
-        ];
+        request()->merge(['slug' => str(request()->input('name'))->slug()]);
 
-        $categoryValidator = validator()->make($categoryPayload, [
+        $validatedCategoryPayload = request()->validate([
             'name' => ['required', 'min:1', 'max:255'],
-            'slug' => ['required', 'min:1', 'max:255', 'unique:categories,slug'],
+            'slug' => ['min:1', 'max:255', 'unique:categories,slug'],
             'description' => ['nullable', 'min:1', 'max:500'],
         ]);
-
-        $validatedCategoryPayload = $categoryValidator->validate();
 
         $updatedCategory = $this->categoryService->updateCategory($categoryId, $validatedCategoryPayload);
 
