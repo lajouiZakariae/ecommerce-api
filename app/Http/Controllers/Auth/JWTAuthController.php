@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
 
-class AuthController extends Controller
+class JWTAuthController extends Controller
 {
     public function __construct()
     {

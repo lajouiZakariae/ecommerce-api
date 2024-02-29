@@ -6,8 +6,7 @@ use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\OrderItemController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\StoreController;
-use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Auth\JWTAuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -28,8 +27,8 @@ Route::middleware(['auth:api'])->get('/v1/user', function (Request $request) {
 
 
 
-Route::post('login', [AuthController::class, 'login']);
-Route::post('logout', [AuthController::class, 'logout']);
+Route::post('login', [JWTAuthController::class, 'login']);
+Route::post('logout', [JWTAuthController::class, 'logout']);
 
 
 Route::group([
