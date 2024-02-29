@@ -41,11 +41,13 @@ class StoreController extends Controller
     {
         request()->merge(['slug' => str(request()->input('name'))->slug()]);
 
-        $validatedStorePayload = request()->validate([
-            'name' => ['required', 'min:1', 'max:255'],
-            'slug' => ['required', 'min:1', 'max:255', 'unique:stores,slug'],
-            'address' => ['nullable', 'min:1', 'max:500'],
-        ]);
+        $validatedStorePayload = request()->validate(
+            [
+                'name' => ['required', 'min:1', 'max:255'],
+                'slug' => ['required', 'min:1', 'max:255', 'unique:stores,slug'],
+                'address' => ['nullable', 'min:1', 'max:500'],
+            ]
+        );
 
         return $this->storeService->createStore($validatedStorePayload);
     }
@@ -54,11 +56,13 @@ class StoreController extends Controller
     {
         request()->merge(['slug' => str(request()->input('name'))->slug()]);
 
-        $validatedStorePayload = request()->validate([
-            'name' => ['required', 'min:1', 'max:255'],
-            'slug' => ['required', 'min:1', 'max:255', 'unique:stores,slug'],
-            'address' => ['nullable', 'min:1', 'max:500'],
-        ]);
+        $validatedStorePayload = request()->validate(
+            [
+                'name' => ['required', 'min:1', 'max:255'],
+                'slug' => ['required', 'min:1', 'max:255', 'unique:stores,slug'],
+                'address' => ['nullable', 'min:1', 'max:500'],
+            ]
+        );
 
         return $this->storeService->updateStore($storeId, $validatedStorePayload);
     }

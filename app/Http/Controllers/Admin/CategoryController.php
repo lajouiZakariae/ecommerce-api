@@ -30,11 +30,13 @@ class CategoryController extends Controller
     {
         request()->merge(['slug' => str(request()->input('name'))->slug()]);
 
-        $validatedCategoryPayload = request()->validate([
-            'name' => ['required', 'min:1', 'max:255'],
-            'slug' => ['required', 'min:1', 'max:255', 'unique:categories,slug'],
-            'description' => ['nullable', 'min:1', 'max:500'],
-        ]);
+        $validatedCategoryPayload = request()->validate(
+            [
+                'name' => ['required', 'min:1', 'max:255'],
+                'slug' => ['required', 'min:1', 'max:255', 'unique:categories,slug'],
+                'description' => ['nullable', 'min:1', 'max:500'],
+            ]
+        );
 
         return $this->categoryService->createCategory($validatedCategoryPayload);
     }
@@ -43,11 +45,13 @@ class CategoryController extends Controller
     {
         request()->merge(['slug' => str(request()->input('name'))->slug()]);
 
-        $validatedCategoryPayload = request()->validate([
-            'name' => ['required', 'min:1', 'max:255'],
-            'slug' => ['min:1', 'max:255', 'unique:categories,slug'],
-            'description' => ['nullable', 'min:1', 'max:500'],
-        ]);
+        $validatedCategoryPayload = request()->validate(
+            [
+                'name' => ['required', 'min:1', 'max:255'],
+                'slug' => ['min:1', 'max:255', 'unique:categories,slug'],
+                'description' => ['nullable', 'min:1', 'max:500'],
+            ]
+        );
 
         return $this->categoryService->updateCategory($categoryId, $validatedCategoryPayload);
     }
