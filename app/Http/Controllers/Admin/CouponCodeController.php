@@ -2,16 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Exceptions\AppExceptions\BadRequestException;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Admin\CouponCodeResource;
-use App\Models\CouponCode;
 use App\Rules\ValidIntegerTypeRule;
 use App\Services\CouponCodeService;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Http\Response;
-use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
 class CouponCodeController extends Controller
 {
