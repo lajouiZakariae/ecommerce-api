@@ -39,19 +39,15 @@ class StoreController extends Controller
 
     public function store(): Store
     {
-        $storePayload = [
-            'name' => request()->input('name'),
-            'slug' => str(request()->input('name'))->slug(),
-            'address' => request()->input('address'),
-        ];
 
-        $storeValidator = validator()->make($storePayload, [
+        request()->merge(['slug' => str(request()->input('name'))->slug()]);
+
+        $validatedStorePayload = request()->validate([
             'name' => ['required', 'min:1', 'max:255'],
             'slug' => ['required', 'min:1', 'max:255', 'unique:stores,slug'],
             'address' => ['nullable', 'min:1', 'max:500'],
         ]);
 
-        $validatedStorePayload = $storeValidator->validate();
 
         return $this->storeService->createStore($validatedStorePayload);
     }
