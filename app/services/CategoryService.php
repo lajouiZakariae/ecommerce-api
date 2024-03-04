@@ -5,10 +5,9 @@ namespace App\Services;
 use App\Exceptions\AppExceptions\BadRequestException;
 use App\Models\Category;
 use App\Models\Product;
-use DB;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
+use DB;
 
 class CategoryService
 {

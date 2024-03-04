@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Enums\Role;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CategoryResource;
 use App\Models\Category;
 use App\Services\CategoryService;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Http\Response;
 
@@ -25,17 +23,15 @@ class CategoryController extends Controller
      */
     public function index(): ResourceCollection
     {
-        return CategoryResource::collection(
-            $this->categoryService->getAllCategories([
-                'sortBy' => request()->input('sortBy', 'oldest')
-            ])
-        );
+        $categories = $this->categoryService->getAllCategories(['sortBy' => request()->input('sortBy', 'oldest')]);
+
+        return CategoryResource::collection($categories);
     }
 
     /**
-     * @return Category
+     * @return CategoryResource
      */
-    public function store(): Category
+    public function store(): CategoryResource
     {
         $this->authorize('create', Category::class);
 
@@ -49,25 +45,25 @@ class CategoryController extends Controller
             ]
         );
 
-        return $this->categoryService->createCategory($validatedCategoryPayload);
+        return CategoryResource::make($this->categoryService->createCategory($validatedCategoryPayload));
     }
 
     /**
      * @param int $categoryId
      * 
-     * @return Category
+     * @return CategoryResource
      */
-    public function show(int $categoryId): Category
+    public function show(int $categoryId): CategoryResource
     {
-        return $this->categoryService->getCategoryById($categoryId);
+        return CategoryResource::make($this->categoryService->getCategoryById($categoryId));
     }
 
     /**
      * @param int $categoryId
      * 
-     * @return Category
+     * @return CategoryResource
      */
-    public function update(int $categoryId): Category
+    public function update(int $categoryId): CategoryResource
     {
         $this->authorize('update', Category::class);
 
@@ -81,7 +77,7 @@ class CategoryController extends Controller
             ]
         );
 
-        return $this->categoryService->updateCategory($categoryId, $validatedCategoryPayload);
+        return CategoryResource::make($this->categoryService->updateCategory($categoryId, $validatedCategoryPayload));
     }
 
     /**
