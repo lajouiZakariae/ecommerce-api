@@ -41,6 +41,15 @@ class CategoryController extends Controller
         return $this->categoryService->createCategory($validatedCategoryPayload);
     }
 
+    /**
+     * @return Category
+     */
+    public function show(int $categoryId): Category
+    {
+        $this->authorize('view', Category::class);
+        return $this->categoryService->getCategoryById($categoryId);
+    }
+
     public function update(int $categoryId): Category
     {
         request()->merge(['slug' => str(request()->input('name'))->slug()]);

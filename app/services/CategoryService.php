@@ -26,9 +26,9 @@ class CategoryService
     }
 
     /**
-     * @return Collection
+     * @return Category
      */
-    public function getStoreById(int $categoryId): Collection
+    public function getCategoryById(int $categoryId): Category
     {
         $category = Category::find($categoryId);
 

@@ -5,9 +5,8 @@ namespace Database\Seeders;
 use App\Enums\Role as EnumsRole;
 use App\Models\Role;
 use App\Models\User;
-use Hash;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Hash;
 
 class UserSeeder extends Seeder
 {
@@ -18,6 +17,7 @@ class UserSeeder extends Seeder
     {
         Role::insert([
             ["name" => "admin"],
+            ["name" => "products_manager"],
             ["name" => "sales_assistant"],
         ]);
 
