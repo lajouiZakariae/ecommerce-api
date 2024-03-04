@@ -7,7 +7,7 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class AuthorizeUser
+class AuthorizeResourceAccess
 {
     /**
      * Handle an incoming request.

@@ -14,9 +14,6 @@ class CategoryController extends Controller
     public function __construct(
         private CategoryService $categoryService
     ) {
-        $this
-            ->middleware("authorize-user:" . Role::ADMIN->value . ',' . Role::PRODUCTS_MANAGER->value)
-            ->except(['index']);
     }
 
     /**
@@ -56,6 +53,7 @@ class CategoryController extends Controller
      */
     public function show(int $categoryId): Category
     {
+        $this->authorize('view', Category::class);
         return $this->categoryService->getCategoryById($categoryId);
     }
 
