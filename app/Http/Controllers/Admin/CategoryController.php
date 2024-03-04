@@ -10,8 +10,9 @@ use Illuminate\Http\Response;
 
 class CategoryController extends Controller
 {
-    public function __construct(private CategoryService $categoryService)
-    {
+    public function __construct(
+        private CategoryService $categoryService
+    ) {
     }
 
     /**
@@ -26,6 +27,9 @@ class CategoryController extends Controller
         ]);
     }
 
+    /**
+     * @return Category
+     */
     public function store(): Category
     {
         request()->merge(['slug' => str(request()->input('name'))->slug()]);
@@ -42,14 +46,22 @@ class CategoryController extends Controller
     }
 
     /**
+     * @param int $categoryId
+     * 
      * @return Category
      */
     public function show(int $categoryId): Category
     {
         $this->authorize('view', Category::class);
+
         return $this->categoryService->getCategoryById($categoryId);
     }
 
+    /**
+     * @param int $categoryId
+     * 
+     * @return Category
+     */
     public function update(int $categoryId): Category
     {
         request()->merge(['slug' => str(request()->input('name'))->slug()]);
@@ -65,6 +77,11 @@ class CategoryController extends Controller
         return $this->categoryService->updateCategory($categoryId, $validatedCategoryPayload);
     }
 
+    /**
+     * @param int $categoryId
+     * 
+     * @return Response
+     */
     public function destroy(int $categoryId): Response
     {
         $this->categoryService->deleteCatgoryById($categoryId);
