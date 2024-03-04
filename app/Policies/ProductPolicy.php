@@ -5,7 +5,7 @@ namespace App\Policies;
 use App\Enums\Role;
 use App\Models\User;
 
-class CategoryPolicy
+class ProductPolicy
 {
     /**
      * Determine whether the user can view any models.
@@ -43,22 +43,6 @@ class CategoryPolicy
      * Determine whether the user can delete the model.
      */
     public function delete(User $user): bool
-    {
-        return in_array($user->role->id, [Role::ADMIN->value, Role::PRODUCTS_MANAGER->value]);
-    }
-
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user): bool
-    {
-        return in_array($user->role->id, [Role::ADMIN->value, Role::PRODUCTS_MANAGER->value]);
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user): bool
     {
         return in_array($user->role->id, [Role::ADMIN->value, Role::PRODUCTS_MANAGER->value]);
     }

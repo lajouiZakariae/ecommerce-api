@@ -47,6 +47,8 @@ class ProductController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', Product::class);
+
         $productFilters = [
             'price_from' => request()->input('price_from'),
             'price_to' => request()->input('price_to'),
@@ -68,6 +70,8 @@ class ProductController extends Controller
      */
     public function store(ProductStoreRequest $request)
     {
+        $this->authorize('create', Product::class);
+
         $data = $request->validated();
 
         $product = $this->productService->createProduct($data);
@@ -97,6 +101,8 @@ class ProductController extends Controller
      */
     public function update(ProductUpdateRequest $request,  $productId): Product
     {
+        $this->authorize('update', Product::class);
+
         $data = $request->validated();
 
         $updatedProduct = $this->productService->updateProduct($productId, $data);
@@ -113,6 +119,8 @@ class ProductController extends Controller
      */
     public function destroy(int $productId): Response
     {
+        $this->authorize('delete', Product::class);
+
         $this->productService->deleteProductById($productId);
 
         return response()->noContent();
@@ -127,6 +135,8 @@ class ProductController extends Controller
      */
     public function togglePublish(int $productId)
     {
+        $this->authorize('update', Product::class);
+
         $this->productService->togglePublishedState($productId);
 
         return response()->noContent();

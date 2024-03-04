@@ -55,7 +55,6 @@ class CategoryController extends Controller
      */
     public function show(int $categoryId): Category
     {
-        $this->authorize('view', Category::class);
         return $this->categoryService->getCategoryById($categoryId);
     }
 
