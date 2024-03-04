@@ -7,10 +7,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\ProductStoreRequest;
 use App\Http\Requests\Admin\ProductUpdateRequest;
 use App\Http\Resources\Admin\ProductResource;
+use App\Models\Category;
 use App\Models\Product;
 use App\Services\ProductService;
 use Illuminate\Http\Response;
 use Illuminate\Validation\Rule;
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Validator;
 
 class ProductController extends Controller
@@ -138,6 +140,8 @@ class ProductController extends Controller
      */
     public function productsByCategory($category_id)
     {
+        if (!Category::where('id', $category_id)->exists()) throw new ResourceNotFoundException("Category Not Found");
+
         return ProductResource::collection(
             $this->productService->getProductsByCategory($category_id)
         );
@@ -149,10 +153,10 @@ class ProductController extends Controller
      * @param  int  $store_id
      * @return \Illuminate\Http\Response
      */
-    public function productsByStore($category_id)
+    public function productsByStore($store_id)
     {
         return ProductResource::collection(
-            $this->productService->getProductsByCategory($category_id)
+            $this->productService->getProductsByStore($store_id)
         );
     }
 }

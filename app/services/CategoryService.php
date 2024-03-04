@@ -4,6 +4,9 @@ namespace App\Services;
 
 use App\Exceptions\AppExceptions\BadRequestException;
 use App\Models\Category;
+use App\Models\Product;
+use DB;
+use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
@@ -72,8 +75,14 @@ class CategoryService
      */
     public function deleteCatgoryById(int $categoryId): void
     {
-        $affectedRowsCount = Category::destroy($categoryId);
+        if ($categoryId === 1) throw new BadRequestException("Category cannot be deleted");
 
-        if ($affectedRowsCount === 0) throw new ResourceNotFoundException($this->notFoundMessage);
+        DB::transaction(function () use ($categoryId) {
+            Product::where('category_id', $categoryId)->delete();
+
+            $affectedRowsCount = Category::destroy($categoryId);
+
+            if ($affectedRowsCount === 0) throw new ResourceNotFoundException($this->notFoundMessage);
+        });
     }
 }

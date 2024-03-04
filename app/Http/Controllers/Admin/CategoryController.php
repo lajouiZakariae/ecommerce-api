@@ -33,6 +33,8 @@ class CategoryController extends Controller
      */
     public function store(): Category
     {
+        $this->authorize('create', Category::class);
+
         request()->merge(['slug' => str(request()->input('name'))->slug()]);
 
         $validatedCategoryPayload = request()->validate(
@@ -64,6 +66,8 @@ class CategoryController extends Controller
      */
     public function update(int $categoryId): Category
     {
+        $this->authorize('update', Category::class);
+
         request()->merge(['slug' => str(request()->input('name'))->slug()]);
 
         $validatedCategoryPayload = request()->validate(
@@ -84,6 +88,8 @@ class CategoryController extends Controller
      */
     public function destroy(int $categoryId): Response
     {
+        $this->authorize('delete', Category::class);
+
         $this->categoryService->deleteCatgoryById($categoryId);
 
         return response()->noContent();
