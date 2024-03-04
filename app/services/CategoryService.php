@@ -6,8 +6,8 @@ use App\Exceptions\AppExceptions\BadRequestException;
 use App\Models\Category;
 use App\Models\Product;
 use DB;
-use Exception;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
 class CategoryService
@@ -15,9 +15,9 @@ class CategoryService
     private $notFoundMessage = "Category Not Found";
 
     /**
-     * @return Collection
+     * @return LengthAwarePaginator
      */
-    public function getAllCategories(array $filters): Collection
+    public function getAllCategories(array $filters): LengthAwarePaginator
     {
         $categories = Category::query();
 
@@ -25,7 +25,7 @@ class CategoryService
             ? $categories->oldest()
             : $categories->latest();
 
-        return $categories->get();
+        return $categories->paginate(10);
     }
 
     /**

@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Enums\Role;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\CategoryResource;
 use App\Models\Category;
 use App\Services\CategoryService;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Http\Response;
 
 class CategoryController extends Controller
@@ -19,13 +21,15 @@ class CategoryController extends Controller
     /**
      * Display a listing of the categories.
      *
-     * @return Collection<int,Category>
+     * @return ResourceCollection
      */
-    public function index(): Collection
+    public function index(): ResourceCollection
     {
-        return $this->categoryService->getAllCategories([
-            'sortBy' => request()->input('sortBy', 'oldest')
-        ]);
+        return CategoryResource::collection(
+            $this->categoryService->getAllCategories([
+                'sortBy' => request()->input('sortBy', 'oldest')
+            ])
+        );
     }
 
     /**
