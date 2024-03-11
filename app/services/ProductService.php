@@ -121,8 +121,7 @@ class ProductService
     {
         $affectedRowsCount = Product::where('id', $productId)->delete();
 
-        if ($affectedRowsCount === 0)
-            throw new ResourceNotFoundException($this->notFoundMessage);
+        if ($affectedRowsCount === 0) throw new ResourceNotFoundException($this->notFoundMessage);
     }
 
     /**

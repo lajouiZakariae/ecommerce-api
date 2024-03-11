@@ -66,14 +66,13 @@ class ReviewController extends Controller
     }
 
     /**
-     * Remove the specified review from storage.
-     *
-     * @param  \App\Models\Review  $review
-     * @return \Illuminate\Http\Response
+     * @param int $reviewId
+     * 
+     * @return Response
      */
-    public function destroy(Review $review): Response
+    public function destroy(int $reviewId): Response
     {
-        $review->delete();
+        $this->reviewService->deleteReviewById($reviewId);
 
         return response()->noContent();
     }
@@ -85,6 +84,8 @@ class ReviewController extends Controller
      */
     public function productReviews(int $productId): ResourceCollection
     {
-        return ReviewResource::collection($this->reviewService->getAllReviewsOfProduct($productId));
+        return ReviewResource::collection(
+            $this->reviewService->getAllReviewsOfProduct($productId)
+        );
     }
 }

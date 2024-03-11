@@ -53,4 +53,16 @@ class ReviewService
 
         return Review::find($reviewId);
     }
+
+    /**
+     * @param int $reviewId
+     * 
+     * @return void
+     */
+    public function deleteReviewById(int $reviewId): void
+    {
+        $affectedRowsCount = Review::where('id', $reviewId)->delete();
+
+        if ($affectedRowsCount === 0) throw new ResourceNotFoundException($this->notFoundMessage);
+    }
 }
