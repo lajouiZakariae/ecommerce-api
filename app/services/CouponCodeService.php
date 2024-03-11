@@ -6,7 +6,6 @@ use App\Exceptions\AppExceptions\BadRequestException;
 use App\Models\CouponCode;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
-use LengthException;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
 class CouponCodeService
@@ -36,7 +35,7 @@ class CouponCodeService
      * @return Collection
      * @throws ResourceNotFoundException
      */
-    public function getCouponCodeById(int $couponCodeId): Collection
+    public function getCouponCodeById(int $couponCodeId): CouponCode
     {
         $couponCode = CouponCode::find($couponCodeId);
 

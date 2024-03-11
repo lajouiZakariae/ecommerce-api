@@ -8,7 +8,7 @@ use App\Models\User;
 class OrderPolicy
 {
     /**
-     * Determine whether the user can view any models.
+     * Determine whether the user can view any orders.
      */
     public function viewAny(): bool
     {
@@ -16,7 +16,7 @@ class OrderPolicy
     }
 
     /**
-     * Determine whether the user can view the model.
+     * Determine whether the user can view the order.
      */
     public function view(): bool
     {
@@ -24,16 +24,15 @@ class OrderPolicy
     }
 
     /**
-     * Determine whether the user can create models.
+     * Determine whether the user can create orders.
      */
     public function create(User $user): bool
     {
-        dump($user->role->id);
         return in_array($user->role->id, [Role::ADMIN->value, Role::SALES_ASSISTANT->value]);
     }
 
     /**
-     * Determine whether the user can update the model.
+     * Determine whether the user can update the order.
      */
     public function update(User $user): bool
     {
@@ -41,7 +40,7 @@ class OrderPolicy
     }
 
     /**
-     * Determine whether the user can delete the model.
+     * Determine whether the user can delete the order.
      */
     public function delete(User $user): bool
     {

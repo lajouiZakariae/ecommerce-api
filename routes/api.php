@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\CouponCodeController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\OrderItemController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\ReviewController;
 use App\Http\Controllers\Admin\StoreController;
 use App\Http\Controllers\Auth\JWTAuthController;
 use Illuminate\Http\Request;
@@ -54,4 +55,8 @@ Route::group([
     Route::group(['prefix' => 'orders/{order}'], function () {
         Route::apiResource('order-items', OrderItemController::class)->whereNumber('order_item');
     });
+
+    Route::apiResource('reviews', ReviewController::class);
+
+    Route::get('/products/{product}/reviews', [ReviewController::class, 'productReviews']);
 });

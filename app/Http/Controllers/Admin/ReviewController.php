@@ -8,16 +8,18 @@ use App\Http\Requests\Admin\ReviewUpdateRequest;
 use App\Http\Resources\Admin\ReviewResource;
 use App\Models\Product;
 use App\Models\Review;
+use App\Services\ReviewService;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Http\Response;
-use Spatie\RouteAttributes\Attributes\ApiResource;
 use Spatie\RouteAttributes\Attributes\Get;
 
-/**
- * @group Reviews
- */
-#[ApiResource('reviews')]
+
 class ReviewController extends Controller
 {
+    public function __construct(private ReviewService $reviewService)
+    {
+    }
+
     /**
      * Display a listing of reviews.
      *
@@ -84,14 +86,12 @@ class ReviewController extends Controller
     }
 
     /**
-     * Get reviews associated with a product.
-     *
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
+     * @param int $productId
+     * 
+     * @return ResourceCollection
      */
-    #[Get('/products/{product}/reviews')]
-    public function productReviews(Product $product): Response
+    public function productReviews(int $productId): ResourceCollection
     {
-        return response(ReviewResource::collection($product->reviews));
+        return ReviewResource::collection($this->reviewService->getAllReviewsOfProduct($productId));
     }
 }

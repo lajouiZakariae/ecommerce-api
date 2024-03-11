@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Admin\CouponCodeResource;
+use App\Http\Resources\CategoryResource;
+use App\Models\CouponCode;
 use App\Rules\ValidIntegerTypeRule;
 use App\Services\CouponCodeService;
 use Illuminate\Http\Resources\Json\ResourceCollection;
@@ -24,8 +26,20 @@ class CouponCodeController extends Controller
         return CouponCodeResource::collection($couponCodes);
     }
 
+    /**
+     * @param int $couponCodeId
+     * 
+     * @return CouponCodeResource
+     */
+    public function show(int $couponCodeId): CouponCodeResource
+    {
+        return CouponCodeResource::make($this->couponCodeService->getCouponCodeById($couponCodeId));
+    }
+
     public function store(): CouponCodeResource
     {
+        $this->authorize('create', CouponCode::class);
+
         $couponCodePayload = [
             'code' => request()->input('code'),
             'amount' => request()->input('amount'),
@@ -43,6 +57,8 @@ class CouponCodeController extends Controller
 
     public function update(int $couponCodeId): Response
     {
+        $this->authorize('update', CouponCode::class);
+
         $couponCodePayload = [
             'code' => request()->input('code'),
             'amount' => request()->input('amount'),
@@ -62,6 +78,8 @@ class CouponCodeController extends Controller
 
     public function destroy(int $couponCodeId): Response
     {
+        $this->authorize('delete', CouponCode::class);
+
         $this->couponCodeService->deleteCouponCodeById($couponCodeId);
 
         return response()->noContent();
