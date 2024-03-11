@@ -6,12 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\ReviewStoreRequest;
 use App\Http\Requests\Admin\ReviewUpdateRequest;
 use App\Http\Resources\Admin\ReviewResource;
-use App\Models\Product;
 use App\Models\Review;
 use App\Services\ReviewService;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Http\Response;
-use Spatie\RouteAttributes\Attributes\Get;
 
 
 class ReviewController extends Controller
@@ -25,11 +23,11 @@ class ReviewController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(): Response
+    public function index(): ResourceCollection
     {
-        $reviews = Review::all();
+        $reviews = Review::paginate(10);
 
-        return response(ReviewResource::collection($reviews));
+        return ReviewResource::collection($reviews);
     }
 
     /**
@@ -46,30 +44,25 @@ class ReviewController extends Controller
     }
 
     /**
-     * Display the specified review.
-     *
-     * @param  \App\Models\Review  $review
-     * @return \Illuminate\Http\Response
+     * @param int $reviewId
+     * 
+     * @return ReviewResource
      */
-    public function show(Review $review): Response
+    public function show(int $reviewId): ReviewResource
     {
-        return response(new ReviewResource($review));
+        return ReviewResource::make($this->reviewService->getReviewById($reviewId));
     }
 
     /**
-     * Update the specified review in storage.
-     *
-     * @param  \App\Http\Requests\Admin\ReviewUpdateRequest  $request
-     * @param  \App\Models\Review  $review
-     * @return \Illuminate\Http\Response
+     * @param ReviewUpdateRequest $request
+     * @param int $reviewId
+     * 
+     * @return ReviewResource
      */
-    public function update(ReviewUpdateRequest $request, Review $review): Response
+    public function update(ReviewUpdateRequest $request, int $reviewId): ReviewResource
     {
-        $data = $request->validated();
-
-        $review->update($data);
-
-        return response()->noContent();
+        $updatedReview = $this->reviewService->updateReview($reviewId, $request->validated());
+        return ReviewResource::make($updatedReview);
     }
 
     /**

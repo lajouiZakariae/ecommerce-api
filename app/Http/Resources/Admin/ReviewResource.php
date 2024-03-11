@@ -14,7 +14,7 @@ class ReviewResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'email' => $this->email,
+            'client' => $this->whenLoaded('client'),
             'body' => $this->body,
             'product_id' => $this->product_id,
             'approved' => $this->approved,

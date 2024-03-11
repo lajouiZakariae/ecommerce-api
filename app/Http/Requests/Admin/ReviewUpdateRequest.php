@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Admin;
 
+use App\Models\Review;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ReviewUpdateRequest extends FormRequest
@@ -11,7 +12,7 @@ class ReviewUpdateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return $this->user()->can('update', Review::class);
     }
 
     /**
@@ -20,9 +21,9 @@ class ReviewUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => ['string', 'min:1', 'max:255'],
+            'client_id' => ['integer', 'exists:clients,id'],
+            'product_id' => ['integer', 'exists:products,id'],
             'body' => ['string', 'min:1'],
-            'product_id' => ['exists:products,id'],
             'approved' => ['boolean']
         ];
     }

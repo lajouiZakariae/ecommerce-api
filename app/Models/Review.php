@@ -16,7 +16,7 @@ class Review extends Model
      * @var array
      */
     protected $fillable = [
-        'email',
+        'client_id',
         'body',
         'product_id',
         'approved',

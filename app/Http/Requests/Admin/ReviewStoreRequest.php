@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Admin;
 
+use App\Models\Review;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ReviewStoreRequest extends FormRequest
@@ -11,7 +12,14 @@ class ReviewStoreRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return $this->user()->can('create', Review::class);
+    }
+
+    public function prepareForValidation(): void
+    {
+        $this->merge([
+            'approved' => $this->boolean('approved'),
+        ]);
     }
 
     /**
@@ -20,10 +28,10 @@ class ReviewStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => ['required', 'string', 'min:1', 'max:255'],
+            'client_id' => ['required', 'integer', 'exists:clients,id'],
+            'product_id' => ['required', 'integer', 'exists:products,id'],
             'body' => ['required', 'string', 'min:1'],
-            'product_id' => ['required', 'exists:products,id'],
-            'approved' => ['required', 'boolean']
+            'approved' => ['boolean']
         ];
     }
 }
