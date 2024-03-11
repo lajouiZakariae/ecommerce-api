@@ -1,0 +1,20 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Products Api",
+        "version": "1"
+    },
+    "paths": {
+        "/v1/products": {
+            "get": {
+                "summary": "display a listing of products",
+                "operationId": "d69d56313339c80036c9929055966446",
+                "responses": {
+                    "200": {
+                        "description": "Product listing returned"
+                    }
+                }
+            }
+        }
+    }
+}

@@ -45,9 +45,7 @@ class ImageController extends Controller
      */
     public function show(int $imageId): ImageResource
     {
-        return ImageResource::make(
-            $this->imageService->getImageById($imageId)
-        );
+        return ImageResource::make($this->imageService->getImageById($imageId));
     }
 
     /**

@@ -12,9 +12,13 @@ use App\Models\Product;
 use App\Services\ProductService;
 use Illuminate\Http\Response;
 use Illuminate\Validation\Rule;
+use OpenApi\Attributes\Get;
+use OpenApi\Attributes\Info;
+use OpenApi\Attributes\Response as AttributesResponse;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Validator;
 
+#[Info(version: 1, title: 'Products Api')]
 class ProductController extends Controller
 {
 
@@ -41,14 +45,15 @@ class ProductController extends Controller
     }
 
     /**
-     * Display a listing of products.
-     *
      * @return \Illuminate\Http\Response
      */
+    #[Get(
+        path: '/v1/products',
+        summary: 'display a listing of products',
+        responses: [new AttributesResponse(response: 200, description: 'Product listing returned')],
+    )]
     public function index()
     {
-        $this->authorize('viewAny', Product::class);
-
         $productFilters = [
             'price_from' => request()->input('price_from'),
             'price_to' => request()->input('price_to'),
