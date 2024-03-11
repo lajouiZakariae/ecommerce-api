@@ -18,7 +18,7 @@ use OpenApi\Attributes\Response as AttributesResponse;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Validator;
 
-#[Info(version: 1, title: 'Products Api')]
+#[Info(version: 1, title: 'Ecommerce Api')]
 class ProductController extends Controller
 {
 
@@ -90,6 +90,14 @@ class ProductController extends Controller
      * @param  int $productId
      * @return \Illuminate\Http\Response
      */
+    #[Get(
+        path: '/v1/products/{product}',
+        summary: 'display a single of product',
+        responses: [
+            new AttributesResponse(response: 200, description: 'Product Returned'),
+            new AttributesResponse(response: 404, description: 'Product Not Found'),
+        ],
+    )]
     public function show($productId): ProductResource
     {
         $product = $this->productService->getProductById($productId);

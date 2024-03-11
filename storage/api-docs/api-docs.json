@@ -1,7 +1,7 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "Products Api",
+        "title": "Ecommerce Api",
         "version": "1"
     },
     "paths": {
@@ -12,6 +12,21 @@
                 "responses": {
                     "200": {
                         "description": "Product listing returned"
+                    }
+                }
+            }
+        },
+        "/v1/products/{product}": {
+            "get": {
+                "summary": "display a single of product",
+                "description": "Display the specified product.",
+                "operationId": "d2e757f8993aac8106f2ec7a5370f1e6",
+                "responses": {
+                    "200": {
+                        "description": "Product Returned"
+                    },
+                    "404": {
+                        "description": "Product Not Found"
                     }
                 }
             }
