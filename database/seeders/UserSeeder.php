@@ -21,15 +21,15 @@ class UserSeeder extends Seeder
             ["name" => "sales_assistant"],
         ]);
 
-        User::factory()->create([
+        User::factory()->create([ // 1
             'first_name' => 'Zakariae',
             'last_name' => 'Lajoui',
-            'role_id' => EnumsRole::ADMIN->value,
             'email' => 'lajoui.zakariae.1@gmail.com',
+            'role_id' => EnumsRole::ADMIN->value,
             'password' => Hash::make('1234')
         ]);
 
-        User::factory()->create([
+        User::factory()->create([ // 2
             'first_name' => fake()->firstName,
             'last_name' => fake()->lastName,
             'role_id' => EnumsRole::PRODUCTS_MANAGER->value,
@@ -37,21 +37,12 @@ class UserSeeder extends Seeder
             'password' => Hash::make('1234')
         ]);
 
-        User::factory()->create([
+        User::factory()->create([ // 3
             'first_name' => fake()->firstName,
             'last_name' => fake()->lastName,
-            'role_id' => EnumsRole::SALES_ASSISTANT->value,
             'email' => fake()->email(),
+            'role_id' => EnumsRole::SALES_ASSISTANT->value,
             'password' => Hash::make('1234')
         ]);
-
-        // User::factory()->create([
-        //     'first_name' => 'Ilham',
-        //     'last_name' => 'El Maimouni',
-        //     'role_id' => EnumsRole::SALES_ASSISTANT->value,
-        //     'email' => 'ilhammaimouni269@gmail.com',
-        //     'password' => Hash::make('1234')
-        // ]);
-
     }
 }

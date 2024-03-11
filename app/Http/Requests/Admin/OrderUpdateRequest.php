@@ -2,10 +2,9 @@
 
 namespace App\Http\Requests\Admin;
 
-use App\Enums\Status;
+use App\Models\Order;
 use App\Rules\ValidIntegerTypeRule;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class OrderUpdateRequest extends FormRequest
 {
@@ -14,7 +13,7 @@ class OrderUpdateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return $this->user()->can('update', Order::class);
     }
 
     /**

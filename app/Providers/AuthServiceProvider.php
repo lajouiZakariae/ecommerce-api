@@ -2,7 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\Order;
 use App\Models\User;
+use App\Policies\OrderPolicy;
+use Blueprint\Models\Policy;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -13,7 +16,9 @@ class AuthServiceProvider extends ServiceProvider
      *
      * @var array<class-string, class-string>
      */
-    protected $policies = [];
+    protected $policies = [
+        Order::class => OrderPolicy::class
+    ];
 
     /**
      * Register any authentication / authorization services.
@@ -26,6 +31,6 @@ class AuthServiceProvider extends ServiceProvider
             return config('app.frontend_url') . "/password-reset/$token?email={$notifiable->getEmailForPasswordReset()}";
         });
 
-        auth()->login(User::find(2));
+        auth()->login(User::find(1));
     }
 }

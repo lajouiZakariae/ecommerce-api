@@ -101,8 +101,6 @@ class ProductController extends Controller
      */
     public function update(ProductUpdateRequest $request,  $productId): Product
     {
-        $this->authorize('update', Product::class);
-
         $data = $request->validated();
 
         $updatedProduct = $this->productService->updateProduct($productId, $data);
