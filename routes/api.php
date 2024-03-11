@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CouponCodeController;
+use App\Http\Controllers\Admin\ImageController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\OrderItemController;
 use App\Http\Controllers\Admin\ProductController;
@@ -59,4 +60,8 @@ Route::group([
     Route::apiResource('reviews', ReviewController::class);
 
     Route::get('/products/{product}/reviews', [ReviewController::class, 'productReviews']);
+
+    Route::apiResource('images', ImageController::class);
+
+    Route::get('products/{product}/images', [ImageController::class, 'productImages']);
 });

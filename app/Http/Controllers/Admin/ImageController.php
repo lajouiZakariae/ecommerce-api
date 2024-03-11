@@ -6,58 +6,22 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\ImageStoreRequest;
 use App\Http\Requests\Admin\ImageUpdateRequest;
 use App\Http\Resources\Admin\ImageResource;
-use App\Models\Image;
-use App\Models\Product;
+use App\Services\ImageService;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Http\Response;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use Spatie\RouteAttributes\Attributes\ApiResource;
-use Spatie\RouteAttributes\Attributes\Get;
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
-/**
- * @group Images
- */
-#[ApiResource('images')]
 class ImageController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index(): Response
+    public function __construct(private ImageService $imageService)
     {
-        $images = Image::all();
-
-        return response(ImageResource::collection($images));
     }
 
-    /**
-     * Extract data from the request and handle image upload.
-     *
-     * @param  \App\Models\Image  $image
-     * @param  \Illuminate\Http\Request  $request
-     * @return array
-     */
-    private function extractData(Image $image, $request): array
+    public function index(): ResourceCollection
     {
-        $data = $request->validated();
 
-        /** @var UploadedFile */
-        $uploaded_image = $data['image'] ?? null;
-
-        if ($uploaded_image === null || $uploaded_image->getError()) {
-            return $data;
-        }
-
-        /* delete image on upload */
-        if ($image->path) {
-            Storage::disk('public')->delete($image->path);
-        }
-
-        $data['path'] = $uploaded_image->store('products', 'public');
-
-        return $data;
+        return ImageResource::collection($this->imageService->paginatedImages());
     }
 
     /**
@@ -68,11 +32,9 @@ class ImageController extends Controller
      */
     public function store(ImageStoreRequest $request): Response
     {
-        $data = $this->extractData(new Image(), $request);
+        $image = $this->imageService->createImage($request->validated());
 
-        $image = Image::create($data);
-
-        return response(new ImageResource($image), Response::HTTP_CREATED);
+        return response(ImageResource::make($image), Response::HTTP_CREATED);
     }
 
     /**
@@ -81,51 +43,46 @@ class ImageController extends Controller
      * @param  \App\Models\Image  $image
      * @return \Illuminate\Http\Response
      */
-    public function show(Image $image): Response
+    public function show(int $imageId): ImageResource
     {
-        return response(new ImageResource($image));
+        return ImageResource::make(
+            $this->imageService->getImageById($imageId)
+        );
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\Admin\ImageUpdateRequest  $request
-     * @param  \App\Models\Image  $image
-     * @return \Illuminate\Http\Response
+     * @param ImageUpdateRequest $request
+     * @param int $imageId
+     * 
+     * @return ImageResource
      */
-    public function update(ImageUpdateRequest $request, Image $image): Response
+    public function update(ImageUpdateRequest $request, int $imageId): ImageResource
     {
-        $data = $this->extractData($image, $request);
+        $updatedImage = $this->imageService->updateImage($imageId, $request->validated());
 
-        $image->update($data);
+        return ImageResource::make($updatedImage);
+    }
+
+
+    /**
+     * @param int $imageId
+     * 
+     * @return Response
+     */
+    public function destroy(int $imageId): Response
+    {
+        $this->imageService->deleteImageById($imageId);
 
         return response()->noContent();
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Image  $image
-     * @return \Illuminate\Http\Response
+     * @param int $productId
+     * 
+     * @return ResourceCollection
      */
-    public function destroy(Image $image): Response
+    public function productImages(int $productId): ResourceCollection
     {
-        Storage::disk('public')->delete($image->path);
-
-        $image->delete();
-
-        return response()->noContent();
-    }
-
-    /**
-     * Get images associated with a product.
-     *
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    #[Get('products/{product}/images')]
-    public function productImages(Product $product): Response
-    {
-        return response(ImageResource::collection($product->images));
+        return ImageResource::collection($this->imageService->getPaginatedImagesOfProduct($productId));
     }
 }
