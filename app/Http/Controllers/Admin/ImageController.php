@@ -9,8 +9,6 @@ use App\Http\Resources\Admin\ImageResource;
 use App\Services\ImageService;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Storage;
-use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
 class ImageController extends Controller
 {

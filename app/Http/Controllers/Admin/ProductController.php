@@ -10,15 +10,13 @@ use App\Http\Resources\Admin\ProductResource;
 use App\Models\Category;
 use App\Models\Product;
 use App\Services\ProductService;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Http\Response;
 use Illuminate\Validation\Rule;
-use OpenApi\Attributes\Get;
-use OpenApi\Attributes\Info;
-use OpenApi\Attributes\Response as AttributesResponse;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Validator;
 
-#[Info(version: 1, title: 'Ecommerce Api')]
+
 class ProductController extends Controller
 {
 
@@ -47,11 +45,6 @@ class ProductController extends Controller
     /**
      * @return \Illuminate\Http\Response
      */
-    #[Get(
-        path: '/v1/products',
-        summary: 'display a listing of products',
-        responses: [new AttributesResponse(response: 200, description: 'Product listing returned')],
-    )]
     public function index()
     {
         $productFilters = [
@@ -70,10 +63,12 @@ class ProductController extends Controller
 
     /**
      * Store a newly created product in storage.
-     *
+     * 
+     * @param ProductStoreRequest $request
+     * 
      * @return \Illuminate\Http\Response
      */
-    public function store(ProductStoreRequest $request)
+    public function store(ProductStoreRequest $request): Response
     {
         $this->authorize('create', Product::class);
 
@@ -88,16 +83,9 @@ class ProductController extends Controller
      * Display the specified product.
      *
      * @param  int $productId
+     * 
      * @return \Illuminate\Http\Response
      */
-    #[Get(
-        path: '/v1/products/{product}',
-        summary: 'display a single of product',
-        responses: [
-            new AttributesResponse(response: 200, description: 'Product Returned'),
-            new AttributesResponse(response: 404, description: 'Product Not Found'),
-        ],
-    )]
     public function show($productId): ProductResource
     {
         $product = $this->productService->getProductById($productId);
@@ -107,24 +95,24 @@ class ProductController extends Controller
 
     /**
      * Update the specified product in storage.
-     *
-     * @param  \App\Http\Requests\Admin\ProductUpdateRequest  $request
-     * @param  \App\Models\Product  $product
-     * @return Product
+     * 
+     * @param ProductUpdateRequest $request
+     * @param mixed $productId
+     * 
+     * @return ProductResource
      */
-    public function update(ProductUpdateRequest $request,  $productId): Product
+    public function update(ProductUpdateRequest $request,  $productId): ProductResource
     {
         $data = $request->validated();
 
         $updatedProduct = $this->productService->updateProduct($productId, $data);
 
-        return $updatedProduct;
+        return ProductResource::make($updatedProduct);
     }
 
     /**
      * Remove the specified product from storage.
      *
-     * @param  \App\Services\ProductService  $productService
      * @param  int  $productId
      * @return \Illuminate\Http\Response
      */
@@ -144,7 +132,7 @@ class ProductController extends Controller
      * @param  int  $productId
      * @return \Illuminate\Http\Response
      */
-    public function togglePublish(int $productId)
+    public function togglePublish(int $productId): Response
     {
         $this->authorize('update', Product::class);
 
@@ -156,28 +144,28 @@ class ProductController extends Controller
     /**
      * Display a listing of products for a specific category.
      *
-     * @param  int  $category_id
+     * @param  int  $categoryId
      * @return \Illuminate\Http\Response
      */
-    public function productsByCategory($category_id)
+    public function productsByCategory($categoryId): ResourceCollection
     {
-        if (!Category::where('id', $category_id)->exists()) throw new ResourceNotFoundException("Category Not Found");
+        if (!Category::where('id', $categoryId)->exists()) throw new ResourceNotFoundException("Category Not Found");
 
         return ProductResource::collection(
-            $this->productService->getProductsByCategory($category_id)
+            $this->productService->getProductsByCategory($categoryId)
         );
     }
 
     /**
      * Display a listing of products for a specific Store.
      *
-     * @param  int  $store_id
+     * @param  int  $storeId
      * @return \Illuminate\Http\Response
      */
-    public function productsByStore($store_id)
+    public function productsByStore($storeId): ResourceCollection
     {
         return ProductResource::collection(
-            $this->productService->getProductsByStore($store_id)
+            $this->productService->getProductsByStore($storeId)
         );
     }
 }

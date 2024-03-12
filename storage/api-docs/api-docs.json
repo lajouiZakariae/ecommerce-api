@@ -2,25 +2,83 @@
     "openapi": "3.0.0",
     "info": {
         "title": "Ecommerce Api",
-        "version": "1"
+        "version": "1.0.0"
     },
+    "servers": [
+        {
+            "url": "http://localhost:8000/api/v1",
+            "description": "Api Server"
+        }
+    ],
     "paths": {
-        "/v1/products": {
+        "/products": {
             "get": {
+                "tags": [
+                    "Products"
+                ],
                 "summary": "display a listing of products",
-                "operationId": "d69d56313339c80036c9929055966446",
+                "operationId": "8b060d39c16cedba91f6cbe0cc3c41eb",
                 "responses": {
                     "200": {
                         "description": "Product listing returned"
                     }
                 }
+            },
+            "post": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Store a new product",
+                "description": "Store a newly created product in storage.",
+                "operationId": "2a8783504bc9bb99bd788013783fac3e",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#components/schemas/Product.$ref"
+                            },
+                            "example": {
+                                "title": "Smartphone",
+                                "description": "A high-end smartphone with advanced features.",
+                                "price": 699.99,
+                                "cost": 499.99,
+                                "categoryId": 1,
+                                "published": true
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "422": {
+                        "description": "Validation Error"
+                    },
+                    "201": {
+                        "description": "Product has been created"
+                    }
+                }
             }
         },
-        "/v1/products/{product}": {
+        "/products/{product}": {
             "get": {
+                "tags": [
+                    "Products"
+                ],
                 "summary": "display a single of product",
                 "description": "Display the specified product.",
-                "operationId": "d2e757f8993aac8106f2ec7a5370f1e6",
+                "operationId": "df71c2176edd294e4adf193be65c85ee",
+                "parameters": [
+                    {
+                        "name": "product",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "title": "product",
+                            "type": "integer",
+                            "minimum": 1
+                        },
+                        "example": 5
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Product Returned"
@@ -29,7 +87,43 @@
                         "description": "Product Not Found"
                     }
                 }
+            },
+            "put": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Update the specified product in storage.",
+                "operationId": "2e632674f38ef5035fbabe305ebdc8ff",
+                "parameters": [
+                    {
+                        "name": "product",
+                        "in": null,
+                        "required": true,
+                        "example": 5
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Product Updated Successfully"
+                    },
+                    "404": {
+                        "description": "Product Not Found"
+                    }
+                }
             }
         }
-    }
+    },
+    "components": {
+        "schemas": {
+            "Product": {
+                "$ref": "#components/schemas/Product"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Products",
+            "description": "A rest api for products"
+        }
+    ]
 }
