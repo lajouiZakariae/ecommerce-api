@@ -16,14 +16,18 @@ class ImageController extends Controller
     {
     }
 
+    /**
+     * Get a listing of images.
+     *
+     * @return ResourceCollection
+     */
     public function index(): ResourceCollection
     {
-
         return ImageResource::collection($this->imageService->paginatedImages());
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created image.
      *
      * @param  \App\Http\Requests\Admin\ImageStoreRequest  $request
      * @return \Illuminate\Http\Response
@@ -36,10 +40,10 @@ class ImageController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Get a specific image.
      *
-     * @param  \App\Models\Image  $image
-     * @return \Illuminate\Http\Response
+     * @param  int  $imageId
+     * @return ImageResource
      */
     public function show(int $imageId): ImageResource
     {
@@ -47,9 +51,10 @@ class ImageController extends Controller
     }
 
     /**
-     * @param ImageUpdateRequest $request
-     * @param int $imageId
-     * 
+     * Update a specific image.
+     *
+     * @param  \App\Http\Requests\Admin\ImageUpdateRequest  $request
+     * @param  int  $imageId
      * @return ImageResource
      */
     public function update(ImageUpdateRequest $request, int $imageId): ImageResource
@@ -59,11 +64,11 @@ class ImageController extends Controller
         return ImageResource::make($updatedImage);
     }
 
-
     /**
-     * @param int $imageId
-     * 
-     * @return Response
+     * Delete a specific image.
+     *
+     * @param  int  $imageId
+     * @return \Illuminate\Http\Response
      */
     public function destroy(int $imageId): Response
     {
@@ -73,8 +78,9 @@ class ImageController extends Controller
     }
 
     /**
-     * @param int $productId
-     * 
+     * Get a paginated listing of images that belongs to a product.
+     *
+     * @param  int  $productId
      * @return ResourceCollection
      */
     public function productImages(int $productId): ResourceCollection

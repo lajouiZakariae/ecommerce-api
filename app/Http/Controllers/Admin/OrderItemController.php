@@ -18,7 +18,10 @@ class OrderItemController extends Controller
     }
 
     /**
+     * Get order items of a specific order 
+     * 
      * @param int $orderId
+     * 
      * @return ResourceCollection
      */
     public function index(int $orderId): ResourceCollection
@@ -29,8 +32,11 @@ class OrderItemController extends Controller
     }
 
     /**
+     * Store a newly created order item.
+     * 
      * @param OrderItemsStoreRequest $request
      * @param int $orderId
+     * 
      * @return \Illuminate\Http\Response
      */
     public function store(OrderItemsStoreRequest $request, int $orderId): Response
@@ -43,11 +49,12 @@ class OrderItemController extends Controller
     }
 
     /**
-     * Display the specified order item.
+     * Get a specific order item.
      *
-     * @param  \App\Models\Order  $order
-     * @param  \App\Models\OrderItem  $orderItem
-     * @return \Illuminate\Http\Response
+     * @param  Order  $order
+     * @param  OrderItem  $orderItem
+     * 
+     * @return OrderItemResource
      */
     public function show(int $orderId, int $orderItemId): OrderItemResource
     {
@@ -57,7 +64,7 @@ class OrderItemController extends Controller
     }
 
     /**
-     * Update the specified order item in storage for a specific order.
+     * Update a specific order item in storage for a specific order.
      * 
      * @param  OrderItemUpdateRequest $request
      * @param  int $orderId 
@@ -77,7 +84,8 @@ class OrderItemController extends Controller
     }
 
     /**
-     * Remove the specified order item from storage for a specific order.
+     * Delete a specific order item from storage for a specific order.
+     * 
      * @param int $orderId
      * @param int $orderItemId
      * 

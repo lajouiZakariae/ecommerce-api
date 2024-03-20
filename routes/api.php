@@ -23,15 +23,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::controller(JWTAuthController::class)->group(function () {
-    Route::post('login', 'login');
-    Route::post('logout', 'logout');
-    Route::post('refresh', 'refresh');
-});
+Route::controller(JWTAuthController::class)
+    ->group(function () {
+        Route::post('login', 'login');
+        Route::post('logout', 'logout');
+        Route::post('refresh', 'refresh');
+    })
+    ->prefix('v1');
 
 Route::group([
     'prefix' => 'v1',
-    'middleware' => 'auth:api'
+    'middleware' => 'auth:api',
 ], function () {
     Route::get('/user', fn (Request $request) => $request->user()->load('role'));
 

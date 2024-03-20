@@ -17,9 +17,9 @@ class CategoryController extends Controller
     }
 
     /**
-     * Display a listing of the categories.
+     * Get a listing of the categories.
      *
-     * @return ResourceCollection
+     * @return ResourceCollection<CategoryResource>
      */
     public function index(): ResourceCollection
     {
@@ -29,6 +29,8 @@ class CategoryController extends Controller
     }
 
     /**
+     * Store a newly created category.
+     *
      * @return CategoryResource
      */
     public function store(): CategoryResource
@@ -49,8 +51,9 @@ class CategoryController extends Controller
     }
 
     /**
-     * @param int $categoryId
-     * 
+     * Get a specific category.
+     *
+     * @param  int  $categoryId
      * @return CategoryResource
      */
     public function show(int $categoryId): CategoryResource
@@ -59,8 +62,9 @@ class CategoryController extends Controller
     }
 
     /**
-     * @param int $categoryId
-     * 
+     * Update a specific category.
+     *
+     * @param  int  $categoryId
      * @return CategoryResource
      */
     public function update(int $categoryId): CategoryResource
@@ -81,8 +85,9 @@ class CategoryController extends Controller
     }
 
     /**
-     * @param int $categoryId
-     * 
+     * Delete a specific category.
+     *
+     * @param  int  $categoryId
      * @return Response
      */
     public function destroy(int $categoryId): Response

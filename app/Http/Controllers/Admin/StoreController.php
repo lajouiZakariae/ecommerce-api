@@ -8,7 +8,6 @@ use App\Models\Store;
 use App\Services\StoreService;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Response;
-use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
 class StoreController extends Controller
 {
@@ -30,6 +29,10 @@ class StoreController extends Controller
     }
 
     /**
+     * Display a spicific store.
+     * 
+     * @param  int  $storeId
+     * 
      * @return Store
      */
     public function show(int $storeId): Store
@@ -37,6 +40,12 @@ class StoreController extends Controller
         return $this->storeService->getStoreById($storeId);
     }
 
+    /**
+     * Store a newly created store
+     *
+     * @return Store
+     * 
+     */
     public function store(): Store
     {
         request()->merge(['slug' => str(request()->input('name'))->slug()]);
@@ -52,6 +61,14 @@ class StoreController extends Controller
         return $this->storeService->createStore($validatedStorePayload);
     }
 
+    /**
+     * Update a specific store
+     *
+     * @param int $storeId
+     * 
+     * @return Store
+     * 
+     */
     public function update(int $storeId): Store
     {
         request()->merge(['slug' => str(request()->input('name'))->slug()]);
@@ -67,6 +84,14 @@ class StoreController extends Controller
         return $this->storeService->updateStore($storeId, $validatedStorePayload);
     }
 
+    /**
+     * Delete a specific store
+     *
+     * @param int $storeId
+     * 
+     * @return Response
+     * 
+     */
     public function destroy(int $storeId): Response
     {
         $this->storeService->deleteStoreById($storeId);

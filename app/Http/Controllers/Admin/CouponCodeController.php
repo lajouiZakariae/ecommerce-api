@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Admin\CouponCodeResource;
-use App\Http\Resources\CategoryResource;
 use App\Models\CouponCode;
 use App\Rules\ValidIntegerTypeRule;
 use App\Services\CouponCodeService;
@@ -17,6 +16,11 @@ class CouponCodeController extends Controller
     {
     }
 
+    /**
+     * Get a listing of the coupon codes.
+     *
+     * @return ResourceCollection
+     */
     public function index(): ResourceCollection
     {
         $couponCodes = $this->couponCodeService->getAllCouponCodes([
@@ -27,8 +31,9 @@ class CouponCodeController extends Controller
     }
 
     /**
-     * @param int $couponCodeId
-     * 
+     * Get a specific coupon code.
+     *
+     * @param  int  $couponCodeId
      * @return CouponCodeResource
      */
     public function show(int $couponCodeId): CouponCodeResource
@@ -36,25 +41,29 @@ class CouponCodeController extends Controller
         return CouponCodeResource::make($this->couponCodeService->getCouponCodeById($couponCodeId));
     }
 
+    /**
+     * Store a newly created coupon code.
+     *
+     * @return CouponCodeResource
+     */
     public function store(): CouponCodeResource
     {
         $this->authorize('create', CouponCode::class);
 
-        $couponCodePayload = [
-            'code' => request()->input('code'),
-            'amount' => request()->input('amount'),
-        ];
-
-        $couponCodeValidator = validator()->make($couponCodePayload, [
+        $validatedCouponCodePayload = request()->validate([
             'code' => ['required', 'min:1', 'max:255', 'unique:coupon_codes,code'],
             'amount' => ['required', 'integer', new ValidIntegerTypeRule, 'min:1', 'max:100'],
         ]);
 
-        $validatedCouponCodePayload = $couponCodeValidator->validate();
-
         return CouponCodeResource::make($this->couponCodeService->createCouponCode($validatedCouponCodePayload));
     }
 
+    /**
+     * Update a specific coupon code.
+     *
+     * @param  int  $couponCodeId
+     * @return Response
+     */
     public function update(int $couponCodeId): Response
     {
         $this->authorize('update', CouponCode::class);
@@ -64,18 +73,22 @@ class CouponCodeController extends Controller
             'amount' => request()->input('amount'),
         ];
 
-        $couponCodeValidator = validator()->make($couponCodePayload, [
+        $validatedCouponCodePayload = request()->validate($couponCodePayload, [
             'code' => ['required', 'min:1', 'max:255', 'unique:coupon_codes,code'],
             'amount' => ['required', 'integer', new ValidIntegerTypeRule, 'min:1', 'max:100'],
         ]);
-
-        $validatedCouponCodePayload = $couponCodeValidator->validate();
 
         $this->couponCodeService->updateCouponCode($couponCodeId, $validatedCouponCodePayload);
 
         return response()->noContent();
     }
 
+    /**
+     * Delete a specific coupon code.
+     *
+     * @param  int  $couponCodeId
+     * @return Response
+     */
     public function destroy(int $couponCodeId): Response
     {
         $this->authorize('delete', CouponCode::class);

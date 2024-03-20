@@ -26,6 +26,11 @@ class ProductController extends Controller
 
     /**
      * Get valid filters only
+     *
+     * @param array<string,mixed> $filters
+     * 
+     * @return array<string,mixed>
+     * 
      */
     private function getValidProductFilters(array $filters): array
     {
@@ -43,7 +48,9 @@ class ProductController extends Controller
     }
 
     /**
-     * @return \Illuminate\Http\Response
+     * Get a listing of the products.
+     *
+     * @return ResourceCollection
      */
     public function index()
     {
@@ -62,7 +69,7 @@ class ProductController extends Controller
     }
 
     /**
-     * Store a newly created product in storage.
+     * Store a newly created product.
      * 
      * @param ProductStoreRequest $request
      * 
@@ -80,11 +87,11 @@ class ProductController extends Controller
     }
 
     /**
-     * Display the specified product.
+     * Get a specific product.
      *
      * @param  int $productId
      * 
-     * @return \Illuminate\Http\Response
+     * @return ProductResource
      */
     public function show($productId): ProductResource
     {
@@ -94,7 +101,7 @@ class ProductController extends Controller
     }
 
     /**
-     * Update the specified product in storage.
+     * Update a specific product in storage.
      * 
      * @param ProductUpdateRequest $request
      * @param mixed $productId
@@ -111,9 +118,10 @@ class ProductController extends Controller
     }
 
     /**
-     * Remove the specified product from storage.
+     * Delete a specific product from storage.
      *
      * @param  int  $productId
+     * 
      * @return \Illuminate\Http\Response
      */
     public function destroy(int $productId): Response
@@ -126,10 +134,11 @@ class ProductController extends Controller
     }
 
     /**
-     * Toggle publish state of the specified product.
+     * Toggle publish state of a specific product.
      *
      * @param  \App\Services\ProductService  $productService
      * @param  int  $productId
+     * 
      * @return \Illuminate\Http\Response
      */
     public function togglePublish(int $productId): Response
@@ -142,10 +151,11 @@ class ProductController extends Controller
     }
 
     /**
-     * Display a listing of products for a specific category.
+     * Get a listing of products for a specific category.
      *
      * @param  int  $categoryId
-     * @return \Illuminate\Http\Response
+     * 
+     * @return ResourceCollection
      */
     public function productsByCategory($categoryId): ResourceCollection
     {
@@ -157,10 +167,11 @@ class ProductController extends Controller
     }
 
     /**
-     * Display a listing of products for a specific Store.
+     * Get a listing of products for a specific Store.
      *
      * @param  int  $storeId
-     * @return \Illuminate\Http\Response
+     * 
+     * @return ResourceCollection
      */
     public function productsByStore($storeId): ResourceCollection
     {

@@ -6733,16 +6733,6 @@ namespace Illuminate\Support\Facades {
         {
                         \Illuminate\Filesystem\Filesystem::flushMacros();
         }
-                    /**
-         * 
-         *
-         * @see \Blueprint\FileMixins::stub()
-         * @param mixed $path
-         * @static 
-         */        public static function stub($path)
-        {
-                        return \Illuminate\Filesystem\Filesystem::stub($path);
-        }
             }
             /**
      * 
@@ -17946,24 +17936,6 @@ namespace Spatie\LaravelIgnition\Facades {
         {
                         /** @var \Spatie\FlareClient\Flare $instance */
                         return $instance->group($groupName, $properties);
-        }
-            }
-    }
-
-namespace Illuminate\Filesystem {
-            /**
-     * 
-     *
-     */        class Filesystem {
-                    /**
-         * 
-         *
-         * @see \Blueprint\FileMixins::stub()
-         * @param mixed $path
-         * @static 
-         */        public static function stub($path)
-        {
-                        return \Illuminate\Filesystem\Filesystem::stub($path);
         }
             }
     }

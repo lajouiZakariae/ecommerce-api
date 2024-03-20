@@ -17,18 +17,36 @@ class JWTAuthController extends Controller
         $this->middleware('auth:api', ['except' => ['login', 'register']]);
     }
 
+    /**
+     * Get the rate limiter's key
+     *
+     * @return string
+     * 
+     */
     private function getThrottleKey(): string
     {
         return Str::lower(request()->input('email')) . '|' . request()->ip();
     }
 
+    /**
+     * Check if the rate limiter reached the max attempts
+     *
+     * @return void
+     * @throws TooManyRequestsHttpException
+     */
     private function checkRateLimit(): void
     {
-        if (RateLimiter::tooManyAttempts($this->getThrottleKey(), 2)) {
+        if (RateLimiter::tooManyAttempts($this->getThrottleKey(), env('MAX_LOGIN_ATTEMPTS', 5))) {
             throw new TooManyRequestsHttpException(message: 'Too Many Attempts');
         };
     }
 
+    /**
+     * Authenticating user using JWT 
+     *
+     * @return array<string,mixed>
+     * 
+     */
     public function login(): array
     {
         $this->checkRateLimit();
@@ -53,6 +71,12 @@ class JWTAuthController extends Controller
         ];
     }
 
+    /**
+     * Logging user out
+     *
+     * @return JsonResponse
+     * 
+     */
     public function logout(): JsonResponse
     {
         Auth::logout();
@@ -62,7 +86,13 @@ class JWTAuthController extends Controller
         ]);
     }
 
-    public function refresh()
+    /**
+     * Refresh the JWT token
+     *
+     * @return JsonResponse
+     * 
+     */
+    public function refresh(): JsonResponse
     {
         return response()->json([
             'user' => Auth::user(),

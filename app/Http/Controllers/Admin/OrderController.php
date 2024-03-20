@@ -12,13 +12,12 @@ use Illuminate\Http\Response;
 
 class OrderController extends Controller
 {
-    public function __construct(
-        private OrderService $orderService,
-    ) {
+    public function __construct(private OrderService $orderService)
+    {
     }
 
     /**
-     * Display a listing of the orders.
+     * Get a listing of the orders.
      *
      * @return ResourceCollection
      */
@@ -30,24 +29,26 @@ class OrderController extends Controller
     }
 
     /**
-     * Store a newly created order in storage.
+     * Store a newly created order.
      *
-     * @param  \App\Http\Requests\OrderStoreRequest  $request
-     * @return \App\Http\Resources
+     * @param  OrderStoreRequest  $request
+     * 
+     * @return OrderResource
      */
-    public function store(OrderStoreRequest $request)
+    public function store(OrderStoreRequest $request): OrderResource
     {
         $data = $request->validated();
 
-        return  OrderResource::make(
+        return OrderResource::make(
             $this->orderService->placeOrderWithOrderItems($data)
         );
     }
 
     /**
-     * Display the specified order.
+     * Get a specific order.
      *
      * @param int $orderId
+     * 
      * @return OrderResource
      */
     public function show(int $orderId): OrderResource
@@ -58,10 +59,11 @@ class OrderController extends Controller
     }
 
     /**
-     * Update the specified order in storage.
+     * Update a specific order in storage.
      *
-     * @param  \App\Http\Requests\OrderUpdateRequest  $request
+     * @param  OrderUpdateRequest  $request
      * @param  int $orderId
+     * 
      * @return \Illuminate\Http\Response
      */
     public function update(OrderUpdateRequest $request, int $orderId): Response
@@ -74,9 +76,10 @@ class OrderController extends Controller
     }
 
     /**
-     * Remove the specified order from storage.
+     * Delete a specific order.
      *
      * @param  int  $orderId
+     * 
      * @return \Illuminate\Http\Response
      */
     public function destroy(int $orderId): Response
@@ -87,9 +90,10 @@ class OrderController extends Controller
     }
 
     /**
-     * Cancel the specified order from storage.
+     * Cancel a specific order.
      *
      * @param  int  $orderId
+     * 
      * @return \Illuminate\Http\Response
      */
     public function cancelOrder(int $orderId): Response

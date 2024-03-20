@@ -19,7 +19,7 @@ class ReviewController extends Controller
     }
 
     /**
-     * Display a listing of reviews.
+     * Get a listing of reviews.
      *
      * @return \Illuminate\Http\Response
      */
@@ -31,7 +31,7 @@ class ReviewController extends Controller
     }
 
     /**
-     * Store a newly created review in storage.
+     * Store a newly created review
      *
      * @param  \App\Http\Requests\Admin\ReviewStoreRequest  $request
      * @return \Illuminate\Http\Response
@@ -44,6 +44,8 @@ class ReviewController extends Controller
     }
 
     /**
+     * Get a specific review
+     *  
      * @param int $reviewId
      * 
      * @return ReviewResource
@@ -54,6 +56,8 @@ class ReviewController extends Controller
     }
 
     /**
+     * Update a specific review
+     * 
      * @param ReviewUpdateRequest $request
      * @param int $reviewId
      * 
@@ -66,6 +70,8 @@ class ReviewController extends Controller
     }
 
     /**
+     * Delete a specific review
+     * 
      * @param int $reviewId
      * 
      * @return Response
@@ -78,6 +84,8 @@ class ReviewController extends Controller
     }
 
     /**
+     * Get reviews of a specific product
+     * 
      * @param int $productId
      * 
      * @return ResourceCollection
