@@ -1,1 +1,1 @@
-# Backend of an inventory system
+# Backend of an ecommerce platform
